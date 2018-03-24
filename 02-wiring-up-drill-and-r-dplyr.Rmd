@@ -1,0 +1,58 @@
+# Wiring Up Drill and R (`dplyr`-style)
+
+## Problem
+
+You have Drill installed and want to work with Drill from R using `dplyr` idioms.
+
+## Solution
+
+Install, load and use the `sergeant` package.
+
+## Discussion
+
+Working with Drill in a `dplyr` context is pretty straightforward. Assuming you have drill running you need to:
+
+- connect to the database
+- identify a table
+- perform normal operations
+
+The Drill query interface (<http://localhost:8047/query>) provides an example query we can use for testing if your setup is working:
+
+    SELECT * FROM cp.`employee.json` LIMIT 20
+
+Let's take a look at the `employee.json` table using R & `dplyr`.
+
+```{r 02-example-01-connect, message=FALSE, warning=FALSE}
+library(sergeant)
+library(tidyverse)
+
+db <- src_drill("localhost")
+
+db
+
+employee <- tbl(db, "cp.`employee.json`")
+
+employee
+```
+
+If you've never worked with the `dplyr` and databases before, you may not be aware that what's really happening is different than what you experince with local R data frames.
+
+The call to `src_drill("localhost")` does some RJDBC/DBI "magic" behind the scenes to setup all the necessary connection parameters.
+
+By printing `db`, a SQL query ---`SHOW DATABASES`---is issued to get available storage/databases and reformats it to conform to the expected `dplyr` datbase API.
+
+When `tbl(...)` is executed a
+
+    SELECT * FROM  cp.`employee.json`  LIMIT 1
+
+is issued to obtain field information for future operations on `employee`.
+
+Finally, when `employee` is printed, the query
+
+    SELECT * FROM  cp.`employee.json`  LIMIT 10
+
+is issued and the contents transferred back into R. `sergeant` cheats a bit since the data is run through `readr::type_convert()` before being delivered back to the user. It does this for a whole host of reasons, but mostly out of convenience for the user.
+
+## See Also
+
+- [Drill package source README](https://github.com/hrbrmstr/sergeant/blob/master/README.md)

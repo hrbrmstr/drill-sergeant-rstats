@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Using Apache Drill with R</title>
+  <meta name="description" content="A small guide to wrangling data to fuel analyses with Apache Drill and R">
+  <meta name="generator" content="bookdown 0.6.2 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Using Apache Drill with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://rud.is/books/drill-sergeant-rstats/" />
+  
+  <meta property="og:description" content="A small guide to wrangling data to fuel analyses with Apache Drill and R" />
+  <meta name="github-repo" content="hrbrmstr/drill-sergeant-rstats" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Using Apache Drill with R" />
+  
+  <meta name="twitter:description" content="A small guide to wrangling data to fuel analyses with Apache Drill and R" />
+  
+
+<meta name="author" content="Bob Rudis">
+
+
+<meta name="date" content="2018-03-24">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="about-the-author.html">
+<link rel="next" href="wiring-up-drill-and-r-dplyr-style.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; }
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource div.sourceLine, .numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em; }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; color: #aaaaaa;  padding-left: 4px; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; color: initial; }
+}
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.bn { color: #40a070; } /* BaseN */
+code span.fl { color: #40a070; } /* Float */
+code span.ch { color: #4070a0; } /* Char */
+code span.st { color: #4070a0; } /* String */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.ot { color: #007020; } /* Other */
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.fu { color: #06287e; } /* Function */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code span.cn { color: #880000; } /* Constant */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.im { } /* Import */
+code span.va { color: #19177c; } /* Variable */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.op { color: #666666; } /* Operator */
+code span.bu { } /* BuiltIn */
+code span.ex { } /* Extension */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.at { color: #7d9029; } /* Attribute */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Using Apache Drill with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#preparing-r-for-drill"><i class="fa fa-check"></i><b>0.1</b> Preparing R for Drill</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the Author</a></li>
+<li class="chapter" data-level="" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html"><i class="fa fa-check"></i>Drill in More Than 10 Minutes</a><ul>
+<li class="chapter" data-level="0.2" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#beyond-standalone-mode"><i class="fa fa-check"></i><b>0.2</b> Beyond Standalone Mode</a></li>
+<li class="chapter" data-level="0.3" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#installing-zookeeper"><i class="fa fa-check"></i><b>0.3</b> Installing Zookeeper</a><ul>
+<li class="chapter" data-level="0.3.1" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#macos"><i class="fa fa-check"></i><b>0.3.1</b> macOS</a></li>
+<li class="chapter" data-level="0.3.2" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#ubuntudebian-ish"><i class="fa fa-check"></i><b>0.3.2</b> Ubuntu/Debian-ish</a></li>
+<li class="chapter" data-level="0.3.3" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#windows"><i class="fa fa-check"></i><b>0.3.3</b> Windows</a></li>
+</ul></li>
+<li class="chapter" data-level="0.4" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#wiring-up-zookeeper-with-drill"><i class="fa fa-check"></i><b>0.4</b> Wiring Up Zookeeper With Drill</a></li>
+<li class="chapter" data-level="0.5" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#allocating-more-memory-to-apache-drill"><i class="fa fa-check"></i><b>0.5</b> Allocating More Memory to Apache Drill</a></li>
+<li class="chapter" data-level="0.6" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#administering-drill"><i class="fa fa-check"></i><b>0.6</b> Administering Drill</a></li>
+<li class="chapter" data-level="0.7" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#drill-storage-plugins"><i class="fa fa-check"></i><b>0.7</b> Drill “Storage” Plugins</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html"><i class="fa fa-check"></i><b>1</b> Wiring Up Drill and R (<code>dplyr</code>-style)</a><ul>
+<li class="chapter" data-level="1.1" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#problem"><i class="fa fa-check"></i><b>1.1</b> Problem</a></li>
+<li class="chapter" data-level="1.2" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#solution"><i class="fa fa-check"></i><b>1.2</b> Solution</a></li>
+<li class="chapter" data-level="1.3" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#discussion"><i class="fa fa-check"></i><b>1.3</b> Discussion</a></li>
+<li class="chapter" data-level="1.4" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#see-also"><i class="fa fa-check"></i><b>1.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html"><i class="fa fa-check"></i><b>2</b> Wiring Up Drill and R (<code>RJDBC</code>-style)</a><ul>
+<li class="chapter" data-level="2.1" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#problem-1"><i class="fa fa-check"></i><b>2.1</b> Problem</a></li>
+<li class="chapter" data-level="2.2" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#solution-1"><i class="fa fa-check"></i><b>2.2</b> Solution</a></li>
+<li class="chapter" data-level="2.3" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#discussion-1"><i class="fa fa-check"></i><b>2.3</b> Discussion</a></li>
+<li class="chapter" data-level="2.4" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#see-also-1"><i class="fa fa-check"></i><b>2.4</b> See Also</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><span style="font-size:8pt"><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></span></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Using Apache Drill with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="drill-in-more-than-10-minutes" class="section level1 unnumbered">
+<h1>Drill in More Than 10 Minutes</h1>
+<p>Part of the wonder of the modern internet is that one doesn’t have to reinvent or <em>redescribe</em> the wheel. The Apache Drill team has superb “Drill in 10 Minutes”<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> tutorial which walks you through the downloading, installation and running (in “standalone” mode) of Apache Drill. <em>Provided you already have Java installed</em>, the time-investment estimation is fairly accurate.</p>
+<p>You should go through that tutorial before proceeding and only continue here when Drill works. File an book issue if you believe more expository would help with that tutorial or if there were “gotchas” you had to overcoome.</p>
+<div id="beyond-standalone-mode" class="section level2">
+<h2><span class="header-section-number">0.2</span> Beyond Standalone Mode</h2>
+<p>The “10 Minutes” tutorial puts Drill in standalone mode and gets you up and running. The <code>sergeant</code> package will work with Drill in standalone mode, but said mode requires you to keep a Drill “shell” running. That is sub-optimal and can lead to frustration. Thankfully, it’s not too difficult to put drill into single-node server mode, but it does require a bit of work and one additional component: Apache Zookeeper<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>.</p>
+<p>Zookeeper’s mission in life it to be a highly available/distributed configuration manager for distributed services and when Drill is used in a &gt;=1 configuration, Zookeeper is necessary to share configuration information between nodes. Thankfully, it’s easy to setup Zookeeper in a single-node with Drill.</p>
+</div>
+<div id="installing-zookeeper" class="section level2">
+<h2><span class="header-section-number">0.3</span> Installing Zookeeper</h2>
+<p>First, we need to install Zookeeper:</p>
+<div id="macos" class="section level3">
+<h3><span class="header-section-number">0.3.1</span> macOS</h3>
+<p>Using Homebrew<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>:</p>
+<pre><code>brew install zookeeper
+ln -sfv /usr/local/opt/zookeeper/homebrew.mxcl.zookeeper.plist ~/Library/LaunchAgents</code></pre>
+</div>
+<div id="ubuntudebian-ish" class="section level3">
+<h3><span class="header-section-number">0.3.2</span> Ubuntu/Debian-ish</h3>
+<pre><code>sudo apt-get install zookeeperd
+service zookeeper # {start|stop|status|restart|force-reload}</code></pre>
+</div>
+<div id="windows" class="section level3">
+<h3><span class="header-section-number">0.3.3</span> Windows</h3>
+<p>TBD</p>
+</div>
+</div>
+<div id="wiring-up-zookeeper-with-drill" class="section level2">
+<h2><span class="header-section-number">0.4</span> Wiring Up Zookeeper With Drill</h2>
+<p>On Linux and macOS, it’s best to have drill in <code>/usr/local/drill</code> (it’s handy to symlink the full versioned directory to <code>drill</code> to make it easier to switch out/upgrade versions). On Windows, Drill is in <code>TBD</code>.</p>
+<p>The Drill directory structure looks like:</p>
+<pre><code>.
+├── bin
+├── conf
+├── jars
+│   ├── 3rdparty
+│   │   ├── fedora
+│   │   ├── linux
+│   │   ├── osx
+│   │   └── windows
+│   ├── classb
+│   ├── ext
+│   ├── jdbc-driver
+│   └── tools
+├── sample-data
+│   ├── nationsMF
+│   ├── nationsSF
+│   ├── regionsMF
+│   └── regionsSF
+└── winutils
+    └── bin</code></pre>
+<p>And, you’ll need to edit <code>conf/drill-override.conf</code> to look a bit like this:</p>
+<pre><code>drill.exec: {
+  cluster-id: &quot;COOL_CLUSTER_ID_NAME&quot;,                                      # keep it short
+  zk.connect: &quot;localhost:2181&quot;,                                            # use zookeeper
+  store.json.reader.skip_invalid_records: true,                            # handle bad json more gracefully
+  sys.store.provider.local.path: &quot;/usr/local/drill/conf/storage.conf&quot;      # persist storage provider config changes
+}</code></pre>
+<p>Once you do that, you can then use:</p>
+<pre><code>drillbit.sh start</code></pre>
+<p>to keep Drill running without having to persist a shell.</p>
+<p>To test this configuration, just do:</p>
+<pre><code>drill-conf</code></pre>
+<p>and you should get into a Drill <code>sqline</code> shell the same as if you had been using standalone mode.</p>
+<p>The <em>cool</em> part of this is that you can now extend your node into a cluster with just a few configuration changes.</p>
+</div>
+<div id="allocating-more-memory-to-apache-drill" class="section level2">
+<h2><span class="header-section-number">0.5</span> Allocating More Memory to Apache Drill</h2>
+<p>The author is a huge proponent of letting Drill do the data wrangling and giving it memory to do the work it needs to do for said wrangling vs R (or Python). For larger systems (16+DB RAM) you’ll likely want/need to update the default memory settings.</p>
+<p>To keep the book as DRY<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a> as possible, you can check out the “Configuring Drill Memory”<a href="#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a> section of the online Drill manual since it does a fine job explaining the configuration parameters you’ll need to change.</p>
+<p>Drill is somewhat like R in that memory (RAM) will constrain what you can do. We’ll discuss this more in future recipes.</p>
+</div>
+<div id="administering-drill" class="section level2">
+<h2><span class="header-section-number">0.6</span> Administering Drill</h2>
+<p>The remainder of the book will assume Drill is running as a server. If you keep it in standalone mode, you will need to have it running manually for most of the book content to be relevant.</p>
+<p>You’ll want to bookmark/tab:</p>
+<ul>
+<li><a href="http://localhost:8047/" class="uri">http://localhost:8047/</a></li>
+<li><a href="http://localhost:8047/query" class="uri">http://localhost:8047/query</a></li>
+<li><a href="http://localhost:8047/storage" class="uri">http://localhost:8047/storage</a></li>
+<li><a href="http://localhost:8047/profiles" class="uri">http://localhost:8047/profiles</a></li>
+</ul>
+<p>in your favourite web browser since it is likely you’ll visit those admin pages more than you think you will. Starting with Drill 1.13.0 the query interface is syntax highlighted and a serious bug in the query results display has been fixed, so it’s a pretty decent interface for testing out queries.</p>
+</div>
+<div id="drill-storage-plugins" class="section level2">
+<h2><span class="header-section-number">0.7</span> Drill “Storage” Plugins</h2>
+<p>Drill works with databases, Hadoop-filesystems, Amazon S3 storage and plain ’ol local filesystems/directories that you use every day. We’ll focus mainly on these simple local filesystems throughout the book since it is somewhat beyond the scope to introduce readers to Hadoop/Hive/HBase, but we’ll likely delve into database access and even S3 access along the way.</p>
+<p>You should Read The Fine Manual<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a> to get an idea of how to work with the storage configuration since we’ll be tweaking it along the way throughout the book.</p>
+
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="6">
+<li id="fn6"><p><a href="https://drill.apache.org/docs/drill-in-10-minutes/">Drill in 10 Minutes</a><a href="drill-in-more-than-10-minutes.html#fnref6" class="footnote-back">↩</a></p></li>
+<li id="fn7"><p><a href="https://zookeeper.apache.org/">Apache Zookeeper</a><a href="drill-in-more-than-10-minutes.html#fnref7" class="footnote-back">↩</a></p></li>
+<li id="fn8"><p><a href="https://brew.sh/">Homebrew</a><a href="drill-in-more-than-10-minutes.html#fnref8" class="footnote-back">↩</a></p></li>
+<li id="fn9"><p><a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don’t Repeat Yourself</a><a href="drill-in-more-than-10-minutes.html#fnref9" class="footnote-back">↩</a></p></li>
+<li id="fn10"><p><a href="https://drill.apache.org/docs/configuring-drill-memory/">Configuring Drill Memory</a><a href="drill-in-more-than-10-minutes.html#fnref10" class="footnote-back">↩</a></p></li>
+<li id="fn11"><p><a href="https://drill.apache.org/docs/storage-plugin-registration/">Drill Storage Plugin Configuration</a><a href="drill-in-more-than-10-minutes.html#fnref11" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="about-the-author.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="wiring-up-drill-and-r-dplyr-style.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "serif",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+},
+"theme": "sandstone"
+});
+});
+</script>
+
+</body>
+
+</html>

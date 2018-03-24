@@ -1,0 +1,6 @@
+book_filename: "drill-sergeant-rstats"
+chapter_name: "Recipe "
+repo: https://github.com/hrbrmstr/drill-sergeant-rstats
+output_dir: docs
+clean: [packages.bib, bookdown.bbl]
+new_session: yes

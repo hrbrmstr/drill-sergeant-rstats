@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Using Apache Drill with R</title>
+  <meta name="description" content="A small guide to wrangling data to fuel analyses with Apache Drill and R">
+  <meta name="generator" content="bookdown 0.6.2 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Using Apache Drill with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://rud.is/books/drill-sergeant-rstats/" />
+  
+  <meta property="og:description" content="A small guide to wrangling data to fuel analyses with Apache Drill and R" />
+  <meta name="github-repo" content="hrbrmstr/drill-sergeant-rstats" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Using Apache Drill with R" />
+  
+  <meta name="twitter:description" content="A small guide to wrangling data to fuel analyses with Apache Drill and R" />
+  
+
+<meta name="author" content="Bob Rudis">
+
+
+<meta name="date" content="2018-03-24">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="drill-in-more-than-10-minutes.html">
+<link rel="next" href="wiring-up-drill-and-r-rjdbc-style.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; }
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource div.sourceLine, .numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em; }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; color: #aaaaaa;  padding-left: 4px; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; color: initial; }
+}
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.bn { color: #40a070; } /* BaseN */
+code span.fl { color: #40a070; } /* Float */
+code span.ch { color: #4070a0; } /* Char */
+code span.st { color: #4070a0; } /* String */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.ot { color: #007020; } /* Other */
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.fu { color: #06287e; } /* Function */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code span.cn { color: #880000; } /* Constant */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.im { } /* Import */
+code span.va { color: #19177c; } /* Variable */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.op { color: #666666; } /* Operator */
+code span.bu { } /* BuiltIn */
+code span.ex { } /* Extension */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.at { color: #7d9029; } /* Attribute */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Using Apache Drill with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#preparing-r-for-drill"><i class="fa fa-check"></i><b>0.1</b> Preparing R for Drill</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the Author</a></li>
+<li class="chapter" data-level="" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html"><i class="fa fa-check"></i>Drill in More Than 10 Minutes</a><ul>
+<li class="chapter" data-level="0.2" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#beyond-standalone-mode"><i class="fa fa-check"></i><b>0.2</b> Beyond Standalone Mode</a></li>
+<li class="chapter" data-level="0.3" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#installing-zookeeper"><i class="fa fa-check"></i><b>0.3</b> Installing Zookeeper</a><ul>
+<li class="chapter" data-level="0.3.1" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#macos"><i class="fa fa-check"></i><b>0.3.1</b> macOS</a></li>
+<li class="chapter" data-level="0.3.2" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#ubuntudebian-ish"><i class="fa fa-check"></i><b>0.3.2</b> Ubuntu/Debian-ish</a></li>
+<li class="chapter" data-level="0.3.3" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#windows"><i class="fa fa-check"></i><b>0.3.3</b> Windows</a></li>
+</ul></li>
+<li class="chapter" data-level="0.4" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#wiring-up-zookeeper-with-drill"><i class="fa fa-check"></i><b>0.4</b> Wiring Up Zookeeper With Drill</a></li>
+<li class="chapter" data-level="0.5" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#allocating-more-memory-to-apache-drill"><i class="fa fa-check"></i><b>0.5</b> Allocating More Memory to Apache Drill</a></li>
+<li class="chapter" data-level="0.6" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#administering-drill"><i class="fa fa-check"></i><b>0.6</b> Administering Drill</a></li>
+<li class="chapter" data-level="0.7" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#drill-storage-plugins"><i class="fa fa-check"></i><b>0.7</b> Drill “Storage” Plugins</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html"><i class="fa fa-check"></i><b>1</b> Wiring Up Drill and R (<code>dplyr</code>-style)</a><ul>
+<li class="chapter" data-level="1.1" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#problem"><i class="fa fa-check"></i><b>1.1</b> Problem</a></li>
+<li class="chapter" data-level="1.2" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#solution"><i class="fa fa-check"></i><b>1.2</b> Solution</a></li>
+<li class="chapter" data-level="1.3" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#discussion"><i class="fa fa-check"></i><b>1.3</b> Discussion</a></li>
+<li class="chapter" data-level="1.4" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#see-also"><i class="fa fa-check"></i><b>1.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html"><i class="fa fa-check"></i><b>2</b> Wiring Up Drill and R (<code>RJDBC</code>-style)</a><ul>
+<li class="chapter" data-level="2.1" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#problem-1"><i class="fa fa-check"></i><b>2.1</b> Problem</a></li>
+<li class="chapter" data-level="2.2" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#solution-1"><i class="fa fa-check"></i><b>2.2</b> Solution</a></li>
+<li class="chapter" data-level="2.3" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#discussion-1"><i class="fa fa-check"></i><b>2.3</b> Discussion</a></li>
+<li class="chapter" data-level="2.4" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#see-also-1"><i class="fa fa-check"></i><b>2.4</b> See Also</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><span style="font-size:8pt"><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></span></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Using Apache Drill with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="wiring-up-drill-and-r-dplyr-style" class="section level1">
+<h1><span class="header-section-number">Recipe 1</span> Wiring Up Drill and R (<code>dplyr</code>-style)</h1>
+<div id="problem" class="section level2">
+<h2><span class="header-section-number">1.1</span> Problem</h2>
+<p>You have Drill installed and want to work with Drill from R using <code>dplyr</code> idioms.</p>
+</div>
+<div id="solution" class="section level2">
+<h2><span class="header-section-number">1.2</span> Solution</h2>
+<p>Install, load and use the <code>sergeant</code> package.</p>
+</div>
+<div id="discussion" class="section level2">
+<h2><span class="header-section-number">1.3</span> Discussion</h2>
+<p>Working with Drill in a <code>dplyr</code> context is pretty straightforward. Assuming you have drill running you need to:</p>
+<ul>
+<li>connect to the database</li>
+<li>identify a table</li>
+<li>perform normal operations</li>
+</ul>
+<p>The Drill query interface (<a href="http://localhost:8047/query" class="uri">http://localhost:8047/query</a>) provides an example query we can use for testing if your setup is working:</p>
+<pre><code>SELECT * FROM cp.`employee.json` LIMIT 20</code></pre>
+<p>Let’s take a look at the <code>employee.json</code> table using R &amp; <code>dplyr</code>.</p>
+<pre class="sourceCode r" id="cb11"><code class="sourceCode r"><div class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">library</span>(sergeant)</div>
+<div class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</div>
+<div class="sourceLine" id="cb11-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb11-4" data-line-number="4">db &lt;-<span class="st"> </span><span class="kw">src_drill</span>(<span class="st">&quot;localhost&quot;</span>)</div>
+<div class="sourceLine" id="cb11-5" data-line-number="5"></div>
+<div class="sourceLine" id="cb11-6" data-line-number="6">db</div></code></pre>
+<pre><code>## src:  DrillConnection
+## tbls: cp.default, dfs.caps, dfs.d, dfs.default, dfs.root, dfs.tmp,
+##   INFORMATION_SCHEMA, sys</code></pre>
+<pre class="sourceCode r" id="cb13"><code class="sourceCode r"><div class="sourceLine" id="cb13-1" data-line-number="1">employee &lt;-<span class="st"> </span><span class="kw">tbl</span>(db, <span class="st">&quot;cp.`employee.json`&quot;</span>)</div>
+<div class="sourceLine" id="cb13-2" data-line-number="2"></div>
+<div class="sourceLine" id="cb13-3" data-line-number="3">employee</div></code></pre>
+<pre><code>## # Source:   table&lt;cp.`employee.json`&gt; [?? x 16]
+## # Database: DrillConnection
+##    store_id gender department_id birth_date supervisor_id last_name
+##       &lt;int&gt; &lt;chr&gt;          &lt;int&gt; &lt;date&gt;             &lt;int&gt; &lt;chr&gt;    
+##  1        0 F                  1 1961-08-26             0 Nowmer   
+##  2        0 M                  1 1915-07-03             1 Whelply  
+##  3        0 M                  1 1969-06-20             1 Spence   
+##  4        0 F                  1 1951-05-10             1 Gutierrez
+##  5        0 F                  2 1942-10-08             1 Damstra  
+##  6        0 F                  3 1949-03-27             1 Kanagaki 
+##  7        9 F                 11 1922-08-10             5 Brunner  
+##  8       21 F                 11 1979-06-23             5 Blumberg 
+##  9        0 M                  5 1949-08-26             1 Stanz    
+## 10        1 M                 11 1967-06-20             5 Murraiin 
+## # ... with more rows, and 10 more variables: position_title &lt;chr&gt;,
+## #   hire_date &lt;dttm&gt;, management_role &lt;chr&gt;, salary &lt;dbl&gt;,
+## #   marital_status &lt;chr&gt;, full_name &lt;chr&gt;, employee_id &lt;int&gt;,
+## #   education_level &lt;chr&gt;, first_name &lt;chr&gt;, position_id &lt;int&gt;</code></pre>
+<p>If you’ve never worked with the <code>dplyr</code> and databases before, you may not be aware that what’s really happening is different than what you experince with local R data frames.</p>
+<p>The call to <code>src_drill(&quot;localhost&quot;)</code> does some RJDBC/DBI “magic” behind the scenes to setup all the necessary connection parameters.</p>
+<p>By printing <code>db</code>, a SQL query —<code>SHOW DATABASES</code>—is issued to get available storage/databases and reformats it to conform to the expected <code>dplyr</code> datbase API.</p>
+<p>When <code>tbl(...)</code> is executed a</p>
+<pre><code>SELECT * FROM  cp.`employee.json`  LIMIT 1</code></pre>
+<p>is issued to obtain field information for future operations on <code>employee</code>.</p>
+<p>Finally, when <code>employee</code> is printed, the query</p>
+<pre><code>SELECT * FROM  cp.`employee.json`  LIMIT 10</code></pre>
+<p>is issued and the contents transferred back into R. <code>sergeant</code> cheats a bit since the data is run through <code>readr::type_convert()</code> before being delivered back to the user. It does this for a whole host of reasons, but mostly out of convenience for the user.</p>
+</div>
+<div id="see-also" class="section level2">
+<h2><span class="header-section-number">1.4</span> See Also</h2>
+<ul>
+<li><a href="https://github.com/hrbrmstr/sergeant/blob/master/README.md">Drill package source README</a></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="drill-in-more-than-10-minutes.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="wiring-up-drill-and-r-rjdbc-style.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "serif",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+},
+"theme": "sandstone"
+});
+});
+</script>
+
+</body>
+
+</html>
