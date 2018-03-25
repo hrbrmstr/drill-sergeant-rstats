@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Using Apache Drill with R</title>
+  <meta name="description" content="A small guide to wrangling data to fuel analyses with Apache Drill and R">
+  <meta name="generator" content="bookdown 0.6.2 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Using Apache Drill with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://rud.is/books/drill-sergeant-rstats/" />
+  
+  <meta property="og:description" content="A small guide to wrangling data to fuel analyses with Apache Drill and R" />
+  <meta name="github-repo" content="hrbrmstr/drill-sergeant-rstats" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Using Apache Drill with R" />
+  
+  <meta name="twitter:description" content="A small guide to wrangling data to fuel analyses with Apache Drill and R" />
+  
+
+<meta name="author" content="Bob Rudis">
+
+
+<meta name="date" content="2018-03-25">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; }
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource div.sourceLine, .numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em; }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; color: #aaaaaa;  padding-left: 4px; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; color: initial; }
+}
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.bn { color: #40a070; } /* BaseN */
+code span.fl { color: #40a070; } /* Float */
+code span.ch { color: #4070a0; } /* Char */
+code span.st { color: #4070a0; } /* String */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.ot { color: #007020; } /* Other */
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.fu { color: #06287e; } /* Function */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code span.cn { color: #880000; } /* Constant */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.im { } /* Import */
+code span.va { color: #19177c; } /* Variable */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.op { color: #666666; } /* Operator */
+code span.bu { } /* BuiltIn */
+code span.ex { } /* Extension */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.at { color: #7d9029; } /* Attribute */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Using Apache Drill with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#preparing-r-for-drill"><i class="fa fa-check"></i><b>0.1</b> Preparing R for Drill</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the Author</a></li>
+<li class="chapter" data-level="" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html"><i class="fa fa-check"></i>Drill in More Than 10 Minutes</a><ul>
+<li class="chapter" data-level="0.2" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#beyond-standalone-mode"><i class="fa fa-check"></i><b>0.2</b> Beyond Standalone Mode</a></li>
+<li class="chapter" data-level="0.3" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#installing-zookeeper"><i class="fa fa-check"></i><b>0.3</b> Installing Zookeeper</a><ul>
+<li class="chapter" data-level="0.3.1" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#macos"><i class="fa fa-check"></i><b>0.3.1</b> macOS</a></li>
+<li class="chapter" data-level="0.3.2" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#ubuntudebian-ish"><i class="fa fa-check"></i><b>0.3.2</b> Ubuntu/Debian-ish</a></li>
+<li class="chapter" data-level="0.3.3" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#windows"><i class="fa fa-check"></i><b>0.3.3</b> Windows</a></li>
+</ul></li>
+<li class="chapter" data-level="0.4" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#wiring-up-zookeeper-with-drill"><i class="fa fa-check"></i><b>0.4</b> Wiring Up Zookeeper With Drill</a></li>
+<li class="chapter" data-level="0.5" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#allocating-more-memory-to-apache-drill"><i class="fa fa-check"></i><b>0.5</b> Allocating More Memory to Apache Drill</a></li>
+<li class="chapter" data-level="0.6" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#administering-drill"><i class="fa fa-check"></i><b>0.6</b> Administering Drill</a></li>
+<li class="chapter" data-level="0.7" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#drill-storage-plugins"><i class="fa fa-check"></i><b>0.7</b> Drill “Storage” Plugins</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html"><i class="fa fa-check"></i><b>1</b> Wiring Up Drill and R (<code>dplyr</code>-style)</a><ul>
+<li class="chapter" data-level="1.1" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#problem"><i class="fa fa-check"></i><b>1.1</b> Problem</a></li>
+<li class="chapter" data-level="1.2" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#solution"><i class="fa fa-check"></i><b>1.2</b> Solution</a></li>
+<li class="chapter" data-level="1.3" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#discussion"><i class="fa fa-check"></i><b>1.3</b> Discussion</a></li>
+<li class="chapter" data-level="1.4" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#see-also"><i class="fa fa-check"></i><b>1.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html"><i class="fa fa-check"></i><b>2</b> Wiring Up Drill and R (<code>RJDBC</code>-style)</a><ul>
+<li class="chapter" data-level="2.1" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#problem-1"><i class="fa fa-check"></i><b>2.1</b> Problem</a></li>
+<li class="chapter" data-level="2.2" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#solution-1"><i class="fa fa-check"></i><b>2.2</b> Solution</a></li>
+<li class="chapter" data-level="2.3" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#discussion-1"><i class="fa fa-check"></i><b>2.3</b> Discussion</a></li>
+<li class="chapter" data-level="2.4" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#see-also-1"><i class="fa fa-check"></i><b>2.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html"><i class="fa fa-check"></i><b>3</b> Reading and Querying CSV Data With Drill and R</a><ul>
+<li class="chapter" data-level="3.1" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#problem-2"><i class="fa fa-check"></i><b>3.1</b> Problem</a></li>
+<li class="chapter" data-level="3.2" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#solution-2"><i class="fa fa-check"></i><b>3.2</b> Solution</a></li>
+<li class="chapter" data-level="3.3" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#discussion-2"><i class="fa fa-check"></i><b>3.3</b> Discussion</a></li>
+<li class="chapter" data-level="3.4" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#see-also-2"><i class="fa fa-check"></i><b>3.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><i class="fa fa-check"></i><b>4</b> Reading and Querying a Directory of CSV Data With Drill &amp; R</a><ul>
+<li class="chapter" data-level="4.1" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#problem-3"><i class="fa fa-check"></i><b>4.1</b> Problem</a></li>
+<li class="chapter" data-level="4.2" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#solution-3"><i class="fa fa-check"></i><b>4.2</b> Solution</a></li>
+<li class="chapter" data-level="4.3" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#discussion-3"><i class="fa fa-check"></i><b>4.3</b> Discussion</a></li>
+<li class="chapter" data-level="4.4" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#see-also-3"><i class="fa fa-check"></i><b>4.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html"><i class="fa fa-check"></i><b>5</b> Reading a “Traditional” JSON Data File With Drill &amp; R</a><ul>
+<li class="chapter" data-level="5.1" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#problem-4"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#solution-4"><i class="fa fa-check"></i><b>5.2</b> Solution</a></li>
+<li class="chapter" data-level="5.3" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#discussion-4"><i class="fa fa-check"></i><b>5.3</b> Discussion</a></li>
+<li class="chapter" data-level="5.4" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#see-also-4"><i class="fa fa-check"></i><b>5.4</b> See Also</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><span style="font-size:8pt"><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></span></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Using Apache Drill with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="reading-a-traditional-json-data-file-with-drill-r" class="section level1">
+<h1><span class="header-section-number">Recipe 5</span> Reading a “Traditional” JSON Data File With Drill &amp; R</h1>
+<div id="problem-4" class="section level2">
+<h2><span class="header-section-number">5.1</span> Problem</h2>
+<p>You have a “traditional” (i.e. not <a href="http://ndjson.org/">ndjson</a>) JSON data file and want to read and query it with Drill and R.</p>
+</div>
+<div id="solution-4" class="section level2">
+<h2><span class="header-section-number">5.2</span> Solution</h2>
+<p>Put the file into an accessible directory by Drill and query it with R, perhaps some SQL, and <code>sergeant</code>.</p>
+</div>
+<div id="discussion-4" class="section level2">
+<h2><span class="header-section-number">5.3</span> Discussion</h2>
+<p>There are two main “flavours” of JSON data files. The first is “traditional” JSON where a file contains a JSON object. Said object can be very complex and have a great deal of nested bits in it, but it is still a file with one JSON object. Newline-delimited JSON (a.k.s. “JSON Lines” or “ndjson”) compacts a JSON object onto one line and stores one object after another on separate lines, delmited by a newline character.</p>
+<p>“Traditional” JSON is generally something you’d get from an API call, but there are plenty of JSON data files in this format that you may come across or even have on hand. Streaming JSON (“ndjson”, from now on) will be covered in a future recipe.</p>
+<p>A good example of a “traditional” JSON file lies in the National Vulnerability Database (NVD) Feeds<a href="#fn16" class="footnote-ref" id="fnref16"><sup>16</sup></a>. Pull the one for 2017, <a href="https://static.nvd.nist.gov/feeds/json/cve/1.0/nvdcve-1.0-2017.json.gz" class="uri">https://static.nvd.nist.gov/feeds/json/cve/1.0/nvdcve-1.0-2017.json.gz</a>, and remember to store it in your <code>~/Data</code> directory.</p>
+<p>This is what the first portion of the file looks like:</p>
+<pre><code>{
+  &quot;CVE_data_type&quot;: &quot;CVE&quot;,
+  &quot;CVE_data_format&quot;: &quot;MITRE&quot;,
+  &quot;CVE_data_version&quot;: &quot;4.0&quot;,
+  &quot;CVE_data_numberOfCVEs&quot;: &quot;13636&quot;,
+  &quot;CVE_data_timestamp&quot;: &quot;2018-03-25T07:01Z&quot;,
+  &quot;CVE_Items&quot;: [
+    {
+      &quot;cve&quot;: {
+        &quot;data_type&quot;: &quot;CVE&quot;,
+        &quot;data_format&quot;: &quot;MITRE&quot;,
+        &quot;data_version&quot;: &quot;4.0&quot;,
+        &quot;CVE_data_meta&quot;: {
+          &quot;ID&quot;: &quot;CVE-2017-0001&quot;,
+          &quot;ASSIGNER&quot;: &quot;cve@mitre.org&quot;
+        },
+        &quot;affects&quot;: {
+          &quot;vendor&quot;: {
+            &quot;vendor_data&quot;: [
+              {
+                &quot;vendor_name&quot;: &quot;microsoft&quot;,
+                &quot;product&quot;: {
+                  &quot;product_data&quot;: [
+                    {
+                      &quot;product_name&quot;: &quot;windows_10&quot;,
+                      &quot;version&quot;: {
+                        &quot;version_data&quot;: [
+                          {
+                            &quot;version_value&quot;: &quot;-&quot;
+                          },
+                          {
+                            &quot;version_value&quot;: &quot;1511&quot;
+                          },
+                          {</code></pre>
+<p>There are some informational fields at the beginning, but all the data is in a big JSON array under <code>CVE_Items</code>. You can take a look at the NVE CVE JSON Schema<a href="#fn17" class="footnote-ref" id="fnref17"><sup>17</sup></a> and the CVE JSON Schema<a href="#fn18" class="footnote-ref" id="fnref18"><sup>18</sup></a> to get a feel for the organizational structure of each record.</p>
+<p>When approaching a new, complex file like this, the Drill Query interface (<a href="http://localhost:8047/query" class="uri">http://localhost:8047/query</a>) is a handy way to look at it. We can separate out the array of <code>CVE_Items</code> into rows and take a look:</p>
+<pre><code>SELECT FLATTEN(a.CVE_Items) 
+FROM dfs.root.`/Users/bob/Data/nvdcve-1.0-2017.json.gz` a 
+LIMIT 10</code></pre>
+<p><img src="figures/06-json-flatten-01.png" width="2822" /></p>
+<blockquote>
+<p>The <code>a</code> is in that query since We need to assign the table an alias to be able to dig into JSON records in a given column. You can use the more verbose <code>AS a</code> if you like as well since that can make queries a bit more readable to folks new to SQL.</p>
+</blockquote>
+<p>Run that query yourself and scroll across and down to see the complexity of each record (the schema may also help you identify potentially good target fields).</p>
+<p>We can dig deep within the nested JSON to extract a more “rectangular” structure. Let’s say we wanted to pull the:</p>
+<ul>
+<li>CVE identifier</li>
+<li>first impacted vendor</li>
+<li>first impacted product of the vendor</li>
+<li>first description of the vulnerability</li>
+<li>date the vulnerability was published</li>
+</ul>
+<p>One possible query for this (SQL is somewhat flexible, like R) is the following:</p>
+<pre><code>SELECT 
+  b.item.cve.CVE_data_meta.ID AS cve_id,
+  b.item.cve.affects.vendor.vendor_data[0].vendor_name AS vendor_name,
+  b.item.cve.affects.vendor.vendor_data[0].product.product_data[0].product_name AS product_name,
+  b.item.cve.description.description_data[0][&#39;value&#39;] AS description,
+  SUBSTR(b.item.publishedDate, 1, 10) as pub_date
+FROM  
+  (SELECT FLATTEN(a.CVE_Items) AS item 
+   FROM dfs.root.`/Users/bob/Data/nvdcve-1.0-2017.json.gz` AS a) AS b 
+   LIMIT 10</code></pre>
+<p>Try that in the Drill query interface and you should see:</p>
+<p><img src="figures/06-cve-smaller.png" width="2822" /></p>
+<p>Let’s hook that query up with <code>sergeant</code> (minus the <code>LIMIT 10</code>):</p>
+<pre class="sourceCode r" id="cb49"><code class="sourceCode r"><div class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">library</span>(sergeant)</div>
+<div class="sourceLine" id="cb49-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</div>
+<div class="sourceLine" id="cb49-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb49-4" data-line-number="4">db &lt;-<span class="st"> </span><span class="kw">src_drill</span>(<span class="st">&quot;localhost&quot;</span>)</div>
+<div class="sourceLine" id="cb49-5" data-line-number="5"></div>
+<div class="sourceLine" id="cb49-6" data-line-number="6"><span class="kw">tbl</span>(db, <span class="st">&quot;(</span></div>
+<div class="sourceLine" id="cb49-7" data-line-number="7"><span class="st">SELECT </span></div>
+<div class="sourceLine" id="cb49-8" data-line-number="8"><span class="st">  b.item.cve.CVE_data_meta.ID AS cve_id,</span></div>
+<div class="sourceLine" id="cb49-9" data-line-number="9"><span class="st">  b.item.cve.affects.vendor.vendor_data[0].vendor_name AS vendor_name,</span></div>
+<div class="sourceLine" id="cb49-10" data-line-number="10"><span class="st">  b.item.cve.affects.vendor.vendor_data[0].product.product_data[0].product_name AS product_name,</span></div>
+<div class="sourceLine" id="cb49-11" data-line-number="11"><span class="st">  b.item.cve.description.description_data[0][&#39;value&#39;] AS description,</span></div>
+<div class="sourceLine" id="cb49-12" data-line-number="12"><span class="st">  SUBSTR(b.item.publishedDate, 1, 10) as pub_date</span></div>
+<div class="sourceLine" id="cb49-13" data-line-number="13"><span class="st">FROM  </span></div>
+<div class="sourceLine" id="cb49-14" data-line-number="14"><span class="st">  (SELECT FLATTEN(a.CVE_Items) AS item </span></div>
+<div class="sourceLine" id="cb49-15" data-line-number="15"><span class="st">   FROM dfs.root.`/Users/bob/Data/nvdcve-1.0-2017.json.gz` AS a) AS b</span></div>
+<div class="sourceLine" id="cb49-16" data-line-number="16"><span class="st">)&quot;</span>) -&gt;<span class="st"> </span>cve_smaller</div>
+<div class="sourceLine" id="cb49-17" data-line-number="17"></div>
+<div class="sourceLine" id="cb49-18" data-line-number="18">cve_smaller</div></code></pre>
+<pre><code>## # Source:   table&lt;( SELECT b.item.cve.CVE_data_meta.ID AS cve_id,
+## #   b.item.cve.affects.vendor.vendor_data[0].vendor_name AS vendor_name,
+## #   b.item.cve.affects.vendor.vendor_data[0].product.product_data[0].product_name
+## #   AS product_name, b.item.cve.description.description_data[0][&#39;value&#39;]
+## #   AS description, SUBSTR(b.item.publishedDate, 1, 10) as pub_date FROM
+## #   (SELECT FLATTEN(a.CVE_Items) AS item FROM
+## #   dfs.root.`/Users/bob/Data/nvdcve-1.0-2017.json.gz` AS a) AS b )&gt; [?? x
+## #   5]
+## # Database: DrillConnection
+##    pub_date   cve_id        vendor_name description           product_name
+##    &lt;date&gt;     &lt;chr&gt;         &lt;chr&gt;       &lt;chr&gt;                 &lt;chr&gt;       
+##  1 2017-03-17 CVE-2017-0001 microsoft   &quot;The Graphics Device~ windows_10  
+##  2 2017-01-10 CVE-2017-0002 microsoft   &quot;Microsoft Edge allo~ edge        
+##  3 2017-01-10 CVE-2017-0003 microsoft   &quot;Microsoft Word 2016~ sharepoint_~
+##  4 2017-01-10 CVE-2017-0004 microsoft   &quot;The Local Security ~ windows_7   
+##  5 2017-03-17 CVE-2017-0005 microsoft   &quot;The Graphics Device~ windows_10  
+##  6 2017-03-17 CVE-2017-0006 microsoft   &quot;Microsoft Excel 200~ excel       
+##  7 2017-03-17 CVE-2017-0007 microsoft   &quot;Device Guard in Mic~ windows_10  
+##  8 2017-03-17 CVE-2017-0008 microsoft   &quot;Microsoft Internet ~ internet_ex~
+##  9 2017-03-17 CVE-2017-0009 microsoft   &quot;Microsoft Internet ~ internet_ex~
+## 10 2017-03-17 CVE-2017-0010 microsoft   A remote code execut~ edge        
+## # ... with more rows</code></pre>
+<p>We can now use <code>cve_smaller</code> just like any other <code>dplyr</code> data source and <em>also take advantage of Drill SQL/custom functions</em>. Future recipes will talk more about Drill SQL/custom functions but for now, let’s see what the aggregate top 3 vendors (including ties) vendors per month look like in terms of CVE counts:</p>
+<blockquote>
+<p>NOTE: In practical terms, this is a pointless query since CVE is not a comprehensive/exhaustive list of recorded vulnerabilities and is subject to the whim, time and resources of researchers and vulnerabilty reporters. But, the data is “good enough” for this example.</p>
+</blockquote>
+<pre class="sourceCode r" id="cb51"><code class="sourceCode r"><div class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">library</span>(hrbrthemes)</div>
+<div class="sourceLine" id="cb51-2" data-line-number="2"></div>
+<div class="sourceLine" id="cb51-3" data-line-number="3"><span class="kw">mutate</span>(cve_smaller, <span class="dt">pub_date =</span> <span class="kw">as.date</span>(pub_date)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">NOTE</span><span class="co"> lower-case as.date()</span></div>
+<div class="sourceLine" id="cb51-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cve_month =</span> <span class="kw">MONTH</span>(pub_date)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">NOTE</span><span class="co"> upper-case MONTH()</span></div>
+<div class="sourceLine" id="cb51-5" data-line-number="5"><span class="st">  </span><span class="kw">count</span>(cve_month, vendor_name) <span class="op">%&gt;%</span><span class="st"> </span></div>
+<div class="sourceLine" id="cb51-6" data-line-number="6"><span class="st">  </span><span class="kw">group_by</span>(cve_month) <span class="op">%&gt;%</span><span class="st"> </span></div>
+<div class="sourceLine" id="cb51-7" data-line-number="7"><span class="st">  </span><span class="kw">top_n</span>(<span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span></div>
+<div class="sourceLine" id="cb51-8" data-line-number="8"><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span>## UP UNTIL THIS POINT EVERYTHING HAPPENED IN DRILL</div>
+<div class="sourceLine" id="cb51-9" data-line-number="9"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(vendor_name)) <span class="op">%&gt;%</span><span class="st"> </span>## Some CVE entries do not have vendors associated with them</div>
+<div class="sourceLine" id="cb51-10" data-line-number="10"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(cve_month, n)) <span class="op">+</span></div>
+<div class="sourceLine" id="cb51-11" data-line-number="11"><span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">xend=</span>cve_month, <span class="dt">yend=</span><span class="dv">0</span>)) <span class="op">+</span></div>
+<div class="sourceLine" id="cb51-12" data-line-number="12"><span class="st">  </span><span class="kw">scale_x_comma</span>(<span class="dt">name=</span><span class="st">&quot;Month&quot;</span>, <span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>,<span class="dv">1</span>), <span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">12</span>)) <span class="op">+</span></div>
+<div class="sourceLine" id="cb51-13" data-line-number="13"><span class="st">  </span><span class="kw">scale_y_comma</span>(<span class="dt">name=</span><span class="st">&quot;# CVEs&quot;</span>, <span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">250</span>)) <span class="op">+</span></div>
+<div class="sourceLine" id="cb51-14" data-line-number="14"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Aggregated &#39;top 3&#39; vendors by CVE count per-month&quot;</span>) <span class="op">+</span></div>
+<div class="sourceLine" id="cb51-15" data-line-number="15"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>vendor_name, <span class="dt">scales=</span><span class="st">&quot;free&quot;</span>, <span class="dt">ncol=</span><span class="dv">3</span>) <span class="op">+</span></div>
+<div class="sourceLine" id="cb51-16" data-line-number="16"><span class="st">  </span><span class="kw">theme_ipsum</span>(<span class="dt">grid=</span><span class="st">&quot;Y&quot;</span>)</div></code></pre>
+<p><img src="06-reading-traditional-json-data-drill-r_files/figure-html4/06-cve0-2-1.png" width="768" /></p>
+</div>
+<div id="see-also-4" class="section level2">
+<h2><span class="header-section-number">5.4</span> See Also</h2>
+<ul>
+<li><a href="https://drill.apache.org/docs/json-data-model/">JSON Data Model</a></li>
+<li><a href="https://drill.apache.org/docs/querying-complex-data-introduction/">Querying Complex Data</a></li>
+<li><a href="http://json-schema.org/">JSON Schema</a></li>
+</ul>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="footnotes">
+<hr />
+<ol start="16">
+<li id="fn16"><p><a href="https://nvd.nist.gov/vuln/data-feeds#JSON_FEED">NVD Feeds</a><a href="reading-a-traditional-json-data-file-with-drill-r.html#fnref16" class="footnote-back">↩</a></p></li>
+<li id="fn17"><p><a href="https://csrc.nist.gov/schema/nvd/feed/0.1/nvd_cve_feed_json_0.1_beta.schema">NVD CVE JSON Schema</a><a href="reading-a-traditional-json-data-file-with-drill-r.html#fnref17" class="footnote-back">↩</a></p></li>
+<li id="fn18"><p><a href="https://csrc.nist.gov/schema/nvd/feed/0.1/CVE_JSON_4.0_min.schema">CVE JSON Schema</a><a href="reading-a-traditional-json-data-file-with-drill-r.html#fnref18" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "serif",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+},
+"theme": "sandstone"
+});
+});
+</script>
+
+</body>
+
+</html>
