@@ -13,6 +13,11 @@ epub:
 word:
 	Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::word_document2", quiet=TRUE)' 
 
+git:
+	git add -A 
+	git commit -m "Book update"
+	git push
+
 sync:
 	rsync -azP --delete docs/ bob@rud.is:/var/sites/rud.is/books/drill-sergeant-rstats/
 

@@ -11,6 +11,18 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "sync",
+      "type": "shell",
+      "command": "make sync",
+      "group": "build"
+    },
+    {
+      "label": "git",
+      "type": "shell",
+      "command": "make git",
+      "group": "build"
     }
   ]
 }
