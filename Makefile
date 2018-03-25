@@ -1,5 +1,5 @@
 all : gitbook
-.PHONY: gitbook pdf epub word
+.PHONY: gitbook pdf epub word sync
 
 gitbook :
 	Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::gitbook", quiet=TRUE)' && open docs/index.html
@@ -12,3 +12,7 @@ epub:
 
 word:
 	Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::word_document2", quiet=TRUE)' 
+
+sync:
+	rsync -azP --delete docs/ bob@rud.is:/var/sites/rud.is/books/drill-sergeant-rstats/
+
