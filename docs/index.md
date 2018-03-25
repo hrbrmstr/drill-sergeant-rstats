@@ -1,7 +1,7 @@
 --- 
 title: "Using Apache Drill with R"
 author: "Bob Rudis"
-date: "2018-03-24"
+date: "2018-03-25"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib]

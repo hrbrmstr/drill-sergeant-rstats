@@ -10,7 +10,7 @@ Install, load and use the `sergeant` package.
 
 ## Discussion
 
-Working with Drill in a `RJDBC` context is pretty straightforward. Assuming you have drill running you need to:
+Working with Drill in an `RJDBC` context is pretty straightforward. Assuming you have drill running you need to:
 
 - connect to the database
 - issue a query

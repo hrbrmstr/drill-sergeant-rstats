@@ -32,8 +32,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
+<link rel="prev" href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html">
 
-<link rel="next" href="about-the-author.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -185,52 +185,55 @@ code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Infor
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Using Apache Drill with R</h1>
-<h4 class="author"><em>Bob Rudis</em></h4>
-<h4 class="date"><em>2018-03-25</em></h4>
+<div id="reading-json-data-with-drill-r" class="section level1">
+<h1><span class="header-section-number">Recipe 5</span> Reading JSON Data With Drill &amp; R</h1>
+<div id="problem-4" class="section level2">
+<h2><span class="header-section-number">5.1</span> Problem</h2>
+<p>You have a JSON data file and want to read and query it with Drill and R.</p>
 </div>
-<div id="preface" class="section level1 unnumbered">
-<h1>Preface</h1>
-<p><a href="https://drill.apache.org/">Apache Drill</a> <em>“enables analysts, business users, data scientists and developers to explore and analyze this data without sacrificing the flexibility and agility offered by these datastores. Drill processes the data in-situ without requiring users to define schemas or transform data.”</em><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
-<p>This book is about using Apache Drill with R and the <a href="https://github.com/hrbrmstr/sergeant"><code>sergeant</code></a> package. Rather than produce an extensive tome, the chapters are organized into a more “cookbook”-style production with some (brief) introductory exposition.</p>
-<p>Rather than write “I” everywhere, be it known up-front that any idioms or advocation contatained within are from the mind of someone who has stared into the heart of the TARDIS yet did not perish (i.e. I’m far askew of the average/normal individual and some things that work for me may seem strange, inefficient or even crazy to others). Emphatic/declarative statements should be interpreted as “I [think|believe]” vs accepted as fact without your own personal verification. For example, I’m about to say “Drill is…” in the next paragraph and it’s all just my own delcarative take on this subject.</p>
-<p>Drill is—in a word—<em>awesome</em>. On its own it can help you wrangle data out of (and into) parquet<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>, [CT]SV, JSON, MongoDB, MySQL, PostgreSQL (OK, anything that speaks JDBC), and more. You can scale it from a zero-configuration local filesystem install to a giant cluster with diverse data endpoints. You can speak SQL to it and have it translate into all the modern, heaven-forsaken NoSQL dialects for you (i.e. it can abstract away the query syntax of all the modern databases the crazy kids today use).</p>
-<p>Drill lets you focus on a single way of thinking about data wrangling/processing so you can get to your analyses, visualizations, dasboards or reports more quickly. Drill also gives you an excuse to finally organize your data <em>without (necessarily) creating a massive single “data lake” in the process</em>.</p>
-<p>There are plenty of other reasons for “why Drill?”<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>, and you can jump into the active community<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> and even poke at the sources<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> to gain a better understanding of the entirety of the mission/purpose of Drill.</p>
-<p>The first few “recipes” will focus on Drill itself but the remainder of the book will be on solving specific problems or addressing specific situations with Drill &amp; <code>sergeant</code>. If you need an area to be addressed that is not covered, please file an issue with as clear a question as possible and a new recipe will be added to help clarify each new use-case.</p>
-<p>Also, the earlier drafts of this book will focus on Linux-ish systems (including macOS). I’ll do my best to add Windows-specific context later on, but you’d be far better off installing Ubuntu in Windows 10 (since Microsoft supports that now).</p>
-<div id="preparing-r-for-drill" class="section level2">
-<h2><span class="header-section-number">0.1</span> Preparing R for Drill</h2>
-<p>Using Drill with R relies on <a href="https://www.rforge.net/RJDBC/"><code>RJDBC</code></a> which means your system will need Java and <a href="https://CRAN.R-project.org/package=rJava"><code>rJava</code></a>. You should spend some time on that now vs be frustrated later (if you do not currently have a working <code>rJava</code> environment). File an issue on this repo if having a recipe for getting Java working with R would be beneficial. (Kinder souls could also file a PR with said assistance.)</p>
-<p>The <code>sergeant</code> package is available on CRAN but we may work with the GitHub version of it for this book in the event some enhancements are made to support recipes. If you prefer CRAN, then you can do:</p>
-<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><div class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;sergeant&quot;</span>)</div></code></pre>
-<p>otherwise, do:</p>
-<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><div class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;hrbrmstr/sergeant&quot;</span>)</div></code></pre>
-<p>Every effort will be made to identify recipes that may require functionality not in the CRAN stable release.</p>
-<p>This book also makes extensive use of the <code>tidyverse</code> meta-package, since one way to use <code>sergeant</code> is via the database back-end of <code>dplyr</code>. You will need to:</p>
-<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><div class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)</div></code></pre>
-<p>if you have not used packages from it before (it may take a few minutes, especially on Linux systems).</p>
+<div id="solution-4" class="section level2">
+<h2><span class="header-section-number">5.2</span> Solution</h2>
+<p>Put the file into an accessible directory by Drill and query it with R and <code>sergeant</code>.</p>
+</div>
+<div id="discussion-4" class="section level2">
+<h2><span class="header-section-number">5.3</span> Discussion</h2>
+<p><code>TBD</code></p>
+</div>
+<div id="see-also-4" class="section level2">
+<h2><span class="header-section-number">5.4</span> See Also</h2>
+<ul>
+<li><a href="https://drill.apache.org/docs/json-data-model/">JSON Data Model</a></li>
+</ul>
 
 </div>
 </div>
-<div class="footnotes">
-<hr />
-<ol start="1">
-<li id="fn1"><p><a href="https://drill.apache.org/faq/">Drill FAQ</a><a href="index.html#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p><a href="https://parquet.apache.org/">Apache Parquet</a><a href="index.html#fnref2" class="footnote-back">↩</a></p></li>
-<li id="fn3"><p><a href="https://drill.apache.org/docs/why-drill/">Why Drill?</a><a href="index.html#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p><a href="https://drill.apache.org/mailinglists/">Drill Mailing Lists</a><a href="index.html#fnref4" class="footnote-back">↩</a></p></li>
-<li id="fn5"><p><a href="https://github.com/apache/drill">Drill GitHub Source Mirror</a><a href="index.html#fnref5" class="footnote-back">↩</a></p></li>
-</ol>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </section>
 
           </div>
         </div>
       </div>
+<a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="about-the-author.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

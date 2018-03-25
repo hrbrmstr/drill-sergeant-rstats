@@ -81,7 +81,9 @@ Finally, when `employee` is printed, the query
 
     SELECT * FROM  cp.`employee.json`  LIMIT 10
 
-is issued and the contents transferred back into R. `sergeant` cheats a bit since the data is run through `readr::type_convert()` before being delivered back to the user. It does this for a whole host of reasons, but mostly out of convenience for the user.
+is issued and the contents transferred back into R. 
+
+Notice that the data is really all still in Drill. Future recipes introduce `dplyr::collect()` which is how you ultimately transfer the query results back into an R object.
 
 ## See Also
 

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Using Apache Drill with R</title>
+  <meta name="description" content="A small guide to wrangling data to fuel analyses with Apache Drill and R">
+  <meta name="generator" content="bookdown 0.6.2 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Using Apache Drill with R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://rud.is/books/drill-sergeant-rstats/" />
+  
+  <meta property="og:description" content="A small guide to wrangling data to fuel analyses with Apache Drill and R" />
+  <meta name="github-repo" content="hrbrmstr/drill-sergeant-rstats" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Using Apache Drill with R" />
+  
+  <meta name="twitter:description" content="A small guide to wrangling data to fuel analyses with Apache Drill and R" />
+  
+
+<meta name="author" content="Bob Rudis">
+
+
+<meta name="date" content="2018-03-25">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="wiring-up-drill-and-r-rjdbc-style.html">
+<link rel="next" href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; }
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource div.sourceLine, .numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em; }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; color: #aaaaaa;  padding-left: 4px; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; color: initial; }
+}
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.bn { color: #40a070; } /* BaseN */
+code span.fl { color: #40a070; } /* Float */
+code span.ch { color: #4070a0; } /* Char */
+code span.st { color: #4070a0; } /* String */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.ot { color: #007020; } /* Other */
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.fu { color: #06287e; } /* Function */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code span.cn { color: #880000; } /* Constant */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.im { } /* Import */
+code span.va { color: #19177c; } /* Variable */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.op { color: #666666; } /* Operator */
+code span.bu { } /* BuiltIn */
+code span.ex { } /* Extension */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.at { color: #7d9029; } /* Attribute */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Using Apache Drill with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#preparing-r-for-drill"><i class="fa fa-check"></i><b>0.1</b> Preparing R for Drill</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the Author</a></li>
+<li class="chapter" data-level="" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html"><i class="fa fa-check"></i>Drill in More Than 10 Minutes</a><ul>
+<li class="chapter" data-level="0.2" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#beyond-standalone-mode"><i class="fa fa-check"></i><b>0.2</b> Beyond Standalone Mode</a></li>
+<li class="chapter" data-level="0.3" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#installing-zookeeper"><i class="fa fa-check"></i><b>0.3</b> Installing Zookeeper</a><ul>
+<li class="chapter" data-level="0.3.1" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#macos"><i class="fa fa-check"></i><b>0.3.1</b> macOS</a></li>
+<li class="chapter" data-level="0.3.2" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#ubuntudebian-ish"><i class="fa fa-check"></i><b>0.3.2</b> Ubuntu/Debian-ish</a></li>
+<li class="chapter" data-level="0.3.3" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#windows"><i class="fa fa-check"></i><b>0.3.3</b> Windows</a></li>
+</ul></li>
+<li class="chapter" data-level="0.4" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#wiring-up-zookeeper-with-drill"><i class="fa fa-check"></i><b>0.4</b> Wiring Up Zookeeper With Drill</a></li>
+<li class="chapter" data-level="0.5" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#allocating-more-memory-to-apache-drill"><i class="fa fa-check"></i><b>0.5</b> Allocating More Memory to Apache Drill</a></li>
+<li class="chapter" data-level="0.6" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#administering-drill"><i class="fa fa-check"></i><b>0.6</b> Administering Drill</a></li>
+<li class="chapter" data-level="0.7" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#drill-storage-plugins"><i class="fa fa-check"></i><b>0.7</b> Drill “Storage” Plugins</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html"><i class="fa fa-check"></i><b>1</b> Wiring Up Drill and R (<code>dplyr</code>-style)</a><ul>
+<li class="chapter" data-level="1.1" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#problem"><i class="fa fa-check"></i><b>1.1</b> Problem</a></li>
+<li class="chapter" data-level="1.2" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#solution"><i class="fa fa-check"></i><b>1.2</b> Solution</a></li>
+<li class="chapter" data-level="1.3" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#discussion"><i class="fa fa-check"></i><b>1.3</b> Discussion</a></li>
+<li class="chapter" data-level="1.4" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#see-also"><i class="fa fa-check"></i><b>1.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html"><i class="fa fa-check"></i><b>2</b> Wiring Up Drill and R (<code>RJDBC</code>-style)</a><ul>
+<li class="chapter" data-level="2.1" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#problem-1"><i class="fa fa-check"></i><b>2.1</b> Problem</a></li>
+<li class="chapter" data-level="2.2" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#solution-1"><i class="fa fa-check"></i><b>2.2</b> Solution</a></li>
+<li class="chapter" data-level="2.3" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#discussion-1"><i class="fa fa-check"></i><b>2.3</b> Discussion</a></li>
+<li class="chapter" data-level="2.4" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#see-also-1"><i class="fa fa-check"></i><b>2.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html"><i class="fa fa-check"></i><b>3</b> Reading and Querying CSV Data With Drill and R</a><ul>
+<li class="chapter" data-level="3.1" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#problem-2"><i class="fa fa-check"></i><b>3.1</b> Problem</a></li>
+<li class="chapter" data-level="3.2" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#solution-2"><i class="fa fa-check"></i><b>3.2</b> Solution</a></li>
+<li class="chapter" data-level="3.3" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#discussion-2"><i class="fa fa-check"></i><b>3.3</b> Discussion</a></li>
+<li class="chapter" data-level="3.4" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#see-also-2"><i class="fa fa-check"></i><b>3.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><i class="fa fa-check"></i><b>4</b> Reading and Querying a Directory of CSV Data With Drill &amp; R</a><ul>
+<li class="chapter" data-level="4.1" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#problem-3"><i class="fa fa-check"></i><b>4.1</b> Problem</a></li>
+<li class="chapter" data-level="4.2" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#solution-3"><i class="fa fa-check"></i><b>4.2</b> Solution</a></li>
+<li class="chapter" data-level="4.3" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#discussion-3"><i class="fa fa-check"></i><b>4.3</b> Discussion</a></li>
+<li class="chapter" data-level="4.4" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#see-also-3"><i class="fa fa-check"></i><b>4.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="reading-json-data-with-drill-r.html"><a href="reading-json-data-with-drill-r.html"><i class="fa fa-check"></i><b>5</b> Reading JSON Data With Drill &amp; R</a><ul>
+<li class="chapter" data-level="5.1" data-path="reading-json-data-with-drill-r.html"><a href="reading-json-data-with-drill-r.html#problem-4"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="reading-json-data-with-drill-r.html"><a href="reading-json-data-with-drill-r.html#solution-4"><i class="fa fa-check"></i><b>5.2</b> Solution</a></li>
+<li class="chapter" data-level="5.3" data-path="reading-json-data-with-drill-r.html"><a href="reading-json-data-with-drill-r.html#discussion-4"><i class="fa fa-check"></i><b>5.3</b> Discussion</a></li>
+<li class="chapter" data-level="5.4" data-path="reading-json-data-with-drill-r.html"><a href="reading-json-data-with-drill-r.html#see-also-4"><i class="fa fa-check"></i><b>5.4</b> See Also</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><span style="font-size:8pt"><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></span></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Using Apache Drill with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="reading-and-querying-csv-data-with-drill-and-r" class="section level1">
+<h1><span class="header-section-number">Recipe 3</span> Reading and Querying CSV Data With Drill and R</h1>
+<div id="problem-2" class="section level2">
+<h2><span class="header-section-number">3.1</span> Problem</h2>
+<p>You have a CSV file and want to use Drill and R to query it vs read it in to R directly with one of the many “read CSV” functions.</p>
+</div>
+<div id="solution-2" class="section level2">
+<h2><span class="header-section-number">3.2</span> Solution</h2>
+<p>Store the CSV file in a directory Drill can access and query it with R.</p>
+</div>
+<div id="discussion-2" class="section level2">
+<h2><span class="header-section-number">3.3</span> Discussion</h2>
+<p>The Drill manual chapter on <em>“Text Files: CSV, TSV, PSV”</em><a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a> discusses–at length–how Drill works with this delimited storage format. Future recipes will show how to convert CSV files to a better format (parquet) and, for now, if your CSV file contains a header (as most “normal” CSV files do) there will be one additional step involved before querying it.</p>
+<p>For this example, we’ll use World Health Organization (WHO) data on cholera<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a>. A verison of that file is in <a href="https://raw.githubusercontent.com/hrbrmstr/drill-sergeant-rstats/master/book-data/who-colera.csv" class="uri">https://raw.githubusercontent.com/hrbrmstr/drill-sergeant-rstats/master/book-data/who-colera.csv</a>.</p>
+<p>You’ll need to store this file <a href="https://raw.githubusercontent.com/hrbrmstr/drill-sergeant-rstats/master/book-data/who-cholera.csv" class="uri">https://raw.githubusercontent.com/hrbrmstr/drill-sergeant-rstats/master/book-data/who-cholera.csv</a> in an accessible place by Drill. The default <code>dfs.root</code> storage location is the “top” of your local filesystem hierarchy. It is suggested (for this example) that you put the <code>who-colera.csv</code> into a <code>Data</code> directory underneath your home directory (shorthand filesystem reference for that directory being <code>~/Data</code>). The full <code>dfs.root</code> for the system used in this example is:</p>
+<pre><code>dfs.root.`/Users/bob/Data/who-cholera.csv`</code></pre>
+<p>Replace <code>bob</code> with your home directory name. (<code>TBD</code>: Windows example path)</p>
+<p>However, because this data file has a header, you should (for this example) rename it to use the <code>.csvh</code> extension vs the <code>.csv</code> extension. So, the <code>dfs</code> path should actually be:</p>
+<pre><code>dfs.root.`/Users/bob/Data/who-cholera.csvh`</code></pre>
+<p>The <code>h</code> at the end let’s Drill’s CSV parser know that there are column headers. A future recipe will show you how to make that the default. Note that there are many contexts where CSV files are generated at a regular frequency as part of a well-established process and do not have or require a header line. No header CSVs were used well-before the “big data” term popped up but were heavily used in the early days of “modern” big data processing since header lines in well-established workflows can slow down processing.</p>
+<blockquote>
+<p>You’ve likely noticed this is a small CSV file. Drill can handle large CSV files well, too, as you’ll see in the next recipe.</p>
+</blockquote>
+<p>Now we can work with this data via <code>sergeant</code>. We’ll first take a look at it:</p>
+<pre class="sourceCode r" id="cb25"><code class="sourceCode r"><div class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">library</span>(sergeant)</div>
+<div class="sourceLine" id="cb25-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</div>
+<div class="sourceLine" id="cb25-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb25-4" data-line-number="4">db &lt;-<span class="st"> </span><span class="kw">src_drill</span>(<span class="st">&quot;localhost&quot;</span>)</div>
+<div class="sourceLine" id="cb25-5" data-line-number="5"></div>
+<div class="sourceLine" id="cb25-6" data-line-number="6">who_cholera &lt;-<span class="st"> </span><span class="kw">tbl</span>(db, <span class="st">&quot;dfs.root.`/Users/bob/Data/who-cholera.csvh`&quot;</span>)</div>
+<div class="sourceLine" id="cb25-7" data-line-number="7"></div>
+<div class="sourceLine" id="cb25-8" data-line-number="8">who_cholera</div></code></pre>
+<pre><code>## # Source:   table&lt;dfs.root.`/Users/bob/Data/who-cholera.csvh`&gt; [?? x 3]
+## # Database: DrillConnection
+##    country     year  reported_cases
+##    &lt;chr&gt;       &lt;chr&gt;          &lt;int&gt;
+##  1 Afghanistan 2016             677
+##  2 Afghanistan 2015           58064
+##  3 Afghanistan 2014           45481
+##  4 Afghanistan 2013            3957
+##  5 Afghanistan 2012              12
+##  6 Afghanistan 2011            3733
+##  7 Afghanistan 2010            2369
+##  8 Afghanistan 2009             662
+##  9 Afghanistan 2008            4384
+## 10 Afghanistan 2005              33
+## # ... with more rows</code></pre>
+<p>One difference between “normal” <code>dplyr</code> and “database” <code>dplyr</code> is that data operations stay at the database until you retrieve them. This is done with <code>collect()</code>. All of the cholera data is still in Drill and the printed display shows 10 observations because the actual query sent to Drill to give you that view is:</p>
+<pre><code>SELECT * FROM  dfs.root.`/Users/bob/Data/who-cholera.csvh`  LIMIT 10</code></pre>
+<p>This particular CSV file is small enough to <code>collect()</code> and work with locally so you could do:</p>
+<pre class="sourceCode r" id="cb28"><code class="sourceCode r"><div class="sourceLine" id="cb28-1" data-line-number="1">cholera_df &lt;-<span class="st"> </span><span class="kw">collect</span>(who_cholera)</div>
+<div class="sourceLine" id="cb28-2" data-line-number="2"></div>
+<div class="sourceLine" id="cb28-3" data-line-number="3">cholera_df</div></code></pre>
+<pre><code>## # A tibble: 2,470 x 3
+##    country     year  reported_cases
+##  * &lt;chr&gt;       &lt;chr&gt;          &lt;int&gt;
+##  1 Afghanistan 2016             677
+##  2 Afghanistan 2015           58064
+##  3 Afghanistan 2014           45481
+##  4 Afghanistan 2013            3957
+##  5 Afghanistan 2012              12
+##  6 Afghanistan 2011            3733
+##  7 Afghanistan 2010            2369
+##  8 Afghanistan 2009             662
+##  9 Afghanistan 2008            4384
+## 10 Afghanistan 2005              33
+## # ... with 2,460 more rows</code></pre>
+<p>and have it all in R. Drill also perform aggregation and other operations for you.</p>
+<p>You may have noticed that all three columns are <code>&lt;chr&gt;</code> that is due to Drill being <em>schema-less</em> and not really knowing how the CSV file is structured, so it returns the data to R with no hints as to the column data types.</p>
+<p>Since we’re working with a datbase, we can “fix” this by being more verbose in how we ask for this CSV data. The second parameter to <code>tbl()</code> does not just have to be a “table” reference. It can be a full SQL query that returns “rectangular” results that can be turned into an R data frame. Drill’s syntax requires such a query to be wrapped in parentheses. We can make the above data a bit more useful with:</p>
+<pre class="sourceCode r" id="cb30"><code class="sourceCode r"><div class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">tbl</span>(db, <span class="st">&quot;(</span></div>
+<div class="sourceLine" id="cb30-2" data-line-number="2"><span class="st">SELECT</span></div>
+<div class="sourceLine" id="cb30-3" data-line-number="3"><span class="st">  country,</span></div>
+<div class="sourceLine" id="cb30-4" data-line-number="4"><span class="st">  CAST(LTRIM(`year`, &#39; &#39;) AS int) AS `year`,</span></div>
+<div class="sourceLine" id="cb30-5" data-line-number="5"><span class="st">  CAST(reported_cases AS int) AS reported_cases</span></div>
+<div class="sourceLine" id="cb30-6" data-line-number="6"><span class="st">FROM dfs.root.`/Users/bob/Data/who-cholera.csvh`</span></div>
+<div class="sourceLine" id="cb30-7" data-line-number="7"><span class="st">)&quot;</span>) -&gt;<span class="st"> </span>who_cholera</div>
+<div class="sourceLine" id="cb30-8" data-line-number="8"></div>
+<div class="sourceLine" id="cb30-9" data-line-number="9">who_cholera</div></code></pre>
+<pre><code>## # Source:   table&lt;( SELECT country, CAST(LTRIM(`year`, &#39; &#39;) AS int) AS
+## #   `year`, CAST(reported_cases AS int) AS reported_cases FROM
+## #   dfs.root.`/Users/bob/Data/who-cholera.csvh` )&gt; [?? x 3]
+## # Database: DrillConnection
+##    country      year reported_cases
+##    &lt;chr&gt;       &lt;int&gt;          &lt;int&gt;
+##  1 Afghanistan  2016            677
+##  2 Afghanistan  2015          58064
+##  3 Afghanistan  2014          45481
+##  4 Afghanistan  2013           3957
+##  5 Afghanistan  2012             12
+##  6 Afghanistan  2011           3733
+##  7 Afghanistan  2010           2369
+##  8 Afghanistan  2009            662
+##  9 Afghanistan  2008           4384
+## 10 Afghanistan  2005             33
+## # ... with more rows</code></pre>
+<p>The <code>CAST()</code> function performs data type conversion and <code>LTRIM()</code> is used to “left trim” characters from strings. The <code>CAST</code> gives a hint about the data type and R now knows it’s an <code>integer</code>. But, why did we need to use <code>LTRIM</code>? You likely didn’t notice the extra <code>' '</code> at the beginning of the entriesin the year column:</p>
+<pre><code>&quot;country&quot;,&quot;year&quot;,&quot;reported_cases&quot;
+&quot;Afghanistan&quot;,&quot; 2016&quot;,&quot;677&quot;
+&quot;Afghanistan&quot;,&quot; 2015&quot;,&quot;58064&quot;
+&quot;Afghanistan&quot;,&quot; 2014&quot;,&quot;45481&quot;
+&quot;Afghanistan&quot;,&quot; 2013&quot;,&quot;3957&quot;
+&quot;Afghanistan&quot;,&quot; 2012&quot;,&quot;12&quot;</code></pre>
+<p>Removing that is necessary before the conversion to integer.</p>
+<p>As noted earlier, we can perform wrangling operations in-database vs in-R:</p>
+<pre class="sourceCode r" id="cb33"><code class="sourceCode r"><div class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">count</span>(who_cholera, country, <span class="dt">wt=</span>reported_cases, <span class="dt">sort=</span><span class="ot">TRUE</span>)</div></code></pre>
+<pre><code>## # Source:     lazy query [?? x 2]
+## # Database:   DrillConnection
+## # Ordered by: desc(n)
+##    country                                n
+##    &lt;chr&gt;                              &lt;int&gt;
+##  1 India                            1363250
+##  2 Haiti                             795794
+##  3 Peru                              736195
+##  4 Democratic Republic of the Congo  521607
+##  5 Indonesia                         394945
+##  6 Mozambique                        327913
+##  7 Somalia                           311203
+##  8 Nigeria                           310217
+##  9 Bangladesh                        294647
+## 10 Afghanistan                       263843
+## # ... with more rows</code></pre>
+<pre class="sourceCode r" id="cb35"><code class="sourceCode r"><div class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">group_by</span>(who_cholera, country) <span class="op">%&gt;%</span><span class="st"> </span></div>
+<div class="sourceLine" id="cb35-2" data-line-number="2"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">avg_annual_cases =</span> <span class="kw">mean</span>(reported_cases))</div></code></pre>
+<pre><code>## # Source:   lazy query [?? x 2]
+## # Database: DrillConnection
+##    country     avg_annual_cases
+##    &lt;chr&gt;                  &lt;dbl&gt;
+##  1 Afghanistan         11993.  
+##  2 Albania               626.  
+##  3 Algeria               636.  
+##  4 Angola               7348.  
+##  5 Argentina             758.  
+##  6 Armenia                25.0 
+##  7 Australia               3.74
+##  8 Austria                 1.00
+##  9 Azerbaijan             18.0 
+## 10 Bahamas                 1.00
+## # ... with more rows</code></pre>
+<pre class="sourceCode r" id="cb37"><code class="sourceCode r"><div class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">library</span>(hrbrthemes)</div>
+<div class="sourceLine" id="cb37-2" data-line-number="2"></div>
+<div class="sourceLine" id="cb37-3" data-line-number="3"><span class="kw">filter</span>(who_cholera, country <span class="op">==</span><span class="st"> &quot;Yemen&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></div>
+<div class="sourceLine" id="cb37-4" data-line-number="4"><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span></div>
+<div class="sourceLine" id="cb37-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year =</span> <span class="kw">as.Date</span>(<span class="kw">sprintf</span>(<span class="st">&quot;%s-01-01&quot;</span>, year))) <span class="op">%&gt;%</span><span class="st"> </span></div>
+<div class="sourceLine" id="cb37-6" data-line-number="6"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(year, reported_cases)) <span class="op">+</span></div>
+<div class="sourceLine" id="cb37-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">xend=</span>year, <span class="dt">yend=</span><span class="dv">0</span>)) <span class="op">+</span></div>
+<div class="sourceLine" id="cb37-8" data-line-number="8"><span class="st">  </span><span class="kw">scale_x_date</span>(<span class="dt">date_breaks=</span><span class="st">&quot;3 years&quot;</span>, <span class="dt">date_labels=</span><span class="st">&quot;&#39;%y&quot;</span>) <span class="op">+</span></div>
+<div class="sourceLine" id="cb37-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_y_comma</span>() <span class="op">+</span></div>
+<div class="sourceLine" id="cb37-10" data-line-number="10"><span class="st">  </span><span class="kw">labs</span>(</div>
+<div class="sourceLine" id="cb37-11" data-line-number="11">    <span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&quot;# reported cases&quot;</span>,</div>
+<div class="sourceLine" id="cb37-12" data-line-number="12">    <span class="dt">title =</span> <span class="st">&quot;Annual Cholera Cases in Yemen (1971-2016)&quot;</span></div>
+<div class="sourceLine" id="cb37-13" data-line-number="13">  ) <span class="op">+</span></div>
+<div class="sourceLine" id="cb37-14" data-line-number="14"><span class="st">  </span><span class="kw">theme_ipsum</span>(<span class="dt">grid=</span><span class="st">&quot;Y&quot;</span>) <span class="op">+</span></div>
+<div class="sourceLine" id="cb37-15" data-line-number="15"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.y=</span><span class="kw">element_text</span>(<span class="dt">vjust=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">rep</span>(<span class="fl">0.5</span>, <span class="dv">2</span>), <span class="dv">1</span>)))</div></code></pre>
+<p><img src="04-reading-csv-data-with-drill-and-r_files/figure-html4/04-chart-01-1.png" width="672" /></p>
+<p>Future recipes will help you debug issues when <code>CAST</code>ing data from “malformed” CSV files.</p>
+</div>
+<div id="see-also-2" class="section level2">
+<h2><span class="header-section-number">3.4</span> See Also</h2>
+<ul>
+<li><a href="https://mapr.com/developercentral/code/drilling-csv-files-simple-example/">Drilling CSV files - A simple example</a></li>
+<li><a href="http://www.theserverside.com/tutorial/Apache-Drill-case-study-A-tutorial-on-processing-CSV-files">Apache Drill case study: A tutorial on processing CSV files</a></li>
+</ul>
+
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="12">
+<li id="fn12"><p><a href="https://drill.apache.org/docs/text-files-csv-tsv-psv/">Text Files: CSV, TSV, PSV</a><a href="reading-and-querying-csv-data-with-drill-and-r.html#fnref12" class="footnote-back">↩</a></p></li>
+<li id="fn13"><p><a href="http://apps.who.int/gho/data/node.main.175?lang=en">WHO Cholera Reported Cases</a><a href="reading-and-querying-csv-data-with-drill-and-r.html#fnref13" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="wiring-up-drill-and-r-rjdbc-style.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "serif",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+},
+"theme": "sandstone"
+});
+});
+</script>
+
+</body>
+
+</html>

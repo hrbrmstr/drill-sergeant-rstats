@@ -1,8 +1,8 @@
-# Using Your Own CSV Data With Drill & R
+# Reading and Querying a Directory of CSV Data With Drill & R
 
 ## Problem
 
-You have common-structured CSV files that you want to use via Drill & R with as little friction as possible.
+You have a directory of homogenous (common-structured) CSV files that you want to use via Drill & R with as little friction as possible.
 
 ## Solution
 
