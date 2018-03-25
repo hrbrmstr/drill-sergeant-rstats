@@ -1,6 +1,6 @@
 # Drill in More Than 10 Minutes {-}
 
-Part of the wonder of the modern internet is that one doesn't have to reinvent or _redescribe_ the wheel. The Apache Drill team has superb "Drill in 10 Minutes"^[[Drill in 10 Minutes](https://drill.apache.org/docs/drill-in-10-minutes/)] tutorial which walks you through the downloading, installation and running (in "standalone" mode) of Apache Drill. _Provided you already have Java installed_, the time-investment estimation is fairly accurate.
+Part of the wonder of the modern internet is that one doesn't have to reinvent or _redescribe_ the wheel. The Apache Drill team has a superb "Drill in 10 Minutes"^[[Drill in 10 Minutes](https://drill.apache.org/docs/drill-in-10-minutes/)] tutorial which walks you through the downloading, installation and running (in "standalone" mode) of Apache Drill. _Provided you already have Java installed_, the time-investment estimation is fairly accurate.
 
 You should go through that tutorial before proceeding and only continue here when Drill works. File an book issue if you believe more expository would help with that tutorial or if there were "gotchas" you had to overcoome.
 
