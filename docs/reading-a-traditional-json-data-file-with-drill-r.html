@@ -33,7 +33,7 @@
   
   
 <link rel="prev" href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html">
-
+<link rel="next" href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -50,57 +50,69 @@
 
 
 <style type="text/css">
-div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }
+a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
-pre.numberSource div.sourceLine, .numberSource a.sourceLine
+pre.numberSource a.sourceLine
   { position: relative; }
-pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
     position: absolute; left: -5em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em; }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; color: #aaaaaa;  padding-left: 4px; }
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
 @media screen {
-a.sourceLine::before { text-decoration: underline; color: initial; }
+a.sourceLine::before { text-decoration: underline; }
 }
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
 code span.dt { color: #902000; } /* DataType */
 code span.dv { color: #40a070; } /* DecVal */
-code span.bn { color: #40a070; } /* BaseN */
-code span.fl { color: #40a070; } /* Float */
-code span.ch { color: #4070a0; } /* Char */
-code span.st { color: #4070a0; } /* String */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.ot { color: #007020; } /* Other */
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.fu { color: #06287e; } /* Function */
 code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code span.cn { color: #880000; } /* Constant */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.im { } /* Import */
-code span.va { color: #19177c; } /* Variable */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.op { color: #666666; } /* Operator */
-code span.bu { } /* BuiltIn */
 code span.ex { } /* Extension */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.at { color: #7d9029; } /* Attribute */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -164,6 +176,12 @@ code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Infor
 <li class="chapter" data-level="5.2" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#solution-4"><i class="fa fa-check"></i><b>5.2</b> Solution</a></li>
 <li class="chapter" data-level="5.3" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#discussion-4"><i class="fa fa-check"></i><b>5.3</b> Discussion</a></li>
 <li class="chapter" data-level="5.4" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#see-also-4"><i class="fa fa-check"></i><b>5.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><i class="fa fa-check"></i><b>6</b> Reading a “Streaming” JSON (ndjson) Data File With Drill &amp; R</a><ul>
+<li class="chapter" data-level="6.1" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#problem-5"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#solution-5"><i class="fa fa-check"></i><b>6.2</b> Solution</a></li>
+<li class="chapter" data-level="6.3" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#discussion-5"><i class="fa fa-check"></i><b>6.3</b> Discussion</a></li>
+<li class="chapter" data-level="6.4" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#see-also-5"><i class="fa fa-check"></i><b>6.4</b> See Also</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><span style="font-size:8pt"><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></span></li>
@@ -267,24 +285,24 @@ FROM
 <p>Try that in the Drill query interface and you should see:</p>
 <p><img src="figures/06-cve-smaller.png" width="2822" /></p>
 <p>Let’s hook that query up with <code>sergeant</code> (minus the <code>LIMIT 10</code>):</p>
-<pre class="sourceCode r" id="cb49"><code class="sourceCode r"><div class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">library</span>(sergeant)</div>
-<div class="sourceLine" id="cb49-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</div>
-<div class="sourceLine" id="cb49-3" data-line-number="3"></div>
-<div class="sourceLine" id="cb49-4" data-line-number="4">db &lt;-<span class="st"> </span><span class="kw">src_drill</span>(<span class="st">&quot;localhost&quot;</span>)</div>
-<div class="sourceLine" id="cb49-5" data-line-number="5"></div>
-<div class="sourceLine" id="cb49-6" data-line-number="6"><span class="kw">tbl</span>(db, <span class="st">&quot;(</span></div>
-<div class="sourceLine" id="cb49-7" data-line-number="7"><span class="st">SELECT </span></div>
-<div class="sourceLine" id="cb49-8" data-line-number="8"><span class="st">  b.item.cve.CVE_data_meta.ID AS cve_id,</span></div>
-<div class="sourceLine" id="cb49-9" data-line-number="9"><span class="st">  b.item.cve.affects.vendor.vendor_data[0].vendor_name AS vendor_name,</span></div>
-<div class="sourceLine" id="cb49-10" data-line-number="10"><span class="st">  b.item.cve.affects.vendor.vendor_data[0].product.product_data[0].product_name AS product_name,</span></div>
-<div class="sourceLine" id="cb49-11" data-line-number="11"><span class="st">  b.item.cve.description.description_data[0][&#39;value&#39;] AS description,</span></div>
-<div class="sourceLine" id="cb49-12" data-line-number="12"><span class="st">  SUBSTR(b.item.publishedDate, 1, 10) as pub_date</span></div>
-<div class="sourceLine" id="cb49-13" data-line-number="13"><span class="st">FROM  </span></div>
-<div class="sourceLine" id="cb49-14" data-line-number="14"><span class="st">  (SELECT FLATTEN(a.CVE_Items) AS item </span></div>
-<div class="sourceLine" id="cb49-15" data-line-number="15"><span class="st">   FROM dfs.root.`/Users/bob/Data/nvdcve-1.0-2017.json.gz` AS a) AS b</span></div>
-<div class="sourceLine" id="cb49-16" data-line-number="16"><span class="st">)&quot;</span>) -&gt;<span class="st"> </span>cve_smaller</div>
-<div class="sourceLine" id="cb49-17" data-line-number="17"></div>
-<div class="sourceLine" id="cb49-18" data-line-number="18">cve_smaller</div></code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">library</span>(sergeant)</a>
+<a class="sourceLine" id="cb49-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb49-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb49-4" data-line-number="4">db &lt;-<span class="st"> </span><span class="kw">src_drill</span>(<span class="st">&quot;localhost&quot;</span>)</a>
+<a class="sourceLine" id="cb49-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb49-6" data-line-number="6"><span class="kw">tbl</span>(db, <span class="st">&quot;(</span></a>
+<a class="sourceLine" id="cb49-7" data-line-number="7"><span class="st">SELECT </span></a>
+<a class="sourceLine" id="cb49-8" data-line-number="8"><span class="st">  b.item.cve.CVE_data_meta.ID AS cve_id,</span></a>
+<a class="sourceLine" id="cb49-9" data-line-number="9"><span class="st">  b.item.cve.affects.vendor.vendor_data[0].vendor_name AS vendor_name,</span></a>
+<a class="sourceLine" id="cb49-10" data-line-number="10"><span class="st">  b.item.cve.affects.vendor.vendor_data[0].product.product_data[0].product_name AS product_name,</span></a>
+<a class="sourceLine" id="cb49-11" data-line-number="11"><span class="st">  b.item.cve.description.description_data[0][&#39;value&#39;] AS description,</span></a>
+<a class="sourceLine" id="cb49-12" data-line-number="12"><span class="st">  SUBSTR(b.item.publishedDate, 1, 10) as pub_date</span></a>
+<a class="sourceLine" id="cb49-13" data-line-number="13"><span class="st">FROM  </span></a>
+<a class="sourceLine" id="cb49-14" data-line-number="14"><span class="st">  (SELECT FLATTEN(a.CVE_Items) AS item </span></a>
+<a class="sourceLine" id="cb49-15" data-line-number="15"><span class="st">   FROM dfs.root.`/Users/bob/Data/nvdcve-1.0-2017.json.gz` AS a) AS b</span></a>
+<a class="sourceLine" id="cb49-16" data-line-number="16"><span class="st">)&quot;</span>) -&gt;<span class="st"> </span>cve_smaller</a>
+<a class="sourceLine" id="cb49-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb49-18" data-line-number="18">cve_smaller</a></code></pre></div>
 <pre><code>## # Source:   table&lt;( SELECT b.item.cve.CVE_data_meta.ID AS cve_id,
 ## #   b.item.cve.affects.vendor.vendor_data[0].vendor_name AS vendor_name,
 ## #   b.item.cve.affects.vendor.vendor_data[0].product.product_data[0].product_name
@@ -296,37 +314,37 @@ FROM
 ## # Database: DrillConnection
 ##    pub_date   cve_id        vendor_name description           product_name
 ##    &lt;date&gt;     &lt;chr&gt;         &lt;chr&gt;       &lt;chr&gt;                 &lt;chr&gt;       
-##  1 2017-03-17 CVE-2017-0001 microsoft   &quot;The Graphics Device~ windows_10  
-##  2 2017-01-10 CVE-2017-0002 microsoft   &quot;Microsoft Edge allo~ edge        
-##  3 2017-01-10 CVE-2017-0003 microsoft   &quot;Microsoft Word 2016~ sharepoint_~
-##  4 2017-01-10 CVE-2017-0004 microsoft   &quot;The Local Security ~ windows_7   
-##  5 2017-03-17 CVE-2017-0005 microsoft   &quot;The Graphics Device~ windows_10  
-##  6 2017-03-17 CVE-2017-0006 microsoft   &quot;Microsoft Excel 200~ excel       
-##  7 2017-03-17 CVE-2017-0007 microsoft   &quot;Device Guard in Mic~ windows_10  
-##  8 2017-03-17 CVE-2017-0008 microsoft   &quot;Microsoft Internet ~ internet_ex~
-##  9 2017-03-17 CVE-2017-0009 microsoft   &quot;Microsoft Internet ~ internet_ex~
-## 10 2017-03-17 CVE-2017-0010 microsoft   A remote code execut~ edge        
+##  1 2017-03-17 CVE-2017-0001 microsoft   &quot;The Graphics Device… windows_10  
+##  2 2017-01-10 CVE-2017-0002 microsoft   &quot;Microsoft Edge allo… edge        
+##  3 2017-01-10 CVE-2017-0003 microsoft   &quot;Microsoft Word 2016… sharepoint_…
+##  4 2017-01-10 CVE-2017-0004 microsoft   &quot;The Local Security … windows_7   
+##  5 2017-03-17 CVE-2017-0005 microsoft   &quot;The Graphics Device… windows_10  
+##  6 2017-03-17 CVE-2017-0006 microsoft   &quot;Microsoft Excel 200… excel       
+##  7 2017-03-17 CVE-2017-0007 microsoft   &quot;Device Guard in Mic… windows_10  
+##  8 2017-03-17 CVE-2017-0008 microsoft   &quot;Microsoft Internet … internet_ex…
+##  9 2017-03-17 CVE-2017-0009 microsoft   &quot;Microsoft Internet … internet_ex…
+## 10 2017-03-17 CVE-2017-0010 microsoft   A remote code execut… edge        
 ## # ... with more rows</code></pre>
 <p>We can now use <code>cve_smaller</code> just like any other <code>dplyr</code> data source and <em>also take advantage of Drill SQL/custom functions</em>. Future recipes will talk more about Drill SQL/custom functions but for now, let’s see what the aggregate top 3 vendors (including ties) vendors per month look like in terms of CVE counts:</p>
 <blockquote>
 <p>NOTE: In practical terms, this is a pointless query since CVE is not a comprehensive/exhaustive list of recorded vulnerabilities and is subject to the whim, time and resources of researchers and vulnerabilty reporters. But, the data is “good enough” for this example.</p>
 </blockquote>
-<pre class="sourceCode r" id="cb51"><code class="sourceCode r"><div class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">library</span>(hrbrthemes)</div>
-<div class="sourceLine" id="cb51-2" data-line-number="2"></div>
-<div class="sourceLine" id="cb51-3" data-line-number="3"><span class="kw">mutate</span>(cve_smaller, <span class="dt">pub_date =</span> <span class="kw">as.date</span>(pub_date)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">NOTE</span><span class="co"> lower-case as.date()</span></div>
-<div class="sourceLine" id="cb51-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cve_month =</span> <span class="kw">MONTH</span>(pub_date)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">NOTE</span><span class="co"> upper-case MONTH()</span></div>
-<div class="sourceLine" id="cb51-5" data-line-number="5"><span class="st">  </span><span class="kw">count</span>(cve_month, vendor_name) <span class="op">%&gt;%</span><span class="st"> </span></div>
-<div class="sourceLine" id="cb51-6" data-line-number="6"><span class="st">  </span><span class="kw">group_by</span>(cve_month) <span class="op">%&gt;%</span><span class="st"> </span></div>
-<div class="sourceLine" id="cb51-7" data-line-number="7"><span class="st">  </span><span class="kw">top_n</span>(<span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span></div>
-<div class="sourceLine" id="cb51-8" data-line-number="8"><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span>## UP UNTIL THIS POINT EVERYTHING HAPPENED IN DRILL</div>
-<div class="sourceLine" id="cb51-9" data-line-number="9"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(vendor_name)) <span class="op">%&gt;%</span><span class="st"> </span>## Some CVE entries do not have vendors associated with them</div>
-<div class="sourceLine" id="cb51-10" data-line-number="10"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(cve_month, n)) <span class="op">+</span></div>
-<div class="sourceLine" id="cb51-11" data-line-number="11"><span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">xend=</span>cve_month, <span class="dt">yend=</span><span class="dv">0</span>)) <span class="op">+</span></div>
-<div class="sourceLine" id="cb51-12" data-line-number="12"><span class="st">  </span><span class="kw">scale_x_comma</span>(<span class="dt">name=</span><span class="st">&quot;Month&quot;</span>, <span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>,<span class="dv">1</span>), <span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">12</span>)) <span class="op">+</span></div>
-<div class="sourceLine" id="cb51-13" data-line-number="13"><span class="st">  </span><span class="kw">scale_y_comma</span>(<span class="dt">name=</span><span class="st">&quot;# CVEs&quot;</span>, <span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">250</span>)) <span class="op">+</span></div>
-<div class="sourceLine" id="cb51-14" data-line-number="14"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Aggregated &#39;top 3&#39; vendors by CVE count per-month&quot;</span>) <span class="op">+</span></div>
-<div class="sourceLine" id="cb51-15" data-line-number="15"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>vendor_name, <span class="dt">scales=</span><span class="st">&quot;free&quot;</span>, <span class="dt">ncol=</span><span class="dv">3</span>) <span class="op">+</span></div>
-<div class="sourceLine" id="cb51-16" data-line-number="16"><span class="st">  </span><span class="kw">theme_ipsum</span>(<span class="dt">grid=</span><span class="st">&quot;Y&quot;</span>)</div></code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">library</span>(hrbrthemes)</a>
+<a class="sourceLine" id="cb51-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb51-3" data-line-number="3"><span class="kw">mutate</span>(cve_smaller, <span class="dt">pub_date =</span> <span class="kw">as.date</span>(pub_date)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">NOTE</span><span class="co"> lower-case as.date()</span></a>
+<a class="sourceLine" id="cb51-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cve_month =</span> <span class="kw">MONTH</span>(pub_date)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">NOTE</span><span class="co"> upper-case MONTH()</span></a>
+<a class="sourceLine" id="cb51-5" data-line-number="5"><span class="st">  </span><span class="kw">count</span>(cve_month, vendor_name) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb51-6" data-line-number="6"><span class="st">  </span><span class="kw">group_by</span>(cve_month) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb51-7" data-line-number="7"><span class="st">  </span><span class="kw">top_n</span>(<span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb51-8" data-line-number="8"><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span>## UP UNTIL THIS POINT EVERYTHING HAPPENED IN DRILL</a>
+<a class="sourceLine" id="cb51-9" data-line-number="9"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(vendor_name)) <span class="op">%&gt;%</span><span class="st"> </span>## Some CVE entries do not have vendors associated with them</a>
+<a class="sourceLine" id="cb51-10" data-line-number="10"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(cve_month, n)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb51-11" data-line-number="11"><span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">xend=</span>cve_month, <span class="dt">yend=</span><span class="dv">0</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb51-12" data-line-number="12"><span class="st">  </span><span class="kw">scale_x_comma</span>(<span class="dt">name=</span><span class="st">&quot;Month&quot;</span>, <span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>,<span class="dv">1</span>), <span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">12</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb51-13" data-line-number="13"><span class="st">  </span><span class="kw">scale_y_comma</span>(<span class="dt">name=</span><span class="st">&quot;# CVEs&quot;</span>, <span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">250</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb51-14" data-line-number="14"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Aggregated &#39;top 3&#39; vendors by CVE count per-month&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb51-15" data-line-number="15"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>vendor_name, <span class="dt">scales=</span><span class="st">&quot;free&quot;</span>, <span class="dt">ncol=</span><span class="dv">3</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb51-16" data-line-number="16"><span class="st">  </span><span class="kw">theme_ipsum</span>(<span class="dt">grid=</span><span class="st">&quot;Y&quot;</span>)</a></code></pre></div>
 <p><img src="06-reading-traditional-json-data-drill-r_files/figure-html4/06-cve0-2-1.png" width="768" /></p>
 </div>
 <div id="see-also-4" class="section level2">
@@ -339,29 +357,6 @@ FROM
 
 </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="footnotes">
 <hr />
 <ol start="16">
@@ -375,8 +370,8 @@ FROM
           </div>
         </div>
       </div>
-<a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

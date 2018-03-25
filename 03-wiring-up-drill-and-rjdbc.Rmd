@@ -21,6 +21,9 @@ The Drill query interface (<http://localhost:8047/query>) provides an example qu
 
 Let's take a look at the `employee.json` table using R & `RJDBC`.
 
+```{r include=FALSE}
+Sys.setenv(DRILL_JDBC_JAR="/usr/local/drill/jars/jdbc-driver/drill-jdbc-all-1.13.0.jar")
+```
 ```{r 03-example-01-connect, message=FALSE, warning=FALSE, cache=TRUE}
 library(sergeant)
 

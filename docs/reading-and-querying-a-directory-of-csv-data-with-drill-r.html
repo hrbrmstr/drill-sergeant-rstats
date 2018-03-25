@@ -50,57 +50,69 @@
 
 
 <style type="text/css">
-div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }
+a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
-pre.numberSource div.sourceLine, .numberSource a.sourceLine
+pre.numberSource a.sourceLine
   { position: relative; }
-pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
     position: absolute; left: -5em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em; }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; color: #aaaaaa;  padding-left: 4px; }
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
 @media screen {
-a.sourceLine::before { text-decoration: underline; color: initial; }
+a.sourceLine::before { text-decoration: underline; }
 }
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
 code span.dt { color: #902000; } /* DataType */
 code span.dv { color: #40a070; } /* DecVal */
-code span.bn { color: #40a070; } /* BaseN */
-code span.fl { color: #40a070; } /* Float */
-code span.ch { color: #4070a0; } /* Char */
-code span.st { color: #4070a0; } /* String */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.ot { color: #007020; } /* Other */
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.fu { color: #06287e; } /* Function */
 code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code span.cn { color: #880000; } /* Constant */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.im { } /* Import */
-code span.va { color: #19177c; } /* Variable */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.op { color: #666666; } /* Operator */
-code span.bu { } /* BuiltIn */
 code span.ex { } /* Extension */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.at { color: #7d9029; } /* Attribute */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -164,6 +176,12 @@ code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Infor
 <li class="chapter" data-level="5.2" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#solution-4"><i class="fa fa-check"></i><b>5.2</b> Solution</a></li>
 <li class="chapter" data-level="5.3" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#discussion-4"><i class="fa fa-check"></i><b>5.3</b> Discussion</a></li>
 <li class="chapter" data-level="5.4" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#see-also-4"><i class="fa fa-check"></i><b>5.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><i class="fa fa-check"></i><b>6</b> Reading a “Streaming” JSON (ndjson) Data File With Drill &amp; R</a><ul>
+<li class="chapter" data-level="6.1" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#problem-5"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#solution-5"><i class="fa fa-check"></i><b>6.2</b> Solution</a></li>
+<li class="chapter" data-level="6.3" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#discussion-5"><i class="fa fa-check"></i><b>6.3</b> Discussion</a></li>
+<li class="chapter" data-level="6.4" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#see-also-5"><i class="fa fa-check"></i><b>6.4</b> See Also</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><span style="font-size:8pt"><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></span></li>
@@ -232,16 +250,19 @@ code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Infor
 ├── [150M]  MERGED2013_14_PP.csv
 ├── [147M]  MERGED2014_15_PP.csv
 └── [ 71M]  MERGED2015_16_PP.csv</code></pre>
+<blockquote>
+<p>It may be obvious, but those files are pretty big. The uncompressed size of the main archive is over 2GB. Folks will need some decent bandwidth to work with these files. If you need an example for multiple-CSV file reading but cannot download something this size, please file an issue with some links to sources that can be added to a recipe for you here.</p>
+</blockquote>
 <p>We can then work with <em>all</em> those files as one unit via R + <code>sergeant</code> just like you would a local data frame (NOTE: you’ll need to substitute your home directory name instead of <code>bob</code>):</p>
-<pre class="sourceCode r" id="cb40"><code class="sourceCode r"><div class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">library</span>(sergeant)</div>
-<div class="sourceLine" id="cb40-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</div>
-<div class="sourceLine" id="cb40-3" data-line-number="3"></div>
-<div class="sourceLine" id="cb40-4" data-line-number="4">db &lt;-<span class="st"> </span><span class="kw">src_drill</span>(<span class="st">&quot;localhost&quot;</span>)</div>
-<div class="sourceLine" id="cb40-5" data-line-number="5"></div>
-<div class="sourceLine" id="cb40-6" data-line-number="6">scorecards &lt;-<span class="st"> </span><span class="kw">tbl</span>(db, <span class="st">&quot;dfs.root.`/Users/bob/Data/CollegeScorecard_Raw_Data/*.csv`&quot;</span>)</div>
-<div class="sourceLine" id="cb40-7" data-line-number="7"></div>
-<div class="sourceLine" id="cb40-8" data-line-number="8"><span class="kw">glimpse</span>(scorecards)</div></code></pre>
-<pre><code>## Observations: 25
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">library</span>(sergeant)</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb40-4" data-line-number="4">db &lt;-<span class="st"> </span><span class="kw">src_drill</span>(<span class="st">&quot;localhost&quot;</span>)</a>
+<a class="sourceLine" id="cb40-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb40-6" data-line-number="6">scorecards &lt;-<span class="st"> </span><span class="kw">tbl</span>(db, <span class="st">&quot;dfs.root.`/Users/bob/Data/CollegeScorecard_Raw_Data/*.csv`&quot;</span>)</a>
+<a class="sourceLine" id="cb40-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb40-8" data-line-number="8"><span class="kw">glimpse</span>(scorecards)</a></code></pre></div>
+<pre><code>## Observations: ??
 ## Variables: 1,805
 ## $ HI_INC_ENRL_4YR_TRANS_YR6_RT     &lt;chr&gt; &quot;NULL&quot;, &quot;NULL&quot;, &quot;NULL&quot;, &quot;NULL...
 ## $ CCUGPROF                         &lt;chr&gt; &quot;NULL&quot;, &quot;NULL&quot;, &quot;NULL&quot;, &quot;NULL...
@@ -2052,15 +2073,17 @@ code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Infor
 <p>Note how there was no <code>lapply()</code> + <code>do.call()</code> or <code>dplyr::map_df()</code> or <code>data.table::rbindlist</code> dance. You also may have noticed that it took some time to perform that simple task (just as it might with straight R idioms). Future chapters will show how to work with this data in a more efficient format, specifically how to convert it to parquet before wrangling operations.</p>
 <p>Note also that we bypassed the <code>Crosswalks.zip</code> file with our <code>/*.csv</code> specification, meaning we can leave metadat files and other artefacts in our directory structures for humans while also making it easy for our soon-to-be robot overlords to process.</p>
 <p>If you head on over to <a href="http://localhost:8047/profiles/" class="uri">http://localhost:8047/profiles/</a> you’ll also see that the resultant query was:</p>
-<pre><code>SELECT * FROM  dfs.root.`/Users/bob/Data/CollegeScorecard_Raw_Data/*.csv`  LIMIT 25</code></pre>
+<pre><code>SELECT * 
+FROM  dfs.root.`/Users/bob/Data/CollegeScorecard_Raw_Data/*.csv`
+LIMIT 25</code></pre>
 <p>and also see how long the query took. On a very vanilla Drill configuration on a 2016 MacBook Pro, the query took about 7 seconds.</p>
 <p>We can extend the example to count the number of cities/towns, across all recorded years, in each state/territory that have colleges (note that we’re still just working with CSV files):</p>
-<pre class="sourceCode r" id="cb43"><code class="sourceCode r"><div class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">distinct</span>(scorecards, CITY, STABBR) <span class="op">%&gt;%</span><span class="st"> </span></div>
-<div class="sourceLine" id="cb43-2" data-line-number="2"><span class="st">  </span><span class="kw">count</span>(STABBR, <span class="dt">sort=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></div>
-<div class="sourceLine" id="cb43-3" data-line-number="3"><span class="st">  </span><span class="kw">collect</span>() -&gt;<span class="st"> </span>total_cities_in_state_with_colleges</div>
-<div class="sourceLine" id="cb43-4" data-line-number="4"></div>
-<div class="sourceLine" id="cb43-5" data-line-number="5">total_cities_in_state_with_colleges <span class="op">%&gt;%</span><span class="st"> </span></div>
-<div class="sourceLine" id="cb43-6" data-line-number="6"><span class="st">  </span><span class="kw">print</span>(<span class="dt">n=</span><span class="dv">59</span>)</div></code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">distinct</span>(scorecards, CITY, STABBR) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb43-2" data-line-number="2"><span class="st">  </span><span class="kw">count</span>(STABBR, <span class="dt">sort=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb43-3" data-line-number="3"><span class="st">  </span><span class="kw">collect</span>() -&gt;<span class="st"> </span>total_cities_in_state_with_colleges</a>
+<a class="sourceLine" id="cb43-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb43-5" data-line-number="5">total_cities_in_state_with_colleges <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb43-6" data-line-number="6"><span class="st">  </span><span class="kw">print</span>(<span class="dt">n=</span><span class="dv">59</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 59 x 2
 ##    STABBR     n
 ##  * &lt;chr&gt;  &lt;int&gt;

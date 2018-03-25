@@ -51,6 +51,8 @@ To test this we can download an archive of college scorecard data^[[College Scor
     ├── [147M]  MERGED2014_15_PP.csv
     └── [ 71M]  MERGED2015_16_PP.csv
 
+>It may be obvious, but those files are pretty big. The uncompressed size of the main archive is over 2GB. Folks will need some decent bandwidth to work with these files. If you need an example for multiple-CSV file reading but cannot download something this size, please file an issue with some links to sources that can be added to a recipe for you here.
+
 We can then work with _all_ those files as one unit via R + `sergeant` just like you would a local data frame (NOTE: you'll need to substitute your home directory name instead of `bob`):
 
 
@@ -66,7 +68,7 @@ glimpse(scorecards)
 ```
 
 ```
-## Observations: 25
+## Observations: ??
 ## Variables: 1,805
 ## $ HI_INC_ENRL_4YR_TRANS_YR6_RT     <chr> "NULL", "NULL", "NULL", "NULL...
 ## $ CCUGPROF                         <chr> "NULL", "NULL", "NULL", "NULL...
@@ -1883,7 +1885,9 @@ Note also that we bypassed the `Crosswalks.zip` file with our `/*.csv` specifica
 
 If you head on over to <http://localhost:8047/profiles/> you'll also see that the resultant query was:
 
-    SELECT * FROM  dfs.root.`/Users/bob/Data/CollegeScorecard_Raw_Data/*.csv`  LIMIT 25
+    SELECT * 
+    FROM  dfs.root.`/Users/bob/Data/CollegeScorecard_Raw_Data/*.csv`
+    LIMIT 25
 
 and also see how long the query took. On a very vanilla Drill configuration on a 2016 MacBook Pro, the query took about 7 seconds. 
 

@@ -128,16 +128,16 @@ cve_smaller
 ## # Database: DrillConnection
 ##    pub_date   cve_id        vendor_name description           product_name
 ##    <date>     <chr>         <chr>       <chr>                 <chr>       
-##  1 2017-03-17 CVE-2017-0001 microsoft   "The Graphics Device~ windows_10  
-##  2 2017-01-10 CVE-2017-0002 microsoft   "Microsoft Edge allo~ edge        
-##  3 2017-01-10 CVE-2017-0003 microsoft   "Microsoft Word 2016~ sharepoint_~
-##  4 2017-01-10 CVE-2017-0004 microsoft   "The Local Security ~ windows_7   
-##  5 2017-03-17 CVE-2017-0005 microsoft   "The Graphics Device~ windows_10  
-##  6 2017-03-17 CVE-2017-0006 microsoft   "Microsoft Excel 200~ excel       
-##  7 2017-03-17 CVE-2017-0007 microsoft   "Device Guard in Mic~ windows_10  
-##  8 2017-03-17 CVE-2017-0008 microsoft   "Microsoft Internet ~ internet_ex~
-##  9 2017-03-17 CVE-2017-0009 microsoft   "Microsoft Internet ~ internet_ex~
-## 10 2017-03-17 CVE-2017-0010 microsoft   A remote code execut~ edge        
+##  1 2017-03-17 CVE-2017-0001 microsoft   "The Graphics Device… windows_10  
+##  2 2017-01-10 CVE-2017-0002 microsoft   "Microsoft Edge allo… edge        
+##  3 2017-01-10 CVE-2017-0003 microsoft   "Microsoft Word 2016… sharepoint_…
+##  4 2017-01-10 CVE-2017-0004 microsoft   "The Local Security … windows_7   
+##  5 2017-03-17 CVE-2017-0005 microsoft   "The Graphics Device… windows_10  
+##  6 2017-03-17 CVE-2017-0006 microsoft   "Microsoft Excel 200… excel       
+##  7 2017-03-17 CVE-2017-0007 microsoft   "Device Guard in Mic… windows_10  
+##  8 2017-03-17 CVE-2017-0008 microsoft   "Microsoft Internet … internet_ex…
+##  9 2017-03-17 CVE-2017-0009 microsoft   "Microsoft Internet … internet_ex…
+## 10 2017-03-17 CVE-2017-0010 microsoft   A remote code execut… edge        
 ## # ... with more rows
 ```
 
