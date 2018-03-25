@@ -1,0 +1,103 @@
+# Using Your Own CSV Data With Drill & R
+
+## Problem
+
+You have common-structured CSV files that you want to use via Drill & R with as little friction as possible.
+
+## Solution
+
+Modify a storage format to make it easier to ingest CSV data and create an organized directory structure that will enable easier access to homogenous CSV-based data.
+
+## Discussion
+
+As stated previously, Drill can handle many data formats, including CSV, but the default way of working with CSV files is to use `column[#]` syntax when most "normal" CSV files have headers with column names. There's a `csvh` format that can work with CSV files with headers, but---really---most CSV files have headers, so let's first modify the `csvh` storage format to include `csv` as a valid file extension vs just `csvh` (because we really don't want to rename files just for Drill). 
+
+Since you Read The Fine Manual^[[Storage Plugin Configuration Bascis](https://drill.apache.org/docs/plugin-configuration-basics/)] before coming here you know where you need to go to edit `dfs` storage formats. In that configuration screen, find the entry under `"formats"` for `csvh` and make it look like this:
+
+    "csvh": {
+      "type": "text",
+      "extensions": [
+        "csvh",
+        "csv"
+      ],
+      "extractHeader": true,
+      "delimiter": ","
+    }
+
+Now, `.csv` files will be scanned for a header and we can use named colums vs numeric columns to wrangle data.
+
+To test this we can download an archive of college scorecard data^[[College Scorecard Data](https://ed-public-download.app.cloud.gov/downloads/CollegeScorecard_Raw_Data.zip)] from the U.S. Department of Education and extract it into `~/Data` to end up with a directory of CSV files in `~/Data/CollegeScorecard_Raw_Data`. The underlying structure should look like this:
+
+    .
+    ├── [ 31M]  Crosswalks.zip
+    ├── [ 57M]  MERGED1996_97_PP.csv
+    ├── [ 61M]  MERGED1997_98_PP.csv
+    ├── [ 72M]  MERGED1998_99_PP.csv
+    ├── [ 86M]  MERGED1999_00_PP.csv
+    ├── [ 99M]  MERGED2000_01_PP.csv
+    ├── [101M]  MERGED2001_02_PP.csv
+    ├── [113M]  MERGED2002_03_PP.csv
+    ├── [115M]  MERGED2003_04_PP.csv
+    ├── [127M]  MERGED2004_05_PP.csv
+    ├── [132M]  MERGED2005_06_PP.csv
+    ├── [130M]  MERGED2006_07_PP.csv
+    ├── [133M]  MERGED2007_08_PP.csv
+    ├── [133M]  MERGED2008_09_PP.csv
+    ├── [138M]  MERGED2009_10_PP.csv
+    ├── [141M]  MERGED2010_11_PP.csv
+    ├── [148M]  MERGED2011_12_PP.csv
+    ├── [150M]  MERGED2012_13_PP.csv
+    ├── [150M]  MERGED2013_14_PP.csv
+    ├── [147M]  MERGED2014_15_PP.csv
+    └── [ 71M]  MERGED2015_16_PP.csv
+
+We can then work with _all_ those files as one unit via R + `sergeant` just like you would a local data frame (NOTE: you'll need to substitute your home directory name instead of `bob`):
+
+```{r 04-csv-01, message=FALSE, warning=FALSE, cache=TRUE}
+library(sergeant)
+library(tidyverse)
+
+db <- src_drill("localhost")
+
+scorecards <- tbl(db, "dfs.root.`/Users/bob/Data/CollegeScorecard_Raw_Data/*.csv`")
+
+glimpse(scorecards)
+```
+
+Yes, a series of very complex/large CSV files were deliberately chosen for this example.
+
+Note how there was no `lapply()` + `do.call()` or `dplyr::map_df()` or `data.table::rbindlist` dance. You also may have noticed that it took some time to perform that simple task (just as it might with straight R idioms). Future chapters will show how to work with this data in a more efficient format, specifically how to convert it to parquet before wrangling operations.
+
+Note also that we bypassed the `Crosswalks.zip` file with our `/*.csv` specification, meaning we can leave metadat files and other artefacts in our directory structures for humans while also making it easy for our soon-to-be robot overlords to process.
+
+If you head on over to <http://localhost:8047/profiles/> you'll also see that the resultant query was:
+
+    SELECT * FROM  dfs.root.`/Users/bob/Data/CollegeScorecard_Raw_Data/*.csv`  LIMIT 25
+
+and also see how long the query took. On a very vanilla Drill configuration on a 2016 MacBook Pro, the query took about 7 seconds. 
+
+We can extend the example to count the number of cities/towns, across all recorded years, in each state/territory that have colleges (note that we're still just working with CSV files):
+
+```{r 04-college-city-count, message=FALSE, warning=FALSE, cache=TRUE}
+distinct(scorecards, CITY, STABBR) %>% 
+  count(STABBR, sort=TRUE) %>% 
+  collect() -> total_cities_in_state_with_colleges
+
+total_cities_in_state_with_colleges %>% 
+  print(n=59)
+```
+
+On the same system used for the previous, generic `glimpse()`-generated query, that more precise query took approximately 3.6 seconds. I'd wager you'd have a difficult time beating that with any R idiom that requires reading files.
+
+For SQL nerds, `dplyr` translates the above DSL into the following SQL:
+
+    SELECT `STABBR`, COUNT(*) AS `n`
+    FROM (SELECT `CITY`, `STABBR`
+          FROM  dfs.root.`/Users/bob/Data/CollegeScorecard_Raw_Data/*.csv` 
+          GROUP BY `CITY`, `STABBR`) `xabckntynw`
+    GROUP BY `STABBR`
+    ORDER BY `n` DESC
+
+## See Also
+
+- [Text Files: CSV, TSV, PSV](https://drill.apache.org/docs/text-files-csv-tsv-psv/)

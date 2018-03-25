@@ -21,7 +21,7 @@ The Drill query interface (<http://localhost:8047/query>) provides an example qu
 
 Let's take a look at the `employee.json` table using R & `RJDBC`.
 
-```{r 03-example-01-connect, message=FALSE, warning=FALSE}
+```{r 03-example-01-connect, message=FALSE, warning=FALSE, cache=TRUE}
 library(sergeant)
 
 con <- drill_jdbc("localhost")
