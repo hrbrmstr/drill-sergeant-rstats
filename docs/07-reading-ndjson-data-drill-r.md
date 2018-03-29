@@ -2,7 +2,7 @@
 
 ## Problem
 
-You have [ndjson](http://ndjson.org/)) JSON data files and want to read and query them with Drill and R.
+You have [ndjson](http://ndjson.org/) JSON data files and want to read and query them with Drill and R.
 
 ## Solution
 
