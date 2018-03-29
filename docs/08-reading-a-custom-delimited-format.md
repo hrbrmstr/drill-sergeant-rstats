@@ -93,7 +93,7 @@ and add an entry for our new "`wikicsv`" format.
         "csvw"
       ],
       "delimiter": " "
-    }
+    },
 
 The default comment character for delimited files is "`#`" so there's no need to save that.
 
@@ -220,16 +220,16 @@ pagecount
 ## # Database: DrillConnection
 ##    language_code daily_total hr_ct    project_code page                   
 ##    <chr>               <dbl> <chr>    <chr>        <chr>                  
-##  1 Ar                   5.00 M3R2     mw           Ar                     
-##  2 De                   3.00 T3       mw           De                     
-##  3 En                   3.00 E1F2     mw           En                     
-##  4 aa                  11.0  A11      b            ?banner=B12_5C_113020_…
-##  5 aa                   2.00 D1X1     b            File:Broom_icon.svg    
-##  6 aa                   1.00 X1       b            File:Commons-logo.svg  
-##  7 aa                   5.00 C1G1V1X2 b            File:Incubator-notext.…
-##  8 aa                   1.00 X1       b            File:Wikibooks-logo.svg
-##  9 aa                   1.00 X1       b            File:Wikimania.svg     
-## 10 aa                   1.00 X1       b            File:Wikimedia-logo.svg
+##  1 Ar                     5. M3R2     mw           Ar                     
+##  2 De                     3. T3       mw           De                     
+##  3 En                     3. E1F2     mw           En                     
+##  4 aa                    11. A11      b            ?banner=B12_5C_113020_…
+##  5 aa                     2. D1X1     b            File:Broom_icon.svg    
+##  6 aa                     1. X1       b            File:Commons-logo.svg  
+##  7 aa                     5. C1G1V1X2 b            File:Incubator-notext.…
+##  8 aa                     1. X1       b            File:Wikibooks-logo.svg
+##  9 aa                     1. X1       b            File:Wikimania.svg     
+## 10 aa                     1. X1       b            File:Wikimedia-logo.svg
 ## # ... with more rows
 ```
 

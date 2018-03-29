@@ -96,7 +96,7 @@ and add an entry for our new "`wikicsv`" format.
         "csvw"
       ],
       "delimiter": " "
-    }
+    },
 
 The default comment character for delimited files is "`#`" so there's no need to save that.
 

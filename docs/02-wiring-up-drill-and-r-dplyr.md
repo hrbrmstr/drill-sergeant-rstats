@@ -35,7 +35,7 @@ db
 
 ```
 ## src:  DrillConnection
-## tbls: cp.default, dfs.default, dfs.otg, dfs.root, dfs.samsung, dfs.tmp,
+## tbls: cp.default, dfs.caps, dfs.d, dfs.default, dfs.root, dfs.tmp,
 ##   INFORMATION_SCHEMA, sys
 ```
 

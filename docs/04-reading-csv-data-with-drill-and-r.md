@@ -176,11 +176,11 @@ group_by(who_cholera, country) %>%
 ## # Database: DrillConnection
 ##    country     avg_annual_cases
 ##    <chr>                  <dbl>
-##  1 Afghanistan         11993   
-##  2 Albania               626   
-##  3 Algeria               636   
-##  4 Angola               7348   
-##  5 Argentina             758   
+##  1 Afghanistan         11993.  
+##  2 Albania               626.  
+##  3 Algeria               636.  
+##  4 Angola               7348.  
+##  5 Argentina             758.  
 ##  6 Armenia                25.0 
 ##  7 Australia               3.74
 ##  8 Austria                 1.00

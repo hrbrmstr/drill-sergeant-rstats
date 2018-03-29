@@ -68,7 +68,7 @@ glimpse(scorecards)
 ```
 
 ```
-## Observations: ??
+## Observations: 25
 ## Variables: 1,805
 ## $ HI_INC_ENRL_4YR_TRANS_YR6_RT     <chr> "NULL", "NULL", "NULL", "NULL...
 ## $ CCUGPROF                         <chr> "NULL", "NULL", "NULL", "NULL...

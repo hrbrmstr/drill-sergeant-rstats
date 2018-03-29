@@ -90,7 +90,7 @@ One possible query for this (SQL is somewhat flexible, like R) is the following:
 
 Try that in the Drill query interface and you should see:
 
-<img src="figures/06-cve-smaller.png" width="2822" />
+![](figures/06-cve-smaller.png)<!-- -->
 
 Let's hook that query up with `sergeant` (minus the `LIMIT 10`):
 
