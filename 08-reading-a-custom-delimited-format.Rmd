@@ -16,7 +16,7 @@ Add a new entries to Drill storage `workspaces` and `formats` and use custom que
 
 A helpful chap---[Ben Marwick](https://github.com/benmarwick)---provided an example of a truly evil set of delimited files from the [Wikimedia Commons](https://github.com/hrbrmstr/drill-sergeant-rstats/issues/1#issuecomment-376713894) that have pagecount data for all Wikimedia properties. The files are _huge_ so we'll be working with an extract. The link to the sample extract file will be posted soon, but it was created with:
 
-    $ head -1000024 pagecounts-2012-12-01 > pagecounts-2012-02-01-excerpt.csvw
+    $ bzcat pagecounts-2012-12-01.bz2 | head -1000024 > pagecounts-2012-02-01-excerpt.csvw
     $ bzip2 --compress pagecounts-2012-02-01-excerpt.csvw
 
 You'll find out the reason for the `csvw` in a bit.
