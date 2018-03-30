@@ -32,8 +32,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
+<link rel="prev" href="working-with-custom-delimited-format-files.html">
 
-<link rel="next" href="about-the-author.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -203,52 +203,231 @@ code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Infor
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Using Apache Drill with R</h1>
-<h4 class="author"><em>Bob Rudis</em></h4>
-<h4 class="date"><em>2018-03-29</em></h4>
+<div id="writing-simple-drill-custom-functions-udfs-for-field-transformations" class="section level1">
+<h1><span class="header-section-number">Recipe 8</span> Writing “Simple” Drill Custom Functions (UDFs) For Field Transformations</h1>
+<div id="problem-7" class="section level2">
+<h2><span class="header-section-number">8.1</span> Problem</h2>
+<p>You have a field that requires complex transformations in order to be useful in a Drill context.</p>
 </div>
-<div id="preface" class="section level1 unnumbered">
-<h1>Preface</h1>
-<p><a href="https://drill.apache.org/">Apache Drill</a> <em>“enables analysts, business users, data scientists and developers to explore and analyze this data without sacrificing the flexibility and agility offered by these datastores. Drill processes the data in-situ without requiring users to define schemas or transform data.”</em><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
-<p>This book is about using Apache Drill with R and the <a href="https://github.com/hrbrmstr/sergeant"><code>sergeant</code></a> package. Rather than produce an extensive tome, the chapters are organized into a more “cookbook”-style production with some (brief) introductory exposition.</p>
-<p>Rather than write “I” everywhere, be it known up-front that any idioms or advocation contatained within are from the mind of someone who has stared into the heart of the TARDIS yet did not perish (i.e. I’m far askew of the average/normal individual and some things that work for me may seem strange, inefficient or even crazy to others). Emphatic/declarative statements should be interpreted as “I [think|believe]” vs accepted as fact without your own personal verification. For example, I’m about to say “Drill is…” in the next paragraph and it’s all just my own delcarative take on this subject.</p>
-<p>Drill is—in a word—<em>awesome</em>. On its own it can help you wrangle data out of (and into) parquet<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>, [CT]SV, JSON, MongoDB, MySQL, PostgreSQL (OK, anything that speaks JDBC), and more. You can scale it from a zero-configuration local filesystem install to a giant cluster with diverse data endpoints. You can speak SQL to it and have it translate into all the modern, heaven-forsaken NoSQL dialects for you (i.e. it can abstract away the query syntax of all the modern databases the crazy kids today use).</p>
-<p>Drill lets you focus on a single way of thinking about data wrangling/processing so you can get to your analyses, visualizations, dasboards or reports more quickly. Drill also gives you an excuse to finally organize your data <em>without (necessarily) creating a massive single “data lake” in the process</em>.</p>
-<p>There are plenty of other reasons for “why Drill?”<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>, and you can jump into the active community<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> and even poke at the sources<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> to gain a better understanding of the entirety of the mission/purpose of Drill.</p>
-<p>The first few “recipes” will focus on Drill itself but the remainder of the book will be on solving specific problems or addressing specific situations with Drill &amp; <code>sergeant</code>. If you need an area to be addressed that is not covered, please file an issue with as clear a question as possible and a new recipe will be added to help clarify each new use-case.</p>
-<p>Also, the earlier drafts of this book will focus on Linux-ish systems (including macOS). I’ll do my best to add Windows-specific context later on, but you’d be far better off installing Ubuntu in Windows 10 (since Microsoft supports that now).</p>
-<div id="preparing-r-for-drill" class="section level2">
-<h2><span class="header-section-number">0.1</span> Preparing R for Drill</h2>
-<p>Using Drill with R relies on <a href="https://www.rforge.net/RJDBC/"><code>RJDBC</code></a> which means your system will need Java and <a href="https://CRAN.R-project.org/package=rJava"><code>rJava</code></a>. You should spend some time on that now vs be frustrated later (if you do not currently have a working <code>rJava</code> environment). File an issue on this repo if having a recipe for getting Java working with R would be beneficial. (Kinder souls could also file a PR with said assistance.)</p>
-<p>The <code>sergeant</code> package is available on CRAN but we may work with the GitHub version of it for this book in the event some enhancements are made to support recipes. If you prefer CRAN, then you can do:</p>
-<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><div class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;sergeant&quot;</span>)</div></code></pre>
-<p>otherwise, do:</p>
-<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><div class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;hrbrmstr/sergeant&quot;</span>)</div></code></pre>
-<p>Every effort will be made to identify recipes that may require functionality not in the CRAN stable release.</p>
-<p>This book also makes extensive use of the <code>tidyverse</code> meta-package, since one way to use <code>sergeant</code> is via the database back-end of <code>dplyr</code>. You will need to:</p>
-<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><div class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)</div></code></pre>
-<p>if you have not used packages from it before (it may take a few minutes, especially on Linux systems).</p>
+<div id="solution-7" class="section level2">
+<h2><span class="header-section-number">8.2</span> Solution</h2>
+<p>Write a Drill custom function/user-defined function (UDF)</p>
+</div>
+<div id="discussion-7" class="section level2">
+<h2><span class="header-section-number">8.3</span> Discussion</h2>
+<p>In Recipe <code>TBD</code> we came across a field that holds encoded hourly counts of pageviews for Wikimedia property pages. The encoding is a contiguous string that uses a series of single A-Z characters to encode hours 00:23 followed by an integer value. This would be an example of such a string:</p>
+<pre><code>M3R20A131Q27H53</code></pre>
+<p>It’s <em>possible</em> to handle this with some <em>serious</em> SQL machinations, but we’d likely go insane in the process. An alternative is to write a Drill user-defined function (UDF) that handles some of this for us. One big hurdle for us is that UDFs are written in Java. So, you will either need <em>some</em> Java familiarity to get through this recipe <em>or</em> offer up some adult beverages in exchange for some assistance from someone who can tolerate the verbosity and idioms of Java.</p>
+<p>An <em>absolute</em> prerequisite for this recipe is a <em>complete</em> review of the Drill manual chapter on <a href="https://drill.apache.org/docs/develop-custom-functions-introduction/">user-defined functions</a>. It doesn’t make much sense to duplicate that content, but we’ll draw on concepts in that example for this solution.</p>
+<p>Drill UDF “projects” define naming conventions, extra Java library dependencies, UDF incoming parameters (including types) and the UDF return value(s). We’re going to keep it simple for this example and take in a value such as:</p>
+<pre><code>M3R20A131Q27H53</code></pre>
+<p>and return back a JSON string like:</p>
+<pre><code>[{&quot;hr&quot;:12,&quot;hr_ct&quot;:3},{&quot;hr&quot;:17,&quot;hr_ct&quot;:20},{&quot;hr&quot;:0,&quot;hr_ct&quot;:131},{&quot;hr&quot;:16,&quot;hr_ct&quot;:27},{&quot;hr&quot;:7,&quot;hr_ct&quot;:53}]</code></pre>
+<p>which will enable us to work with standard Drill functions for further transformations.</p>
+<p>Star by cloning the <a href="https://github.com/tgrall/drill-simple-mask-function">example UDF repo</a> from the <a href="https://drill.apache.org/docs/tutorial-develop-a-simple-function/">tutorial</a> and renaming it for this example (we’ll assume you’re in your “development” directory because you keep things organized, right?):</p>
+<pre><code>$ git clone https://github.com/tgrall/drill-simple-mask-function.git
+$ mv drill-simple-mask-function/ pagecount-hour-count-split</code></pre>
+<p>In the top-level of that new directory there’s a <code>pom.xml</code> file which holds all the metadata about this project. We’re only going to change a few bits of this metadata since we’re not going to add in any other dependencies. Change each of these XML tags to look like this:</p>
+<pre><code>&lt;artifactId&gt;pagecount-hour-count-split&lt;/artifactId&gt;
+&lt;version&gt;1.0&lt;/version&gt;
+&lt;name&gt;Drill Pagecount Hour Count Splitter Function&lt;/name&gt;</code></pre>
+<p>We also need to modify some configuration information in <code>src/main/resources/drill-module.conf</code> since we are going to have our own class name for our new UDF. Make that file look like:</p>
+<pre><code>drill {
+
+  classpath.scanning {
+    base.classes : ${?drill.classpath.scanning.base.classes} [
+      org.apache.drill.contrib.function.ConvertPageCountFunc
+    ],
+    packages : ${?drill.classpath.scanning.packages} [
+      org.apache.drill.contrib.function
+    ]
+  }
+}</code></pre>
+<p><code>org.apache.drill.contrib.function.ConvertPageCountFunc</code> is going to be our new function. But, we’ll first need to rename the file <code>SimpleMaskFunc.java</code> in <code>src/main/java/org/apache/drill/contrib/function/</code> to <code>ConvertPageCountFunc.java</code>.</p>
+<p>We’ll edit the file to look like this:</p>
+<pre><code>package org.apache.drill.contrib.function;
+
+import com.google.common.base.Strings;
+import io.netty.buffer.DrillBuf;
+import org.apache.drill.exec.expr.DrillSimpleFunc;
+import org.apache.drill.exec.expr.annotations.FunctionTemplate;
+import org.apache.drill.exec.expr.annotations.Output;
+import org.apache.drill.exec.expr.annotations.Param;
+import org.apache.drill.exec.expr.holders.NullableVarCharHolder;
+import org.apache.drill.exec.expr.holders.VarCharHolder;
+
+import javax.inject.Inject;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+@FunctionTemplate(
+  name = &quot;pagecounts_to_json&quot;, // THIS IS WHAT WE&#39;LL USE IN Drill QUERIES TO TRANSFORM THE DATA
+  scope = FunctionTemplate.FunctionScope.SIMPLE,
+  nulls = FunctionTemplate.NullHandling.NULL_IF_NULL
+  )
+public class ConvertPageCountFunc implements DrillSimpleFunc {
+
+  @Param
+  NullableVarCharHolder input; // ONLY ONE INPUT PARAMETER (i.e. THE COLUMN WE&#39;RE PASSING IN)
+
+  @Output
+  VarCharHolder out; // ONLY ONE OUTPUT VALUE (i.e. THE TRANSFORMED DATA TO JSON)
+
+  @Inject
+  DrillBuf buffer;
+
+  public void setup() {}
+
+  public void eval() {
+
+    // get the pagecount compacted hour-count string
+    String inputValue = org.apache.drill.exec.expr.fn.impl.StringFunctionHelpers.toStringFromUTF8(input.start, input.end, input.buffer);
+
+    // this pattern will match all valid hour-count entries (and deal with &quot;?&quot;)
+    java.util.regex.Pattern hcList = java.util.regex.Pattern.compile(&quot;([A-Xa-x][0-9]+|[A-Xa-x]\\?)&quot;);
+    java.util.regex.Matcher hcListMatcher = hcList.matcher(inputValue);
+
+    // this pattern will match individual components of hour-count entries
+    java.util.regex.Pattern hc = java.util.regex.Pattern.compile(&quot;([A-Xa-x])([0-9]+|\\?)&quot;);
+    java.util.regex.Matcher hc_entry; // used in the while loop
+
+    String outputValue = &quot;[&quot;; // start of &#39;json&#39;
+    
+    // for each hr-ct match:
+    //   - extract hr
+    //   - extract ct; if ct is ? then ct is null
+
+    while (hcListMatcher.find()) {
+      
+      hc_entry = hc.matcher(hcListMatcher.group());
+      
+      hc_entry.find();
+      outputValue = outputValue + &quot;{\&quot;hr\&quot;:&quot; + (int)(Character.toUpperCase(hc_entry.group(1).charAt(0))-65) + &quot;,\&quot;hr_ct\&quot;:&quot;;
+      outputValue = outputValue + (hc_entry.group(2) == &quot;?&quot; ? &quot;null&quot; : hc_entry.group(2)) + &quot;},&quot;;
+      
+    }
+    
+    outputValue = outputValue + &quot;]&quot;; // end of json
+    outputValue = outputValue.replace(&quot;,]&quot;, &quot;]&quot;); // pesky trailing ,
+
+    // put the output value in the out buffer
+    out.buffer = buffer;
+    out.start = 0;
+    out.end = outputValue.getBytes().length;
+    buffer.setBytes(0, outputValue.getBytes());
+
+  }
+
+}</code></pre>
+<p>Even if you’re not super-familiar with Java the above code should be pretty readable. We’re taking in a string and returning a string. We made things easier since there are no dependencies on third-party Java classes that don’t ship with Drill. One thing folks who are familiar with Java will notice is that we fully qualify virtually all of the named classes. That’s due to the context in which Drill is running these functions. It’s a tiny bit of developer-ionconvenience for some performance and execution assurance benefits.</p>
+<p>Once we’re done editing that file, fire up a command prompt and ensure you’re in the UDF top-level directory. Then run the following:</p>
+<pre><code>$ mvn clean package # there should be no errors
+
+$ # make our new functions accessible by Drill
+$ cp target/pagecount-hour-count-split*.jar /usr/local/drill/jars/3rdparty/ 
+
+$ drillbit.sh restart # restart Drill</code></pre>
+<p>Drill should startup without issue. Now we can do something like the following in the Drill query web interface or from a <code>sqlline</code> prompt:</p>
+<pre><code>SELECT 
+  language_code, 
+  project_code, 
+  page, 
+  daily_total, 
+  b.hc.hr AS hr, 
+  b.hc.hr_ct AS hr_ct 
+FROM (
+  SELECT 
+    language_code, 
+    project_code, 
+    page, 
+    daily_total, 
+    FLATTEN(a.hr_ct) AS hc 
+  FROM (
+    SELECT 
+      SUBSTR(columns[0], 1, STRPOS(columns[0], &#39;.&#39;)-1) AS language_code,
+      SUBSTR(columns[0], STRPOS(columns[0], &#39;.&#39;)+1) AS project_code,
+      columns[1] AS page,
+      CAST(columns[2] AS DOUBLE) AS daily_total,
+      convert_fromJSON(pagecounts_to_json(columns[3])) AS hr_ct
+    FROM dfs.wikimedia.`/*.csvw.bz2` 
+    LIMIT 10) a
+  ) b
++----------------+---------------+--------------------------------------+--------------+-----+--------+
+| language_code  | project_code  |                 page                 | daily_total  | hr  | hr_ct  |
++----------------+---------------+--------------------------------------+--------------+-----+--------+
+| Ar             | mw            | Ar                                   | 5.0          | 12  | 3      |
+| Ar             | mw            | Ar                                   | 5.0          | 17  | 2      |
+| De             | mw            | De                                   | 3.0          | 19  | 3      |
+| En             | mw            | En                                   | 3.0          | 4   | 1      |
+| En             | mw            | En                                   | 3.0          | 5   | 2      |
+| aa             | b             | ?banner=B12_5C_113020_hover_nohover  | 11.0         | 0   | 11     |
+| aa             | b             | File:Broom_icon.svg                  | 2.0          | 3   | 1      |
+| aa             | b             | File:Broom_icon.svg                  | 2.0          | 23  | 1      |
+| aa             | b             | File:Commons-logo.svg                | 1.0          | 23  | 1      |
+| aa             | b             | File:Incubator-notext.svg            | 5.0          | 2   | 1      |
+| aa             | b             | File:Incubator-notext.svg            | 5.0          | 6   | 1      |
+| aa             | b             | File:Incubator-notext.svg            | 5.0          | 21  | 1      |
+| aa             | b             | File:Incubator-notext.svg            | 5.0          | 23  | 2      |
+| aa             | b             | File:Wikibooks-logo.svg              | 1.0          | 23  | 1      |
+| aa             | b             | File:Wikimania.svg                   | 1.0          | 23  | 1      |
+| aa             | b             | File:Wikimedia-logo.svg              | 1.0          | 23  | 1      |
++----------------+---------------+--------------------------------------+--------------+-----+--------+
+16 rows selected (0.427 seconds) </code></pre>
+<p>Most of the “magic” happens in this part of the first <code>SELECT</code>:</p>
+<pre><code>convert_fromJSON(pagecounts_to_json(columns[3])) AS hr_ct</code></pre>
+<p>You should recognize <code>pagecounts_to_json()</code> as our new UDF! We pass in the last column to it for transformation. We also deliberately returned a valid JSON array so we could use <code>FLATTEN()</code> on it which turns one record into multiple records (as many as are in the array). From there we can use <a href="https://drill.apache.org/docs/querying-complex-data-introduction/">standard Drill idioms</a> for querying the JSON data in the “atomic” records.</p>
+<blockquote>
+<p>SQL queries like that one can really make on appreciate the abstractions afforded in “normal” <code>dplyr</code> use in R.</p>
+</blockquote>
+<p>You can find the working UDF source code tree in the <code>extra</code> directory of this book’s GitHub repository.</p>
+</div>
+<div id="see-also-7" class="section level2">
+<h2><span class="header-section-number">8.4</span> See Also</h2>
+<ul>
+<li><a href="https://maven.apache.org/">Apache Maven</a></li>
+<li><a href="https://drill.apache.org/docs/develop-custom-functions-introduction/">Develop Drill Custom Functions</a></li>
+<li><a href="https://drill.apache.org/docs/querying-complex-data-introduction/">Querying Complex Data</a></li>
+</ul>
 
 </div>
 </div>
-<div class="footnotes">
-<hr />
-<ol start="1">
-<li id="fn1"><p><a href="https://drill.apache.org/faq/">Drill FAQ</a><a href="index.html#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p><a href="https://parquet.apache.org/">Apache Parquet</a><a href="index.html#fnref2" class="footnote-back">↩</a></p></li>
-<li id="fn3"><p><a href="https://drill.apache.org/docs/why-drill/">Why Drill?</a><a href="index.html#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p><a href="https://drill.apache.org/mailinglists/">Drill Mailing Lists</a><a href="index.html#fnref4" class="footnote-back">↩</a></p></li>
-<li id="fn5"><p><a href="https://github.com/apache/drill">Drill GitHub Source Mirror</a><a href="index.html#fnref5" class="footnote-back">↩</a></p></li>
-</ol>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </section>
 
           </div>
         </div>
       </div>
+<a href="working-with-custom-delimited-format-files.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="about-the-author.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
