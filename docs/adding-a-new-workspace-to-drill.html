@@ -32,8 +32,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="reading-a-traditional-json-data-file-with-drill-r.html">
-<link rel="next" href="working-with-custom-delimited-format-files.html">
+<link rel="prev" href="drill-in-more-than-10-minutes.html">
+<link rel="next" href="adding-or-modifying-drill-formats.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -228,212 +228,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="reading-a-streaming-json-ndjson-data-file-with-drill-r" class="section level1">
-<h1><span class="header-section-number">Recipe 8</span> Reading a “Streaming” JSON (ndjson) Data File With Drill &amp; R</h1>
-<div id="problem-7" class="section level2">
-<h2><span class="header-section-number">8.1</span> Problem</h2>
-<p>You have <a href="http://ndjson.org/">ndjson</a> JSON data files and want to read and query them with Drill and R.</p>
+<div id="adding-a-new-workspace-to-drill" class="section level1">
+<h1><span class="header-section-number">Recipe 1</span> Adding a New ‘Workspace’ to Drill</h1>
+<div id="problem" class="section level2">
+<h2><span class="header-section-number">1.1</span> Problem</h2>
+<p>You have data in a directory structure and would like a Drill “shortcut” reference to it vs entering the full path in queries all the time.</p>
 </div>
-<div id="solution-7" class="section level2">
-<h2><span class="header-section-number">8.2</span> Solution</h2>
-<p>Put the files into an organized, accessible directory by Drill and query it with R and <code>sergeant</code>.</p>
+<div id="solution" class="section level2">
+<h2><span class="header-section-number">1.2</span> Solution</h2>
+<p>Create a Drill “<code>workspace</code>”.</p>
 </div>
-<div id="discussion-7" class="section level2">
-<h2><span class="header-section-number">8.3</span> Discussion</h2>
-<p>The previous recipe covered the two basic flavours of JSON, traditional (a complete, syntactically correct object) and streaming/ndjson which is a file of flattened JSON records one per-line.</p>
-<p>One example with a likely familiar data layout is an archive of 170 million tweets collected during the 3 months leading up to the 2012 U.S. presiential election.<a href="#fn19" class="footnote-ref" id="fnref19"><sup>19</sup></a>. Another example would be Rapid7’s “Forward DNS (FDNS)” studies<a href="#fn20" class="footnote-ref" id="fnref20"><sup>20</sup></a>. Yet another is the Yelp Challenge dataset<a href="#fn21" class="footnote-ref" id="fnref21"><sup>21</sup></a>. Those archives are multiple gigabytes (and, in some cases, substantially more) each and a previous recipe already took up 2+GB of data on your system, so asking folks to download additional files of this size would be more than unkind. Unfortunately, the ndjson format (and, Drill, for that matter) was designed to solve “big data” problems and ndjson is often used in the context of large data sets.</p>
-<blockquote>
-<p>If you have smaller ndjson data sets that could be used for this example, please file an issue. The goal of the cookbook is to be as “real world” helpful to folks as possible and “real” data beats tutorial-crafted data any day.</p>
-</blockquote>
-<p>We’ll <em>reuse</em> some existing data and give a sneak peek at a powerful capability of Drill that we’ll see in later recipes. This feature is the ability to write data out to different file types or storage engines. In this case, we’ll convert a few of the files from Recipe 5 (reading in a directory of CSV files) into streaming JSON and do some light querying with them.</p>
-<p>You’ll need to bring up a terminal/command shell for this work since we need to operate in a contained session since we’re going to alter the default output format to JSON and convert three CSV files for use in the examples here. Assuming you followed the advice to run Drill as a server/service and also followed the advice in the Drill manual and added the Drill <code>bin</code> directory to your system <code>PATH</code>, you can start a Drill query session at the command line with:</p>
-<pre><code>$ drill-conf
-apache drill 1.13.0
-&quot;drill baby drill&quot;
-0: jdbc:drill:&gt;</code></pre>
-<blockquote>
-<p>You can always <code>cd</code> to the <code>drill</code> directory and <code>bin/dill-conf</code> if the directory is not in your <code>PATH</code>.</p>
-</blockquote>
-<p>Now, we need to alter the session data storage format to ‘json’:</p>
-<pre><code>0: jdbc:drill:&gt; ALTER SESSION SET `store.format`=&#39;json&#39;;
-+-------+------------------------+
-|  ok   |        summary         |
-+-------+------------------------+
-| true  | store.format updated.  |
-+-------+------------------------+
-1 row selected (0.133 seconds)</code></pre>
-<p>By default, the <code>dfs.root</code> schema is <em>immutable</em> (i.e. “read only”). <strong>This is a very sane setting</strong> and changing it is <strong>not</strong> recommended. For now, we’ll store our new ndjson files in the default temporary (which is <code>/tmp</code> on Linux systems and <code>TBD</code> on Windows) and use the Drill <code>CREATE TABLE AS</code> (CTAS)<a href="#fn22" class="footnote-ref" id="fnref22"><sup>22</sup></a> command</p>
-<pre><code>0: jdbc:drill:&gt; CREATE TABLE dfs.tmp.`/1996-97` AS SELECT * FROM dfs.root.`/Users/bob/Data/CollegeScorecard_Raw_Data/MERGED1996_97_PP.csv`;
-+-----------+----------------------------+
-| Fragment  | Number of records written  |
-+-----------+----------------------------+
-| 0_0       | 6794                       |
-+-----------+----------------------------+
-1 row selected (11.9 seconds)
-
-0: jdbc:drill:&gt; CREATE TABLE dfs.tmp.`/1997-98` AS SELECT * FROM dfs.root.`/Users/bob/Data/CollegeScorecard_Raw_Data/MERGED1997_98_PP.csv`;
-+-----------+----------------------------+
-| Fragment  | Number of records written  |
-+-----------+----------------------------+
-| 0_0       | 6699                       |
-+-----------+----------------------------+
-1 row selected (9.743 seconds)
-
-0: jdbc:drill:&gt; CREATE TABLE dfs.tmp.`/1998-99` AS SELECT * FROM dfs.root.`/Users/bob/Data/CollegeScorecard_Raw_Data/MERGED1998_99_PP.csv`;
-+-----------+----------------------------+
-| Fragment  | Number of records written  |
-+-----------+----------------------------+
-| 0_0       | 6480                       |
-+-----------+----------------------------+
-1 row selected (9.536 seconds)
-
-0: jdbc:drill:&gt; CREATE TABLE dfs.tmp.`/1999-00` AS SELECT * FROM dfs.root.`/Users/bob/Data/CollegeScorecard_Raw_Data/MERGED1999_00_PP.csv`;
-+-----------+----------------------------+
-| Fragment  | Number of records written  |
-+-----------+----------------------------+
-| 0_0       | 6466                       |
-+-----------+----------------------------+
-1 row selected (9.459 seconds)</code></pre>
-<p>The temporary directory will now have three new subdirectores with a single JSON file in them:</p>
-<pre><code>/tmp/1996-97
-└── [328M]  0_0_0.json
-/tmp/1997-98
-└── [327M]  0_0_0.json
-/tmp/1998-99
-└── [329M]  0_0_0.json
-/tmp/1999-00
-└── [342M]  0_0_0.json</code></pre>
-<p>While you haven’t downloaded a few hundred MB more data, you have created a three more large files and if you were to compare these each file to its CSV counterpart, you’d see they are much larger (uncompressed). This is due to ndjson repeating <code>key:value</code> pairs for each record. Now, we’ll compress them:</p>
-<pre><code>$ gzip /tmp/1996-97/0_0_0.json
-$ gzip /tmp/1997-98/0_0_0.json
-$ gzip /tmp/1998-99/0_0_0.json
-$ gzip /tmp/1999-00/0_0_0.json</code></pre>
-<p>and see that they compress quite nicely:</p>
-<pre><code>/tmp/1996-97
-└── [ 38M]  0_0_0.json.gz
-/tmp/1997-98
-└── [ 40M]  0_0_0.json.gz
-/tmp/1998-99
-└── [ 40M]  0_0_0.json.gz
-/tmp/1999-00
-└── [ 43M]  0_0_0.json.gz</code></pre>
-<p>In fact, each file is now <em>smaller</em> than its CSV counterpart.</p>
-<p>We’re going to remove these files in the long run, so we’ll keep them in this temporary directory but let’s move them underneath a common subdirectory since organized data is way better than disorganized data:</p>
-<pre><code>$ mkdir /tmp/college-scorecard
-$ mv /tmp/1996-97/0_0_0.json.gz /tmp/college-scorecard/1996-1997.json.gz
-$ mv /tmp/1997-98/0_0_0.json.gz /tmp/college-scorecard/1997-1998.json.gz
-$ mv /tmp/1998-99/0_0_0.json.gz /tmp/college-scorecard/1998-1999.json.gz
-$ mv /tmp/1999-00/0_0_0.json.gz /tmp/college-scorecard/1999-2000.json.gz</code></pre>
-<p>Leaving us with:</p>
-<pre><code>/tmp/college-scorecard/
-├── [ 38M]  1996-1997.json.gz
-├── [ 40M]  1997-1998.json.gz
-├── [ 40M]  1998-1999.json.gz
-└── [ 43M]  1999-2000.json.gz</code></pre>
-<p><em>Now</em> we can work with these in Drill and R. You’ve already <em>kinda</em> seen the data before so we’ll just work with a few fields from it. By referencing the data dictionary<a href="#fn23" class="footnote-ref" id="fnref23"><sup>23</sup></a> we can see that:</p>
+<div id="discussion" class="section level2">
+<h2><span class="header-section-number">1.3</span> Discussion</h2>
+<p>If you’ve gone through <a href="https://drill.apache.org/docs/drill-in-10-minutes/">Drill in 10 Minutes</a> or reviewed the recipe that goes into a bit more depth on an introduction to Drill, you know you can get to any location on your local filesystem with <code>dfs.root</code> filesystem references like this:</p>
+<pre><code>dfs.root.`/some/very/long/path/to/a/set/of/files/in/my/coolproject/*.json.gz`</code></pre>
+<p>That’s great but it’s also annoying to type each time you work with data in that directory.</p>
+<p>Drill lets you define a <a href="https://drill.apache.org/docs/workspaces/">workspace</a> name as a kind of alias to a filesystem location. They’re very easy to setup by going to <a href="http://localhost:8047/storage/dfs" class="uri">http://localhost:8047/storage/dfs</a> and taking a look at the JSON configuration under the <code>dfs</code> storage plugin. There’s an entry for “<code>workspaces</code>” and we can add one for the above example like so:</p>
+<pre><code>&quot;coolproject&quot; : {
+  &quot;location&quot; : &quot;/some/very/long/path/to/a/set/of/files/in/my/coolproject/&quot;,
+  &quot;writable&quot; : false,
+  &quot;defaultInputFormat&quot;: null
+},</code></pre>
+<p>Now, you can use:</p>
+<pre><code>dfs.coolproject.`/*.json.gz` </code></pre>
+<p>in queries.</p>
+<p>If you have custom formats or just know the file format most files will be using in your directory tree, you can also customize the <code>defaultInputFormat</code> and if you <em>really</em> want to live dangerously you can make your directory tree writable by changing that boolean value to <code>true</code>. Drill is pretty good about not overwriting files and directories but unless you really need write-ability, leave this <code>false</code>.</p>
+</div>
+<div id="see-also-1" class="section level2">
+<h2><span class="header-section-number">1.4</span> See Also</h2>
 <ul>
-<li><code>col_UNITID</code> is the unique “unit id” for the institution</li>
-<li><code>INSTNM</code> is the institution name</li>
-<li><code>CITY</code> &amp; <code>STABBR</code> is the city/state location information for the institution, and</li>
-<li><code>PCIP27</code> is <em>‘Percentage of degrees awarded in Mathematics And Statistics.’</em></li>
-</ul>
-<p><em>However</em>, no field in the data dictionary specifies a year or date/timestamp for the record. That data is encoded in the names of the files in the original CSVs. Thankfully, we carried that over to our ndjson format and can use one of Drill’s implicit columns<a href="#fn24" class="footnote-ref" id="fnref24"><sup>24</sup></a> and can include that in any queries.</p>
-<p>Let’s see what the average percentage of degrees awarded in math+stats by state for the four years we’ve converted. While we <em>could</em> just use:</p>
-<pre><code>scorecards &lt;- tbl(db, &quot;dfs.tmp.`/college-scorecard/*.json.gz`&quot;) </code></pre>
-<p>we need the <code>filename</code> field and that means a using custom query to generate the table. So we’ll also thin out the data we’re retrieving at the same time:</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw">library</span>(sergeant)</a>
-<a class="sourceLine" id="cb65-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</a>
-<a class="sourceLine" id="cb65-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb65-4" data-line-number="4">db &lt;-<span class="st"> </span><span class="kw">src_drill</span>(<span class="st">&quot;localhost&quot;</span>)</a>
-<a class="sourceLine" id="cb65-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb65-6" data-line-number="6"><span class="kw">tbl</span>(db, <span class="st">&quot;(</span></a>
-<a class="sourceLine" id="cb65-7" data-line-number="7"><span class="st">SELECT</span></a>
-<a class="sourceLine" id="cb65-8" data-line-number="8"><span class="st">  SUBSTR(filename, 1, 4) AS start_year,</span></a>
-<a class="sourceLine" id="cb65-9" data-line-number="9"><span class="st">  STABBR AS state,</span></a>
-<a class="sourceLine" id="cb65-10" data-line-number="10"><span class="st">  PCIP27 AS pct_math_stats</span></a>
-<a class="sourceLine" id="cb65-11" data-line-number="11"><span class="st">FROM dfs.tmp.`/college-scorecard/*.json.gz`</span></a>
-<a class="sourceLine" id="cb65-12" data-line-number="12"><span class="st">)&quot;</span>) -&gt;<span class="st"> </span>scorecards</a>
-<a class="sourceLine" id="cb65-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb65-14" data-line-number="14">scorecards</a></code></pre></div>
-<pre><code>## # Source:   table&lt;( SELECT SUBSTR(filename, 1, 4) AS start_year, STABBR AS
-## #   state, PCIP27 AS pct_math_stats FROM
-## #   dfs.tmp.`/college-scorecard/*.json.gz` )&gt; [?? x 3]
-## # Database: DrillConnection
-##    start_year state pct_math_stats
-##         &lt;int&gt; &lt;chr&gt;          &lt;dbl&gt;
-##  1       1997 AL           0      
-##  2       1997 AL           0.00830
-##  3       1997 AL           0.00580
-##  4       1997 AL           0      
-##  5       1997 AL           0      
-##  6       1997 AL           0.0365 
-##  7       1997 AL           0.0316 
-##  8       1997 AL           0.00300
-##  9       1997 AL           0      
-## 10       1997 AL           0.0241 
-## # ... with more rows</code></pre>
-<p>Now, we accomplsh our goal of looking at the average percentage across states by year. <em>However</em> since the CSV file used <code>NULL</code> vs <code>null</code> for missing data, the built-in JSON converter had no way to convert it to a SQL missing value, so we’ll need to do some more wrangling before computing the means:</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw">mutate</span>(scorecards, <span class="dt">pct_math_stats =</span> <span class="kw">ifelse</span>(pct_math_stats <span class="op">==</span><span class="st"> &#39;NULL&#39;</span>, <span class="dv">0</span>, pct_math_stats)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb67-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pct_math_stats =</span> <span class="kw">as.numeric</span>(pct_math_stats)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb67-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(start_year, state) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb67-4" data-line-number="4"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_pct =</span> <span class="kw">mean</span>(pct_math_stats)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb67-5" data-line-number="5"><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">NOTE</span><span class="co">: all the above were in-Drill operations until this collect() line</span></a>
-<a class="sourceLine" id="cb67-6" data-line-number="6"><span class="st">  </span><span class="kw">ungroup</span>() -&gt;<span class="st"> </span>stats_avg </a></code></pre></div>
-<p>That pretty readable bit of R code generates this SQL query in Drill:</p>
-<pre><code>SELECT `start_year`, `state`, AVG(`pct_math_stats`) AS `mean_pct`
-FROM (SELECT `start_year`, `state`, CAST(`pct_math_stats` AS DOUBLE) AS `pct_math_stats`
-FROM (SELECT `start_year`, `state`, 
-      CASE WHEN (`pct_math_stats` = &#39;NULL&#39;) THEN (0.0) 
-           WHEN NOT(`pct_math_stats` = &#39;NULL&#39;) THEN (`pct_math_stats`) 
-      END AS `pct_math_stats`
-FROM  (
-SELECT
-    SUBSTR(filename,  1,  4)  AS  start_year,
-    STABBR  AS  state,
-    PCIP27  AS  pct_math_stats
-FROM  dfs.tmp.`/college-scorecard/*.json.gz`
-) ) `raqjqhtatv`) `fjxlsbemuv`
-GROUP BY `start_year`, `state`</code></pre>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="kw">library</span>(hrbrthemes)</a>
-<a class="sourceLine" id="cb69-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb69-3" data-line-number="3"><span class="kw">mutate</span>(stats_avg, <span class="dt">start_year =</span> <span class="kw">as.Date</span>(<span class="kw">sprintf</span>(<span class="st">&quot;%s-01-01&quot;</span>, start_year))) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb69-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(start_year, mean_pct)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb69-5" data-line-number="5"><span class="st">  </span>ggbeeswarm<span class="op">::</span><span class="kw">geom_quasirandom</span>(<span class="dt">color=</span><span class="st">&quot;lightslategray&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb69-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_y_percent</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">0.02</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb69-7" data-line-number="7"><span class="st">  </span><span class="kw">labs</span>(</a>
-<a class="sourceLine" id="cb69-8" data-line-number="8">    <span class="dt">x=</span><span class="ot">NULL</span>, <span class="dt">y=</span><span class="ot">NULL</span>,</a>
-<a class="sourceLine" id="cb69-9" data-line-number="9">    <span class="dt">title=</span><span class="st">&quot;Annual Mean (per-institution) Percentage of degrees awarded</span><span class="ch">\n</span><span class="st">in Mathematics And Statistics in U.S. Colleges &amp; Universities</span><span class="ch">\n</span><span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb69-10" data-line-number="10">  ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb69-11" data-line-number="11"><span class="st">  </span><span class="kw">theme_ipsum</span>(<span class="dt">grid=</span><span class="st">&quot;Y&quot;</span>)</a></code></pre></div>
-<p><img src="09-reading-ndjson-data-drill-r_files/figure-html/07-vis-01-1.png" width="672" /></p>
-</div>
-<div id="see-also-8" class="section level2">
-<h2><span class="header-section-number">8.4</span> See Also</h2>
-<ul>
-<li><a href="https://drill.apache.org/docs/json-data-model/">JSON Data Model</a></li>
-<li><a href="https://drill.apache.org/docs/querying-complex-data-introduction/">Querying Complex Data</a></li>
+<li><a href="https://drill.apache.org/docs/connect-a-data-source-introduction/">Connect a Data Source</a></li>
 </ul>
 
 </div>
-</div>
-<div class="footnotes">
-<hr />
-<ol start="19">
-<li id="fn19"><p><a href="https://old.datahub.io/dataset/twitter-2012-presidential-election">Twitter 2012 Presidential Election</a><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#fnref19" class="footnote-back">↩</a></p></li>
-<li id="fn20"><p><a href="https://scans.io/study/sonar.fdns_v2">Rapid7 FDNS</a><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#fnref20" class="footnote-back">↩</a></p></li>
-<li id="fn21"><p><a href="https://www.yelp.com/dataset/download">Yelp Challenge</a><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#fnref21" class="footnote-back">↩</a></p></li>
-<li id="fn22"><p><a href="https://drill.apache.org/docs/create-table-as-ctas/">CTAS Manual Page</a><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#fnref22" class="footnote-back">↩</a></p></li>
-<li id="fn23"><p><a href="https://collegescorecard.ed.gov/assets/CollegeScorecardDataDictionary.xlsx">College Scorecard Data Dictionary</a><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#fnref23" class="footnote-back">↩</a></p></li>
-<li id="fn24"><p><a href="https://drill.apache.org/docs/querying-a-file-system-introduction/#implicit-columns">Drill Implicit Columns</a><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#fnref24" class="footnote-back">↩</a></p></li>
-</ol>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="reading-a-traditional-json-data-file-with-drill-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="working-with-custom-delimited-format-files.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="drill-in-more-than-10-minutes.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="adding-or-modifying-drill-formats.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -105,7 +105,7 @@ In fact, each file is now _smaller_ than its CSV counterpart.
 We're going to remove these files in the long run, so we'll keep them in this temporary directory but let's move them underneath a common subdirectory since organized data is way better than disorganized data:
 
     $ mkdir /tmp/college-scorecard
-    $ mv /tmp/1996-97/0_0_0.json.gz /tmp/9college-scorecard/196-1997.json.gz
+    $ mv /tmp/1996-97/0_0_0.json.gz /tmp/college-scorecard/1996-1997.json.gz
     $ mv /tmp/1997-98/0_0_0.json.gz /tmp/college-scorecard/1997-1998.json.gz
     $ mv /tmp/1998-99/0_0_0.json.gz /tmp/college-scorecard/1998-1999.json.gz
     $ mv /tmp/1999-00/0_0_0.json.gz /tmp/college-scorecard/1999-2000.json.gz

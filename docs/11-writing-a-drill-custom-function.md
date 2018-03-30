@@ -1,8 +1,5 @@
 # Writing "Simple" Drill Custom Functions (UDFs) For Field Transformations
-```{r message=FALSE, include=FALSE, warning=FALSE}
-library(sergeant)
-library(tidyverse)
-```
+
 
 ## Problem
 
@@ -210,4 +207,5 @@ You can find the working UDF source code tree in the `extra` directory of this b
 
 - [Apache Maven](https://maven.apache.org/)
 - [Develop Drill Custom Functions](https://drill.apache.org/docs/develop-custom-functions-introduction/)
+- [Apache Drill - CUstom Function](https://www.tutorialspoint.com/apache_drill/apache_drill_custom_function.htm)
 - [Querying Complex Data](https://drill.apache.org/docs/querying-complex-data-introduction/)

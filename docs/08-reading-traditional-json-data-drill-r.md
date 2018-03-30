@@ -61,7 +61,7 @@ When approaching a new, complex file like this, the Drill Query interface (<http
     FROM dfs.root.`/Users/bob/Data/nvdcve-1.0-2017.json.gz` a 
     LIMIT 10
 
-`r knitr::include_graphics("figures/06-json-flatten-01.png")`
+<img src="figures/06-json-flatten-01.png" width="2822" />
 
 >The `a` is in that query since We need to assign the table an alias to be able to dig into JSON records in a given column. You can use the more verbose `AS a` if you like as well since that can make queries a bit more readable to folks new to SQL.
 
@@ -90,11 +90,12 @@ One possible query for this (SQL is somewhat flexible, like R) is the following:
 
 Try that in the Drill query interface and you should see:
 
-`r knitr::include_graphics("figures/06-cve-smaller.png")`
+![](figures/06-cve-smaller.png)<!-- -->
 
 Let's hook that query up with `sergeant` (minus the `LIMIT 10`):
 
-```{r 06-cve-01, message=FALSE, warning=FALSE}
+
+```r
 library(sergeant)
 library(tidyverse)
 
@@ -115,16 +116,39 @@ FROM
 cve_smaller
 ```
 
+```
+## # Source:   table<( SELECT b.item.cve.CVE_data_meta.ID AS cve_id,
+## #   b.item.cve.affects.vendor.vendor_data[0].vendor_name AS vendor_name,
+## #   b.item.cve.affects.vendor.vendor_data[0].product.product_data[0].product_name
+## #   AS product_name, b.item.cve.description.description_data[0]['value']
+## #   AS description, SUBSTR(b.item.publishedDate, 1, 10) as pub_date FROM
+## #   (SELECT FLATTEN(a.CVE_Items) AS item FROM
+## #   dfs.root.`/Users/bob/Data/nvdcve-1.0-2017.json.gz` AS a) AS b )> [?? x
+## #   5]
+## # Database: DrillConnection
+##    pub_date   cve_id        vendor_name description           product_name
+##    <date>     <chr>         <chr>       <chr>                 <chr>       
+##  1 2017-03-17 CVE-2017-0001 microsoft   "The Graphics Device… windows_10  
+##  2 2017-01-10 CVE-2017-0002 microsoft   "Microsoft Edge allo… edge        
+##  3 2017-01-10 CVE-2017-0003 microsoft   "Microsoft Word 2016… sharepoint_…
+##  4 2017-01-10 CVE-2017-0004 microsoft   "The Local Security … windows_7   
+##  5 2017-03-17 CVE-2017-0005 microsoft   "The Graphics Device… windows_10  
+##  6 2017-03-17 CVE-2017-0006 microsoft   "Microsoft Excel 200… excel       
+##  7 2017-03-17 CVE-2017-0007 microsoft   "Device Guard in Mic… windows_10  
+##  8 2017-03-17 CVE-2017-0008 microsoft   "Microsoft Internet … internet_ex…
+##  9 2017-03-17 CVE-2017-0009 microsoft   "Microsoft Internet … internet_ex…
+## 10 2017-03-17 CVE-2017-0010 microsoft   A remote code execut… edge        
+## # ... with more rows
+```
+
 We can now use `cve_smaller` just like any other `dplyr` data source and _also take advantage of Drill SQL/custom functions_. Future recipes will talk more about Drill SQL/custom functions but for now, let's see what the aggregate top 3 vendors (including ties) vendors per month look like in terms of CVE counts:
 
 >NOTE: In practical terms, this is a pointless query since CVE is not a comprehensive/exhaustive list of recorded vulnerabilities and is subject to the whim, time and resources of researchers and vulnerabilty reporters. But, the data is "good enough" for this example.
 
-```{r include=FALSE, message=FALSE, warning=FALSE}
-library(hrbrthemes)
-extrafont::loadfonts(quiet=TRUE)
-```
 
-```{r 06-cve0-2, message=FALSE, warning=FALSE, fig.width=8, fig.height=9, cache=TRUE}
+
+
+```r
 library(hrbrthemes)
 
 mutate(cve_smaller, pub_date = as.date(pub_date)) %>% # NOTE lower-case as.date()
@@ -143,8 +167,12 @@ mutate(cve_smaller, pub_date = as.date(pub_date)) %>% # NOTE lower-case as.date(
   theme_ipsum(grid="Y")
 ```
 
+<img src="08-reading-traditional-json-data-drill-r_files/figure-html/06-cve0-2-1.png" width="768" />
+
 ## See Also
 
 - [JSON Data Model](https://drill.apache.org/docs/json-data-model/)
 - [Querying Complex Data](https://drill.apache.org/docs/querying-complex-data-introduction/)
+- [Apache Drill - Query using JSON](https://www.tutorialspoint.com/apache_drill/apache_drill_query_using_json.htm)
+- [Apache Drill - Window Functions using JSON](https://www.tutorialspoint.com/apache_drill/apache_drill_window_functions_using_json.htm)
 - [JSON Schema](http://json-schema.org/)

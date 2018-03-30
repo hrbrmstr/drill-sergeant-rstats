@@ -25,7 +25,7 @@
 <meta name="author" content="Bob Rudis">
 
 
-<meta name="date" content="2018-03-29">
+<meta name="date" content="2018-03-30">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -50,57 +50,69 @@
 
 
 <style type="text/css">
-div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }
+a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
-pre.numberSource div.sourceLine, .numberSource a.sourceLine
+pre.numberSource a.sourceLine
   { position: relative; }
-pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
     position: absolute; left: -5em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em; }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; color: #aaaaaa;  padding-left: 4px; }
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
 @media screen {
-a.sourceLine::before { text-decoration: underline; color: initial; }
+a.sourceLine::before { text-decoration: underline; }
 }
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
 code span.dt { color: #902000; } /* DataType */
 code span.dv { color: #40a070; } /* DecVal */
-code span.bn { color: #40a070; } /* BaseN */
-code span.fl { color: #40a070; } /* Float */
-code span.ch { color: #4070a0; } /* Char */
-code span.st { color: #4070a0; } /* String */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.ot { color: #007020; } /* Other */
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.fu { color: #06287e; } /* Function */
 code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code span.cn { color: #880000; } /* Constant */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.im { } /* Import */
-code span.va { color: #19177c; } /* Variable */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.op { color: #666666; } /* Operator */
-code span.bu { } /* BuiltIn */
 code span.ex { } /* Extension */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.at { color: #7d9029; } /* Attribute */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -134,54 +146,67 @@ code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Infor
 <li class="chapter" data-level="0.5" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#allocating-more-memory-to-apache-drill"><i class="fa fa-check"></i><b>0.5</b> Allocating More Memory to Apache Drill</a></li>
 <li class="chapter" data-level="0.6" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#administering-drill"><i class="fa fa-check"></i><b>0.6</b> Administering Drill</a></li>
 <li class="chapter" data-level="0.7" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#drill-storage-plugins"><i class="fa fa-check"></i><b>0.7</b> Drill “Storage” Plugins</a></li>
+<li class="chapter" data-level="0.8" data-path="drill-in-more-than-10-minutes.html"><a href="drill-in-more-than-10-minutes.html#see-also"><i class="fa fa-check"></i><b>0.8</b> See Also</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html"><i class="fa fa-check"></i><b>1</b> Wiring Up Drill and R (<code>dplyr</code>-style)</a><ul>
-<li class="chapter" data-level="1.1" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#problem"><i class="fa fa-check"></i><b>1.1</b> Problem</a></li>
-<li class="chapter" data-level="1.2" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#solution"><i class="fa fa-check"></i><b>1.2</b> Solution</a></li>
-<li class="chapter" data-level="1.3" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#discussion"><i class="fa fa-check"></i><b>1.3</b> Discussion</a></li>
-<li class="chapter" data-level="1.4" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#see-also"><i class="fa fa-check"></i><b>1.4</b> See Also</a></li>
+<li class="chapter" data-level="1" data-path="adding-a-new-workspace-to-drill.html"><a href="adding-a-new-workspace-to-drill.html"><i class="fa fa-check"></i><b>1</b> Adding a New ‘Workspace’ to Drill</a><ul>
+<li class="chapter" data-level="1.1" data-path="adding-a-new-workspace-to-drill.html"><a href="adding-a-new-workspace-to-drill.html#problem"><i class="fa fa-check"></i><b>1.1</b> Problem</a></li>
+<li class="chapter" data-level="1.2" data-path="adding-a-new-workspace-to-drill.html"><a href="adding-a-new-workspace-to-drill.html#solution"><i class="fa fa-check"></i><b>1.2</b> Solution</a></li>
+<li class="chapter" data-level="1.3" data-path="adding-a-new-workspace-to-drill.html"><a href="adding-a-new-workspace-to-drill.html#discussion"><i class="fa fa-check"></i><b>1.3</b> Discussion</a></li>
+<li class="chapter" data-level="1.4" data-path="adding-a-new-workspace-to-drill.html"><a href="adding-a-new-workspace-to-drill.html#see-also-1"><i class="fa fa-check"></i><b>1.4</b> See Also</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html"><i class="fa fa-check"></i><b>2</b> Wiring Up Drill and R (<code>RJDBC</code>-style)</a><ul>
-<li class="chapter" data-level="2.1" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#problem-1"><i class="fa fa-check"></i><b>2.1</b> Problem</a></li>
-<li class="chapter" data-level="2.2" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#solution-1"><i class="fa fa-check"></i><b>2.2</b> Solution</a></li>
-<li class="chapter" data-level="2.3" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#discussion-1"><i class="fa fa-check"></i><b>2.3</b> Discussion</a></li>
-<li class="chapter" data-level="2.4" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#see-also-1"><i class="fa fa-check"></i><b>2.4</b> See Also</a></li>
+<li class="chapter" data-level="2" data-path="adding-or-modifying-drill-formats.html"><a href="adding-or-modifying-drill-formats.html"><i class="fa fa-check"></i><b>2</b> Adding or Modifying Drill ‘Formats’</a><ul>
+<li class="chapter" data-level="2.1" data-path="adding-or-modifying-drill-formats.html"><a href="adding-or-modifying-drill-formats.html#problem-1"><i class="fa fa-check"></i><b>2.1</b> Problem</a></li>
+<li class="chapter" data-level="2.2" data-path="adding-or-modifying-drill-formats.html"><a href="adding-or-modifying-drill-formats.html#solution-1"><i class="fa fa-check"></i><b>2.2</b> Solution</a></li>
+<li class="chapter" data-level="2.3" data-path="adding-or-modifying-drill-formats.html"><a href="adding-or-modifying-drill-formats.html#discussion-1"><i class="fa fa-check"></i><b>2.3</b> Discussion</a></li>
+<li class="chapter" data-level="2.4" data-path="adding-or-modifying-drill-formats.html"><a href="adding-or-modifying-drill-formats.html#see-also-2"><i class="fa fa-check"></i><b>2.4</b> See Also</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html"><i class="fa fa-check"></i><b>3</b> Reading and Querying CSV Data With Drill and R</a><ul>
-<li class="chapter" data-level="3.1" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#problem-2"><i class="fa fa-check"></i><b>3.1</b> Problem</a></li>
-<li class="chapter" data-level="3.2" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#solution-2"><i class="fa fa-check"></i><b>3.2</b> Solution</a></li>
-<li class="chapter" data-level="3.3" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#discussion-2"><i class="fa fa-check"></i><b>3.3</b> Discussion</a></li>
-<li class="chapter" data-level="3.4" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#see-also-2"><i class="fa fa-check"></i><b>3.4</b> See Also</a></li>
+<li class="chapter" data-level="3" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html"><i class="fa fa-check"></i><b>3</b> Wiring Up Drill and R (<code>dplyr</code>-style)</a><ul>
+<li class="chapter" data-level="3.1" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#problem-2"><i class="fa fa-check"></i><b>3.1</b> Problem</a></li>
+<li class="chapter" data-level="3.2" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#solution-2"><i class="fa fa-check"></i><b>3.2</b> Solution</a></li>
+<li class="chapter" data-level="3.3" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#discussion-2"><i class="fa fa-check"></i><b>3.3</b> Discussion</a></li>
+<li class="chapter" data-level="3.4" data-path="wiring-up-drill-and-r-dplyr-style.html"><a href="wiring-up-drill-and-r-dplyr-style.html#see-also-3"><i class="fa fa-check"></i><b>3.4</b> See Also</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><i class="fa fa-check"></i><b>4</b> Reading and Querying a Directory of CSV Data With Drill &amp; R</a><ul>
-<li class="chapter" data-level="4.1" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#problem-3"><i class="fa fa-check"></i><b>4.1</b> Problem</a></li>
-<li class="chapter" data-level="4.2" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#solution-3"><i class="fa fa-check"></i><b>4.2</b> Solution</a></li>
-<li class="chapter" data-level="4.3" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#discussion-3"><i class="fa fa-check"></i><b>4.3</b> Discussion</a></li>
-<li class="chapter" data-level="4.4" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#see-also-3"><i class="fa fa-check"></i><b>4.4</b> See Also</a></li>
+<li class="chapter" data-level="4" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html"><i class="fa fa-check"></i><b>4</b> Wiring Up Drill and R (<code>RJDBC</code>-style)</a><ul>
+<li class="chapter" data-level="4.1" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#problem-3"><i class="fa fa-check"></i><b>4.1</b> Problem</a></li>
+<li class="chapter" data-level="4.2" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#solution-3"><i class="fa fa-check"></i><b>4.2</b> Solution</a></li>
+<li class="chapter" data-level="4.3" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#discussion-3"><i class="fa fa-check"></i><b>4.3</b> Discussion</a></li>
+<li class="chapter" data-level="4.4" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#see-also-4"><i class="fa fa-check"></i><b>4.4</b> See Also</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html"><i class="fa fa-check"></i><b>5</b> Reading a “Traditional” JSON Data File With Drill &amp; R</a><ul>
-<li class="chapter" data-level="5.1" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#problem-4"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
-<li class="chapter" data-level="5.2" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#solution-4"><i class="fa fa-check"></i><b>5.2</b> Solution</a></li>
-<li class="chapter" data-level="5.3" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#discussion-4"><i class="fa fa-check"></i><b>5.3</b> Discussion</a></li>
-<li class="chapter" data-level="5.4" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#see-also-4"><i class="fa fa-check"></i><b>5.4</b> See Also</a></li>
+<li class="chapter" data-level="5" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html"><i class="fa fa-check"></i><b>5</b> Reading and Querying CSV Data With Drill and R</a><ul>
+<li class="chapter" data-level="5.1" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#problem-4"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#solution-4"><i class="fa fa-check"></i><b>5.2</b> Solution</a></li>
+<li class="chapter" data-level="5.3" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#discussion-4"><i class="fa fa-check"></i><b>5.3</b> Discussion</a></li>
+<li class="chapter" data-level="5.4" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#see-also-5"><i class="fa fa-check"></i><b>5.4</b> See Also</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><i class="fa fa-check"></i><b>6</b> Reading a “Streaming” JSON (ndjson) Data File With Drill &amp; R</a><ul>
-<li class="chapter" data-level="6.1" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#problem-5"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
-<li class="chapter" data-level="6.2" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#solution-5"><i class="fa fa-check"></i><b>6.2</b> Solution</a></li>
-<li class="chapter" data-level="6.3" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#discussion-5"><i class="fa fa-check"></i><b>6.3</b> Discussion</a></li>
-<li class="chapter" data-level="6.4" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#see-also-5"><i class="fa fa-check"></i><b>6.4</b> See Also</a></li>
+<li class="chapter" data-level="6" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><i class="fa fa-check"></i><b>6</b> Reading and Querying a Directory of CSV Data With Drill &amp; R</a><ul>
+<li class="chapter" data-level="6.1" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#problem-5"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#solution-5"><i class="fa fa-check"></i><b>6.2</b> Solution</a></li>
+<li class="chapter" data-level="6.3" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#discussion-5"><i class="fa fa-check"></i><b>6.3</b> Discussion</a></li>
+<li class="chapter" data-level="6.4" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#see-also-6"><i class="fa fa-check"></i><b>6.4</b> See Also</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html"><i class="fa fa-check"></i><b>7</b> Working With Custom Delimited Format Files</a><ul>
-<li class="chapter" data-level="7.1" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#problem-6"><i class="fa fa-check"></i><b>7.1</b> Problem</a></li>
-<li class="chapter" data-level="7.2" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#solution-6"><i class="fa fa-check"></i><b>7.2</b> Solution</a></li>
-<li class="chapter" data-level="7.3" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#discussion-6"><i class="fa fa-check"></i><b>7.3</b> Discussion</a></li>
-<li class="chapter" data-level="7.4" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#see-also-6"><i class="fa fa-check"></i><b>7.4</b> See Also</a></li>
+<li class="chapter" data-level="7" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html"><i class="fa fa-check"></i><b>7</b> Reading a “Traditional” JSON Data File With Drill &amp; R</a><ul>
+<li class="chapter" data-level="7.1" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#problem-6"><i class="fa fa-check"></i><b>7.1</b> Problem</a></li>
+<li class="chapter" data-level="7.2" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#solution-6"><i class="fa fa-check"></i><b>7.2</b> Solution</a></li>
+<li class="chapter" data-level="7.3" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#discussion-6"><i class="fa fa-check"></i><b>7.3</b> Discussion</a></li>
+<li class="chapter" data-level="7.4" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#see-also-7"><i class="fa fa-check"></i><b>7.4</b> See Also</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><i class="fa fa-check"></i><b>8</b> Writing “Simple” Drill Custom Functions (UDFs) For Field Transformations</a><ul>
-<li class="chapter" data-level="8.1" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#problem-7"><i class="fa fa-check"></i><b>8.1</b> Problem</a></li>
-<li class="chapter" data-level="8.2" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#solution-7"><i class="fa fa-check"></i><b>8.2</b> Solution</a></li>
-<li class="chapter" data-level="8.3" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#discussion-7"><i class="fa fa-check"></i><b>8.3</b> Discussion</a></li>
-<li class="chapter" data-level="8.4" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#see-also-7"><i class="fa fa-check"></i><b>8.4</b> See Also</a></li>
+<li class="chapter" data-level="8" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><i class="fa fa-check"></i><b>8</b> Reading a “Streaming” JSON (ndjson) Data File With Drill &amp; R</a><ul>
+<li class="chapter" data-level="8.1" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#problem-7"><i class="fa fa-check"></i><b>8.1</b> Problem</a></li>
+<li class="chapter" data-level="8.2" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#solution-7"><i class="fa fa-check"></i><b>8.2</b> Solution</a></li>
+<li class="chapter" data-level="8.3" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#discussion-7"><i class="fa fa-check"></i><b>8.3</b> Discussion</a></li>
+<li class="chapter" data-level="8.4" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#see-also-8"><i class="fa fa-check"></i><b>8.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html"><i class="fa fa-check"></i><b>9</b> Working With Custom Delimited Format Files</a><ul>
+<li class="chapter" data-level="9.1" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#problem-8"><i class="fa fa-check"></i><b>9.1</b> Problem</a></li>
+<li class="chapter" data-level="9.2" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#solution-8"><i class="fa fa-check"></i><b>9.2</b> Solution</a></li>
+<li class="chapter" data-level="9.3" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#discussion-8"><i class="fa fa-check"></i><b>9.3</b> Discussion</a></li>
+<li class="chapter" data-level="9.4" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#see-also-9"><i class="fa fa-check"></i><b>9.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><i class="fa fa-check"></i><b>10</b> Writing “Simple” Drill Custom Functions (UDFs) For Field Transformations</a><ul>
+<li class="chapter" data-level="10.1" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#problem-9"><i class="fa fa-check"></i><b>10.1</b> Problem</a></li>
+<li class="chapter" data-level="10.2" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#solution-9"><i class="fa fa-check"></i><b>10.2</b> Solution</a></li>
+<li class="chapter" data-level="10.3" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#discussion-9"><i class="fa fa-check"></i><b>10.3</b> Discussion</a></li>
+<li class="chapter" data-level="10.4" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#see-also-10"><i class="fa fa-check"></i><b>10.4</b> See Also</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><span style="font-size:8pt"><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></span></li>
@@ -204,17 +229,17 @@ code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Infor
 
             <section class="normal" id="section-">
 <div id="reading-a-traditional-json-data-file-with-drill-r" class="section level1">
-<h1><span class="header-section-number">Recipe 5</span> Reading a “Traditional” JSON Data File With Drill &amp; R</h1>
-<div id="problem-4" class="section level2">
-<h2><span class="header-section-number">5.1</span> Problem</h2>
+<h1><span class="header-section-number">Recipe 7</span> Reading a “Traditional” JSON Data File With Drill &amp; R</h1>
+<div id="problem-6" class="section level2">
+<h2><span class="header-section-number">7.1</span> Problem</h2>
 <p>You have a “traditional” (i.e. not <a href="http://ndjson.org/">ndjson</a>) JSON data file and want to read and query it with Drill and R.</p>
 </div>
-<div id="solution-4" class="section level2">
-<h2><span class="header-section-number">5.2</span> Solution</h2>
+<div id="solution-6" class="section level2">
+<h2><span class="header-section-number">7.2</span> Solution</h2>
 <p>Put the file into an accessible directory by Drill and query it with R, perhaps some SQL, and <code>sergeant</code>.</p>
 </div>
-<div id="discussion-4" class="section level2">
-<h2><span class="header-section-number">5.3</span> Discussion</h2>
+<div id="discussion-6" class="section level2">
+<h2><span class="header-section-number">7.3</span> Discussion</h2>
 <p>There are two main “flavours” of JSON data files. The first is “traditional” JSON where a file contains a JSON object. Said object can be very complex and have a great deal of nested bits in it, but it is still a file with one JSON object. Newline-delimited JSON (a.k.s. “JSON Lines” or “ndjson”) compacts a JSON object onto one line and stores one object after another on separate lines, delmited by a newline character.</p>
 <p>“Traditional” JSON is generally something you’d get from an API call, but there are plenty of JSON data files in this format that you may come across or even have on hand. Streaming JSON (“ndjson”, from now on) will be covered in a future recipe.</p>
 <p>A good example of a “traditional” JSON file lies in the National Vulnerability Database (NVD) Feeds<a href="#fn16" class="footnote-ref" id="fnref16"><sup>16</sup></a>. Pull the one for 2017, <a href="https://static.nvd.nist.gov/feeds/json/cve/1.0/nvdcve-1.0-2017.json.gz" class="uri">https://static.nvd.nist.gov/feeds/json/cve/1.0/nvdcve-1.0-2017.json.gz</a>, and remember to store it in your <code>~/Data</code> directory.</p>
@@ -285,24 +310,24 @@ FROM
 <p>Try that in the Drill query interface and you should see:</p>
 <p><img src="figures/06-cve-smaller.png" /><!-- --></p>
 <p>Let’s hook that query up with <code>sergeant</code> (minus the <code>LIMIT 10</code>):</p>
-<pre class="sourceCode r" id="cb49"><code class="sourceCode r"><div class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">library</span>(sergeant)</div>
-<div class="sourceLine" id="cb49-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</div>
-<div class="sourceLine" id="cb49-3" data-line-number="3"></div>
-<div class="sourceLine" id="cb49-4" data-line-number="4">db &lt;-<span class="st"> </span><span class="kw">src_drill</span>(<span class="st">&quot;localhost&quot;</span>)</div>
-<div class="sourceLine" id="cb49-5" data-line-number="5"></div>
-<div class="sourceLine" id="cb49-6" data-line-number="6"><span class="kw">tbl</span>(db, <span class="st">&quot;(</span></div>
-<div class="sourceLine" id="cb49-7" data-line-number="7"><span class="st">SELECT </span></div>
-<div class="sourceLine" id="cb49-8" data-line-number="8"><span class="st">  b.item.cve.CVE_data_meta.ID AS cve_id,</span></div>
-<div class="sourceLine" id="cb49-9" data-line-number="9"><span class="st">  b.item.cve.affects.vendor.vendor_data[0].vendor_name AS vendor_name,</span></div>
-<div class="sourceLine" id="cb49-10" data-line-number="10"><span class="st">  b.item.cve.affects.vendor.vendor_data[0].product.product_data[0].product_name AS product_name,</span></div>
-<div class="sourceLine" id="cb49-11" data-line-number="11"><span class="st">  b.item.cve.description.description_data[0][&#39;value&#39;] AS description,</span></div>
-<div class="sourceLine" id="cb49-12" data-line-number="12"><span class="st">  SUBSTR(b.item.publishedDate, 1, 10) as pub_date</span></div>
-<div class="sourceLine" id="cb49-13" data-line-number="13"><span class="st">FROM  </span></div>
-<div class="sourceLine" id="cb49-14" data-line-number="14"><span class="st">  (SELECT FLATTEN(a.CVE_Items) AS item </span></div>
-<div class="sourceLine" id="cb49-15" data-line-number="15"><span class="st">   FROM dfs.root.`/Users/bob/Data/nvdcve-1.0-2017.json.gz` AS a) AS b</span></div>
-<div class="sourceLine" id="cb49-16" data-line-number="16"><span class="st">)&quot;</span>) -&gt;<span class="st"> </span>cve_smaller</div>
-<div class="sourceLine" id="cb49-17" data-line-number="17"></div>
-<div class="sourceLine" id="cb49-18" data-line-number="18">cve_smaller</div></code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">library</span>(sergeant)</a>
+<a class="sourceLine" id="cb53-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb53-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb53-4" data-line-number="4">db &lt;-<span class="st"> </span><span class="kw">src_drill</span>(<span class="st">&quot;localhost&quot;</span>)</a>
+<a class="sourceLine" id="cb53-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb53-6" data-line-number="6"><span class="kw">tbl</span>(db, <span class="st">&quot;(</span></a>
+<a class="sourceLine" id="cb53-7" data-line-number="7"><span class="st">SELECT </span></a>
+<a class="sourceLine" id="cb53-8" data-line-number="8"><span class="st">  b.item.cve.CVE_data_meta.ID AS cve_id,</span></a>
+<a class="sourceLine" id="cb53-9" data-line-number="9"><span class="st">  b.item.cve.affects.vendor.vendor_data[0].vendor_name AS vendor_name,</span></a>
+<a class="sourceLine" id="cb53-10" data-line-number="10"><span class="st">  b.item.cve.affects.vendor.vendor_data[0].product.product_data[0].product_name AS product_name,</span></a>
+<a class="sourceLine" id="cb53-11" data-line-number="11"><span class="st">  b.item.cve.description.description_data[0][&#39;value&#39;] AS description,</span></a>
+<a class="sourceLine" id="cb53-12" data-line-number="12"><span class="st">  SUBSTR(b.item.publishedDate, 1, 10) as pub_date</span></a>
+<a class="sourceLine" id="cb53-13" data-line-number="13"><span class="st">FROM  </span></a>
+<a class="sourceLine" id="cb53-14" data-line-number="14"><span class="st">  (SELECT FLATTEN(a.CVE_Items) AS item </span></a>
+<a class="sourceLine" id="cb53-15" data-line-number="15"><span class="st">   FROM dfs.root.`/Users/bob/Data/nvdcve-1.0-2017.json.gz` AS a) AS b</span></a>
+<a class="sourceLine" id="cb53-16" data-line-number="16"><span class="st">)&quot;</span>) -&gt;<span class="st"> </span>cve_smaller</a>
+<a class="sourceLine" id="cb53-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb53-18" data-line-number="18">cve_smaller</a></code></pre></div>
 <pre><code>## # Source:   table&lt;( SELECT b.item.cve.CVE_data_meta.ID AS cve_id,
 ## #   b.item.cve.affects.vendor.vendor_data[0].vendor_name AS vendor_name,
 ## #   b.item.cve.affects.vendor.vendor_data[0].product.product_data[0].product_name
@@ -329,29 +354,31 @@ FROM
 <blockquote>
 <p>NOTE: In practical terms, this is a pointless query since CVE is not a comprehensive/exhaustive list of recorded vulnerabilities and is subject to the whim, time and resources of researchers and vulnerabilty reporters. But, the data is “good enough” for this example.</p>
 </blockquote>
-<pre class="sourceCode r" id="cb51"><code class="sourceCode r"><div class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">library</span>(hrbrthemes)</div>
-<div class="sourceLine" id="cb51-2" data-line-number="2"></div>
-<div class="sourceLine" id="cb51-3" data-line-number="3"><span class="kw">mutate</span>(cve_smaller, <span class="dt">pub_date =</span> <span class="kw">as.date</span>(pub_date)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">NOTE</span><span class="co"> lower-case as.date()</span></div>
-<div class="sourceLine" id="cb51-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cve_month =</span> <span class="kw">MONTH</span>(pub_date)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">NOTE</span><span class="co"> upper-case MONTH()</span></div>
-<div class="sourceLine" id="cb51-5" data-line-number="5"><span class="st">  </span><span class="kw">count</span>(cve_month, vendor_name) <span class="op">%&gt;%</span><span class="st"> </span></div>
-<div class="sourceLine" id="cb51-6" data-line-number="6"><span class="st">  </span><span class="kw">group_by</span>(cve_month) <span class="op">%&gt;%</span><span class="st"> </span></div>
-<div class="sourceLine" id="cb51-7" data-line-number="7"><span class="st">  </span><span class="kw">top_n</span>(<span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span></div>
-<div class="sourceLine" id="cb51-8" data-line-number="8"><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span>## UP UNTIL THIS POINT EVERYTHING HAPPENED IN DRILL</div>
-<div class="sourceLine" id="cb51-9" data-line-number="9"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(vendor_name)) <span class="op">%&gt;%</span><span class="st"> </span>## Some CVE entries do not have vendors associated with them</div>
-<div class="sourceLine" id="cb51-10" data-line-number="10"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(cve_month, n)) <span class="op">+</span></div>
-<div class="sourceLine" id="cb51-11" data-line-number="11"><span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">xend=</span>cve_month, <span class="dt">yend=</span><span class="dv">0</span>)) <span class="op">+</span></div>
-<div class="sourceLine" id="cb51-12" data-line-number="12"><span class="st">  </span><span class="kw">scale_x_comma</span>(<span class="dt">name=</span><span class="st">&quot;Month&quot;</span>, <span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>,<span class="dv">1</span>), <span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">12</span>)) <span class="op">+</span></div>
-<div class="sourceLine" id="cb51-13" data-line-number="13"><span class="st">  </span><span class="kw">scale_y_comma</span>(<span class="dt">name=</span><span class="st">&quot;# CVEs&quot;</span>, <span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">250</span>)) <span class="op">+</span></div>
-<div class="sourceLine" id="cb51-14" data-line-number="14"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Aggregated &#39;top 3&#39; vendors by CVE count per-month&quot;</span>) <span class="op">+</span></div>
-<div class="sourceLine" id="cb51-15" data-line-number="15"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>vendor_name, <span class="dt">scales=</span><span class="st">&quot;free&quot;</span>, <span class="dt">ncol=</span><span class="dv">3</span>) <span class="op">+</span></div>
-<div class="sourceLine" id="cb51-16" data-line-number="16"><span class="st">  </span><span class="kw">theme_ipsum</span>(<span class="dt">grid=</span><span class="st">&quot;Y&quot;</span>)</div></code></pre>
-<p><img src="06-reading-traditional-json-data-drill-r_files/figure-html4/06-cve0-2-1.png" width="768" /></p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">library</span>(hrbrthemes)</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb55-3" data-line-number="3"><span class="kw">mutate</span>(cve_smaller, <span class="dt">pub_date =</span> <span class="kw">as.date</span>(pub_date)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">NOTE</span><span class="co"> lower-case as.date()</span></a>
+<a class="sourceLine" id="cb55-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cve_month =</span> <span class="kw">MONTH</span>(pub_date)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">NOTE</span><span class="co"> upper-case MONTH()</span></a>
+<a class="sourceLine" id="cb55-5" data-line-number="5"><span class="st">  </span><span class="kw">count</span>(cve_month, vendor_name) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb55-6" data-line-number="6"><span class="st">  </span><span class="kw">group_by</span>(cve_month) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb55-7" data-line-number="7"><span class="st">  </span><span class="kw">top_n</span>(<span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb55-8" data-line-number="8"><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span>## UP UNTIL THIS POINT EVERYTHING HAPPENED IN DRILL</a>
+<a class="sourceLine" id="cb55-9" data-line-number="9"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(vendor_name)) <span class="op">%&gt;%</span><span class="st"> </span>## Some CVE entries do not have vendors associated with them</a>
+<a class="sourceLine" id="cb55-10" data-line-number="10"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(cve_month, n)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb55-11" data-line-number="11"><span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">xend=</span>cve_month, <span class="dt">yend=</span><span class="dv">0</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb55-12" data-line-number="12"><span class="st">  </span><span class="kw">scale_x_comma</span>(<span class="dt">name=</span><span class="st">&quot;Month&quot;</span>, <span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>,<span class="dv">1</span>), <span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">12</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb55-13" data-line-number="13"><span class="st">  </span><span class="kw">scale_y_comma</span>(<span class="dt">name=</span><span class="st">&quot;# CVEs&quot;</span>, <span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">250</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb55-14" data-line-number="14"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Aggregated &#39;top 3&#39; vendors by CVE count per-month&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb55-15" data-line-number="15"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>vendor_name, <span class="dt">scales=</span><span class="st">&quot;free&quot;</span>, <span class="dt">ncol=</span><span class="dv">3</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb55-16" data-line-number="16"><span class="st">  </span><span class="kw">theme_ipsum</span>(<span class="dt">grid=</span><span class="st">&quot;Y&quot;</span>)</a></code></pre></div>
+<p><img src="08-reading-traditional-json-data-drill-r_files/figure-html/06-cve0-2-1.png" width="768" /></p>
 </div>
-<div id="see-also-4" class="section level2">
-<h2><span class="header-section-number">5.4</span> See Also</h2>
+<div id="see-also-7" class="section level2">
+<h2><span class="header-section-number">7.4</span> See Also</h2>
 <ul>
 <li><a href="https://drill.apache.org/docs/json-data-model/">JSON Data Model</a></li>
 <li><a href="https://drill.apache.org/docs/querying-complex-data-introduction/">Querying Complex Data</a></li>
+<li><a href="https://www.tutorialspoint.com/apache_drill/apache_drill_query_using_json.htm">Apache Drill - Query using JSON</a></li>
+<li><a href="https://www.tutorialspoint.com/apache_drill/apache_drill_window_functions_using_json.htm">Apache Drill - Window Functions using JSON</a></li>
 <li><a href="http://json-schema.org/">JSON Schema</a></li>
 </ul>
 

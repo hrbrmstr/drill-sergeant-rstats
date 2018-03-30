@@ -1,0 +1,36 @@
+# Adding or Modifying Drill 'Formats'
+
+## Problem
+
+You have data in a somewhat different format than is handled by the default configuration of Drill's default/built-in storage `formats` and want Drill to be able to work with it.
+
+## Solution
+
+Create a Drill "`format`".
+
+## Discussion
+
+The most common situations for this need is that you either have a CSV-like delimited plain text in a "flat" file that uses different delimiters or comment markers _or_ need to map a different extension to be recognized as a plain text, delimited "flat" file.
+
+Drill's `dfs` storage plugin (<http://localhost:8047/storage/dfs>) has a "`formats`" section below the "`workspaces`" section. You an customize a new plain text/flat file format there. 
+
+Say you have an evil flat file (`esv`?) with `@` as a delimeter and `!` as a comment character and no column names and also gives special data-meaning to "`"`" characters (so we can't treat them as field quotes).
+
+    "esv": {
+      "type": "text",
+      "extensions": [
+        "esv"                // to handle our custom file extension
+      ],
+      "quote": "\u0000",     // to handle " being data and never a field quote 
+      "skipFirstLine": true, // to handle no column names
+      "delimiter": "@",      // to handle the custom delimiter
+      "comment": "!"         // to handle ! being a comment character
+    },
+
+You can find the complete set of parameters in the [Drill manual](https://drill.apache.org/docs/plugin-configuration-basics/#list-of-attributes-and-definitions).
+
+## See Also
+
+- [Drill Default Input Format](https://drill.apache.org/docs/drill-default-input-format/)
+- [List of Attributes and Definitions](https://drill.apache.org/docs/plugin-configuration-basics/#list-of-attributes-and-definitions)
+- [Querying Plain Text Files](https://drill.apache.org/docs/querying-plain-text-files/)

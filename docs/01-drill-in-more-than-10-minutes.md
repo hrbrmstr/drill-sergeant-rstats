@@ -106,3 +106,12 @@ in your favourite web browser since it is likely you'll visit those admin pages 
 Drill works with databases, Hadoop-filesystems, Amazon S3 storage and plain 'ol local filesystems/directories that you use every day. We'll focus mainly on these simple local filesystems throughout the book since it is somewhat beyond the scope to introduce readers to Hadoop/Hive/HBase, but we'll likely delve into database access and even S3 access along the way.
 
 You should Read The Fine Manual^[[Drill Storage Plugin Configuration](https://drill.apache.org/docs/storage-plugin-registration/)] to get an idea of how to work with the storage configuration since we'll be tweaking it along the way throughout the book.
+
+## See Also
+
+- [Apache Drill - Introduction](https://www.tutorialspoint.com/apache_drill/apache_drill_introduction.htm)
+- [Apache Drill - Fundamentals](https://www.tutorialspoint.com/apache_drill/apache_drill_fundamentals.htm)
+- [Apache Drill - Architecture](https://www.tutorialspoint.com/apache_drill/apache_drill_architecture.htm)
+- [Apache Drill - Installation](https://www.tutorialspoint.com/apache_drill/apache_drill_installation.htm)
+- [Apache Drill - Quick Guide](https://www.tutorialspoint.com/apache_drill/apache_drill_quick_guide.htm)
+- [Apache Drill](https://en.wikipedia.org/wiki/Apache_Drill) (Wikipedia)
