@@ -210,7 +210,7 @@ filter(who_cholera, country == "Yemen") %>%
   theme(axis.text.y=element_text(vjust=c(0, rep(0.5, 2), 1)))
 ```
 
-<img src="06-reading-csv-data-with-drill-and-r_files/figure-html/04-chart-01-1.png" width="672" />
+<img src="07-reading-csv-data-with-drill-and-r_files/figure-html/04-chart-01-1.png" width="672" />
 
 Future recipes will help you debug issues when `CAST`ing data from "malformed" CSV files.
 

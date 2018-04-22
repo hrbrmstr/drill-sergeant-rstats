@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Using Apache Drill with R</title>
   <meta name="description" content="A small guide to wrangling data to fuel analyses with Apache Drill and R">
-  <meta name="generator" content="bookdown 0.6.2 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="Using Apache Drill with R" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 <meta name="author" content="Bob Rudis">
 
 
-<meta name="date" content="2018-03-30">
+<meta name="date" content="2018-04-22">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -172,41 +172,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.3" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#discussion-3"><i class="fa fa-check"></i><b>4.3</b> Discussion</a></li>
 <li class="chapter" data-level="4.4" data-path="wiring-up-drill-and-r-rjdbc-style.html"><a href="wiring-up-drill-and-r-rjdbc-style.html#see-also-4"><i class="fa fa-check"></i><b>4.4</b> See Also</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html"><i class="fa fa-check"></i><b>5</b> Reading and Querying CSV Data With Drill and R</a><ul>
-<li class="chapter" data-level="5.1" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#problem-4"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
-<li class="chapter" data-level="5.2" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#solution-4"><i class="fa fa-check"></i><b>5.2</b> Solution</a></li>
-<li class="chapter" data-level="5.3" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#discussion-4"><i class="fa fa-check"></i><b>5.3</b> Discussion</a></li>
-<li class="chapter" data-level="5.4" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#see-also-5"><i class="fa fa-check"></i><b>5.4</b> See Also</a></li>
+<li class="chapter" data-level="5" data-path="wiring-up-drill-and-r-odbc-style.html"><a href="wiring-up-drill-and-r-odbc-style.html"><i class="fa fa-check"></i><b>5</b> Wiring Up Drill and R (<code>ODBC</code>-style)</a><ul>
+<li class="chapter" data-level="5.1" data-path="wiring-up-drill-and-r-odbc-style.html"><a href="wiring-up-drill-and-r-odbc-style.html#problem-4"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="wiring-up-drill-and-r-odbc-style.html"><a href="wiring-up-drill-and-r-odbc-style.html#solution-4"><i class="fa fa-check"></i><b>5.2</b> Solution</a></li>
+<li class="chapter" data-level="5.3" data-path="wiring-up-drill-and-r-odbc-style.html"><a href="wiring-up-drill-and-r-odbc-style.html#discussion-4"><i class="fa fa-check"></i><b>5.3</b> Discussion</a></li>
+<li class="chapter" data-level="5.4" data-path="wiring-up-drill-and-r-odbc-style.html"><a href="wiring-up-drill-and-r-odbc-style.html#see-also-5"><i class="fa fa-check"></i><b>5.4</b> See Also</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><i class="fa fa-check"></i><b>6</b> Reading and Querying a Directory of CSV Data With Drill &amp; R</a><ul>
-<li class="chapter" data-level="6.1" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#problem-5"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
-<li class="chapter" data-level="6.2" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#solution-5"><i class="fa fa-check"></i><b>6.2</b> Solution</a></li>
-<li class="chapter" data-level="6.3" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#discussion-5"><i class="fa fa-check"></i><b>6.3</b> Discussion</a></li>
-<li class="chapter" data-level="6.4" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#see-also-6"><i class="fa fa-check"></i><b>6.4</b> See Also</a></li>
+<li class="chapter" data-level="6" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html"><i class="fa fa-check"></i><b>6</b> Reading and Querying CSV Data With Drill and R</a><ul>
+<li class="chapter" data-level="6.1" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#problem-5"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#solution-5"><i class="fa fa-check"></i><b>6.2</b> Solution</a></li>
+<li class="chapter" data-level="6.3" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#discussion-5"><i class="fa fa-check"></i><b>6.3</b> Discussion</a></li>
+<li class="chapter" data-level="6.4" data-path="reading-and-querying-csv-data-with-drill-and-r.html"><a href="reading-and-querying-csv-data-with-drill-and-r.html#see-also-6"><i class="fa fa-check"></i><b>6.4</b> See Also</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html"><i class="fa fa-check"></i><b>7</b> Reading a “Traditional” JSON Data File With Drill &amp; R</a><ul>
-<li class="chapter" data-level="7.1" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#problem-6"><i class="fa fa-check"></i><b>7.1</b> Problem</a></li>
-<li class="chapter" data-level="7.2" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#solution-6"><i class="fa fa-check"></i><b>7.2</b> Solution</a></li>
-<li class="chapter" data-level="7.3" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#discussion-6"><i class="fa fa-check"></i><b>7.3</b> Discussion</a></li>
-<li class="chapter" data-level="7.4" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#see-also-7"><i class="fa fa-check"></i><b>7.4</b> See Also</a></li>
+<li class="chapter" data-level="7" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><i class="fa fa-check"></i><b>7</b> Reading and Querying a Directory of CSV Data With Drill &amp; R</a><ul>
+<li class="chapter" data-level="7.1" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#problem-6"><i class="fa fa-check"></i><b>7.1</b> Problem</a></li>
+<li class="chapter" data-level="7.2" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#solution-6"><i class="fa fa-check"></i><b>7.2</b> Solution</a></li>
+<li class="chapter" data-level="7.3" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#discussion-6"><i class="fa fa-check"></i><b>7.3</b> Discussion</a></li>
+<li class="chapter" data-level="7.4" data-path="reading-and-querying-a-directory-of-csv-data-with-drill-r.html"><a href="reading-and-querying-a-directory-of-csv-data-with-drill-r.html#see-also-7"><i class="fa fa-check"></i><b>7.4</b> See Also</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><i class="fa fa-check"></i><b>8</b> Reading a “Streaming” JSON (ndjson) Data File With Drill &amp; R</a><ul>
-<li class="chapter" data-level="8.1" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#problem-7"><i class="fa fa-check"></i><b>8.1</b> Problem</a></li>
-<li class="chapter" data-level="8.2" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#solution-7"><i class="fa fa-check"></i><b>8.2</b> Solution</a></li>
-<li class="chapter" data-level="8.3" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#discussion-7"><i class="fa fa-check"></i><b>8.3</b> Discussion</a></li>
-<li class="chapter" data-level="8.4" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#see-also-8"><i class="fa fa-check"></i><b>8.4</b> See Also</a></li>
+<li class="chapter" data-level="8" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html"><i class="fa fa-check"></i><b>8</b> Reading a “Traditional” JSON Data File With Drill &amp; R</a><ul>
+<li class="chapter" data-level="8.1" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#problem-7"><i class="fa fa-check"></i><b>8.1</b> Problem</a></li>
+<li class="chapter" data-level="8.2" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#solution-7"><i class="fa fa-check"></i><b>8.2</b> Solution</a></li>
+<li class="chapter" data-level="8.3" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#discussion-7"><i class="fa fa-check"></i><b>8.3</b> Discussion</a></li>
+<li class="chapter" data-level="8.4" data-path="reading-a-traditional-json-data-file-with-drill-r.html"><a href="reading-a-traditional-json-data-file-with-drill-r.html#see-also-8"><i class="fa fa-check"></i><b>8.4</b> See Also</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html"><i class="fa fa-check"></i><b>9</b> Working With Custom Delimited Format Files</a><ul>
-<li class="chapter" data-level="9.1" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#problem-8"><i class="fa fa-check"></i><b>9.1</b> Problem</a></li>
-<li class="chapter" data-level="9.2" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#solution-8"><i class="fa fa-check"></i><b>9.2</b> Solution</a></li>
-<li class="chapter" data-level="9.3" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#discussion-8"><i class="fa fa-check"></i><b>9.3</b> Discussion</a></li>
-<li class="chapter" data-level="9.4" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#see-also-9"><i class="fa fa-check"></i><b>9.4</b> See Also</a></li>
+<li class="chapter" data-level="9" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><i class="fa fa-check"></i><b>9</b> Reading a “Streaming” JSON (ndjson) Data File With Drill &amp; R</a><ul>
+<li class="chapter" data-level="9.1" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#problem-8"><i class="fa fa-check"></i><b>9.1</b> Problem</a></li>
+<li class="chapter" data-level="9.2" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#solution-8"><i class="fa fa-check"></i><b>9.2</b> Solution</a></li>
+<li class="chapter" data-level="9.3" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#discussion-8"><i class="fa fa-check"></i><b>9.3</b> Discussion</a></li>
+<li class="chapter" data-level="9.4" data-path="reading-a-streaming-json-ndjson-data-file-with-drill-r.html"><a href="reading-a-streaming-json-ndjson-data-file-with-drill-r.html#see-also-9"><i class="fa fa-check"></i><b>9.4</b> See Also</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><i class="fa fa-check"></i><b>10</b> Writing “Simple” Drill Custom Functions (UDFs) For Field Transformations</a><ul>
-<li class="chapter" data-level="10.1" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#problem-9"><i class="fa fa-check"></i><b>10.1</b> Problem</a></li>
-<li class="chapter" data-level="10.2" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#solution-9"><i class="fa fa-check"></i><b>10.2</b> Solution</a></li>
-<li class="chapter" data-level="10.3" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#discussion-9"><i class="fa fa-check"></i><b>10.3</b> Discussion</a></li>
-<li class="chapter" data-level="10.4" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#see-also-10"><i class="fa fa-check"></i><b>10.4</b> See Also</a></li>
+<li class="chapter" data-level="10" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html"><i class="fa fa-check"></i><b>10</b> Working With Custom Delimited Format Files</a><ul>
+<li class="chapter" data-level="10.1" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#problem-9"><i class="fa fa-check"></i><b>10.1</b> Problem</a></li>
+<li class="chapter" data-level="10.2" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#solution-9"><i class="fa fa-check"></i><b>10.2</b> Solution</a></li>
+<li class="chapter" data-level="10.3" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#discussion-9"><i class="fa fa-check"></i><b>10.3</b> Discussion</a></li>
+<li class="chapter" data-level="10.4" data-path="working-with-custom-delimited-format-files.html"><a href="working-with-custom-delimited-format-files.html#see-also-10"><i class="fa fa-check"></i><b>10.4</b> See Also</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><i class="fa fa-check"></i><b>11</b> Writing “Simple” Drill Custom Functions (UDFs) For Field Transformations</a><ul>
+<li class="chapter" data-level="11.1" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#problem-10"><i class="fa fa-check"></i><b>11.1</b> Problem</a></li>
+<li class="chapter" data-level="11.2" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#solution-10"><i class="fa fa-check"></i><b>11.2</b> Solution</a></li>
+<li class="chapter" data-level="11.3" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#discussion-10"><i class="fa fa-check"></i><b>11.3</b> Discussion</a></li>
+<li class="chapter" data-level="11.4" data-path="writing-simple-drill-custom-functions-udfs-for-field-transformations.html"><a href="writing-simple-drill-custom-functions-udfs-for-field-transformations.html#see-also-11"><i class="fa fa-check"></i><b>11.4</b> See Also</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><span style="font-size:8pt"><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></span></li>
@@ -244,7 +250,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">0.3.1</span> macOS</h3>
 <p>Using Homebrew<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>:</p>
 <pre><code>brew install zookeeper
-ln -sfv /usr/local/opt/zookeeper/homebrew.mxcl.zookeeper.plist ~/Library/LaunchAgents</code></pre>
+ln -sfv /usr/local/opt/zookeeper/homebrew.mxcl.zookeeper.plist ~/Library/LaunchAgents
+# OR 
+brew services start zookeeper</code></pre>
 </div>
 <div id="ubuntudebian-ish" class="section level3">
 <h3><span class="header-section-number">0.3.2</span> Ubuntu/Debian-ish</h3>
@@ -253,12 +261,12 @@ service zookeeper # {start|stop|status|restart|force-reload}</code></pre>
 </div>
 <div id="windows" class="section level3">
 <h3><span class="header-section-number">0.3.3</span> Windows</h3>
-<p>TBD</p>
+<pre><code>Not possible. Need to use standalone mode.</code></pre>
 </div>
 </div>
 <div id="wiring-up-zookeeper-with-drill" class="section level2">
 <h2><span class="header-section-number">0.4</span> Wiring Up Zookeeper With Drill</h2>
-<p>On Linux and macOS, it’s best to have drill in <code>/usr/local/drill</code> (it’s handy to symlink the full versioned directory to <code>drill</code> to make it easier to switch out/upgrade versions). On Windows, Drill is in <code>TBD</code>.</p>
+<p>On Linux and macOS, it’s best to have drill in <code>/usr/local/drill</code> (it’s handy to symlink the full versioned directory to <code>drill</code> to make it easier to switch out/upgrade versions). On Windows, Drill is in wherever you <a href="https://drill.apache.org/docs/installing-drill-on-windows/">put the files outlined in the official manual</a>.</p>
 <p>The Drill directory structure looks like:</p>
 <pre><code>.
 ├── bin

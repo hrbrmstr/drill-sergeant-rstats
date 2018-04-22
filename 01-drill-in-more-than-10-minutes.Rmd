@@ -20,6 +20,8 @@ Using Homebrew^[[Homebrew](https://brew.sh/)]:
 
     brew install zookeeper
     ln -sfv /usr/local/opt/zookeeper/homebrew.mxcl.zookeeper.plist ~/Library/LaunchAgents
+    # OR 
+    brew services start zookeeper
 
 ### Ubuntu/Debian-ish
 
@@ -28,11 +30,11 @@ Using Homebrew^[[Homebrew](https://brew.sh/)]:
 
 ### Windows
 
-   TBD
+    Not possible. Need to use standalone mode.
 
 ## Wiring Up Zookeeper With Drill
 
-On Linux and macOS, it's best to have drill in `/usr/local/drill` (it's handy to symlink the full versioned directory to `drill` to make it easier to switch out/upgrade versions). On Windows, Drill is in `TBD`.
+On Linux and macOS, it's best to have drill in `/usr/local/drill` (it's handy to symlink the full versioned directory to `drill` to make it easier to switch out/upgrade versions). On Windows, Drill is in wherever you [put the files outlined in the official manual](https://drill.apache.org/docs/installing-drill-on-windows/).
 
 The Drill directory structure looks like:
 
